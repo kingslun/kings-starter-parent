@@ -25,7 +25,7 @@ final class RedisDistributedElectionRegistry extends DistributedElectionRegistry
     private final DistributedElectionProperties.Redis properties;
     private final ScheduledExecutorService leaderElection;
     private final RedisTemplate<String, String> template;
-    private Selector selector;
+    private final Selector selector;
     private static final String LOCAL_HOST = IpUtil.getIp();
 
     RedisDistributedElectionRegistry(RedisTemplate<String, String> template,

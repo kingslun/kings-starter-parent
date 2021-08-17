@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
 
 /**
- * <p>最基础的抽象</p>
+ * 最基础的抽象
  *
  * @author lun.wang
  * @date 2020/4/30 6:07 下午
