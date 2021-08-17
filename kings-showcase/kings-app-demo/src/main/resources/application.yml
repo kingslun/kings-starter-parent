@@ -1,0 +1,21 @@
+logging:
+  level.com.kings.framework: trace
+spring:
+  application:
+    name: kings-app
+  cloud:
+    kubernetes:
+      client:
+        master-url: https://10.181.18.183:6443
+        oauth-token: eyJhbGciOiJSUzI1NiIsImtpZCI6ImR5ZjBvZ1JGa09DTTBUdExiUHRYaThqLTluZ3RrWklPTnM3VWsyYTMwUWMifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJkZWZhdWx0LXRva2VuLXMyaGxsIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImRlZmF1bHQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJjNjc4ZGZmZS00ZTNlLTQ2OTEtYTkwNC0wOWEzN2Y0ZGE5YmUiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06ZGVmYXVsdCJ9.W3EsJiqm40Qol5a36rDqMglzP1Yey_3rFs2x1unDiN40wS5Kwgc_vYjaT8qPr5y9eeMYW9EnkmDIC8LMt-4SiXS_5T9Ac7hc49W-oz0daGxPvfoolpqvuY4S-pf0dS_co2YFRP6Q3P6XeuXE0I_0lIF9rBn99XIaJyVzJgd9y6Fzp4cWIWEgyDbJYVLSpO1kwR542mb4lK9arLnxK-yblMkCKlwsym12Tr9AIt0k4PhZZew58BoyMY8qCxCEhK335Fx9_eKjBYgnVlgxSJ-4DAnADhlcpA44-TdKx2eTKnK6F9x0wu0WWbnEeY9GPjP735w8CUVmaKo7c6iqTWY5YQ
+        namespace: kings
+  redis:
+    database: 8
+    host: 10.181.18.183
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+
+

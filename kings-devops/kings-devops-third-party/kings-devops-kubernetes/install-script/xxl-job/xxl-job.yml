@@ -1,0 +1,51 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: xxl-job
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xxl-job
+  namespace: xxl-job
+  labels:
+    app: xxl-job
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xxl-job
+  template:
+    metadata:
+      labels:
+        app: xxl-job
+    spec:
+      containers:
+        - name: xxl-job
+          image: registry.cn-hangzhou.aliyuncs.com/java-service/xxl-job-admin:722098f9fa6e9579a3470270c4b23da7ba9da6e1dev
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: spring.datasource.url
+              value: jdbc:mysql://10.102.35.117:3306/xxl_job?Unicode=true&characterEncoding=UTF-8
+            - name: spring.datasource.username
+              value: root
+            - name: spring.datasource.password
+              value: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: xxl-job
+  name: xxl-job
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+      nodePort: 30082
+  type: NodePort
+  selector:
+    app: xxl-job

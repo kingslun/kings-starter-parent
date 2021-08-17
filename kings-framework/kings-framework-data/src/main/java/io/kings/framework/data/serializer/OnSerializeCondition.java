@@ -1,0 +1,19 @@
+package io.kings.framework.data.serializer;
+
+import io.kings.framework.core.condition.PropertyCondition;
+
+import static io.kings.framework.data.serializer.Serializer.SERIALIZE_ENABLE_PREFIX;
+
+/**
+ * 序列化装载条件
+ *
+ * @author lun.wang
+ * @date 2021/8/16 4:52 下午
+ * @since v2.0
+ */
+final class OnSerializeCondition extends PropertyCondition {
+    @Override
+    protected boolean matches() {
+        return super.on(SERIALIZE_ENABLE_PREFIX);
+    }
+}

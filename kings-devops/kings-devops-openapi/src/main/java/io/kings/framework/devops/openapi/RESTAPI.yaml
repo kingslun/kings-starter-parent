@@ -1,0 +1,44 @@
+swagger: "2.0"
+info:
+  title: OpenAPI for kings-devops
+  description: devops开放平台接口文档
+  version: v1.0
+host: kings.io.devops
+schemes:
+  - https
+  - http
+basePath: /v1
+paths:
+
+  /application/get/{id}:
+    get:
+      summary: 获取应用
+      description: 根据应用编号获取应用信息,在没有此信息时返回失败
+      parameters:
+        - name: id
+          in: path
+          description: 应用编号
+          required: true
+          type: number
+      responses:
+        200:
+          description: 根据编号获取应用成功
+          schema:
+            type: object
+            $ref: '#/definitions/Application'
+produces:
+  - application/json;charset=utf-8;
+
+definitions:
+  Application:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 应用名称
+      git:
+        type: string
+        description: 仓库地址
+      projectPath:
+        type: string
+        description: 构建目录

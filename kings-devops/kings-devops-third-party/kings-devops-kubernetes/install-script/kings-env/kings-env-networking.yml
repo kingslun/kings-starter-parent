@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kings-env
+  name: redis
+spec:
+  ports:
+    - port: 6379
+      targetPort: 6379
+      name: redis
+      nodePort: 30379
+  type: NodePort
+  selector:
+    app: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kings-env
+  name: mysql
+spec:
+  ports:
+    - port: 3306
+      targetPort: 3306
+      name: mysql
+      nodePort: 30306
+  type: NodePort
+  selector:
+    app: mysql

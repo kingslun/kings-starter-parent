@@ -1,0 +1,30 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: projectName
+  namespace: namespace
+spec:
+  hosts:
+    - svc.cluster.local
+    - domain
+
+  http:
+    #金丝雀版本可定制header版本匹配
+    - match:
+        - headers:
+            x-version:
+              regex: "^(.*?;)?({{ version }})(;.*)?$"
+      route:
+        - destination:
+            host: svc.cluster.local
+            subset: a
+    - route:
+        - destination:
+            host: a
+            subset: a
+          weight: 1
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: 'gateway-error,connect-failure,refused-stream,reset'

@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: kings-env
+  labels:
+    app: zookeeper
+    profile: local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+      profile: local
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+        profile: local
+    spec:
+      containers:
+        - name: zookeeper
+          image: zookeeper:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 2181
+          volumeMounts:
+            - mountPath: /data
+              name: data
+      volumes:
+        - name: data
+          hostPath:
+            path: /Users/lunkings/data/zookeeper/data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kings-env
+  name: zookeeper
+spec:
+  ports:
+    - port: 2181
+      targetPort: 2181
+      name: zookeeper
+      nodePort: 30181
+  type: NodePort
+  selector:
+    app: zookeeper

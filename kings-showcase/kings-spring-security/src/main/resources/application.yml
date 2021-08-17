@@ -1,0 +1,3 @@
+#spring.security.user:
+#  name: un
+#  password: pw

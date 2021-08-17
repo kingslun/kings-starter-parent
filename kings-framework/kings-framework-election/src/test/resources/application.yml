@@ -1,0 +1,6 @@
+spring:
+  redis:
+    port: 30379
+    database: 8
+logging:
+  level.io.kings.framework: debug

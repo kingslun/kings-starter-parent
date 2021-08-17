@@ -1,0 +1,55 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nova-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nova-service
+  namespace: nova-service
+  labels:
+    app: nova-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nova-service
+  template:
+    metadata:
+      labels:
+        app: nova-service
+    spec:
+      containers:
+        - name: nova-service
+          image: nova-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: env
+              value: prod
+            - name: spring.profiles.active
+              value: dev
+            - name: spring.redis.host
+              value: 10.109.231.163
+            - name: spring.redis.port
+              value: "6379"
+            - name: spring.datasource.url
+              value: jdbc:mysql://10.102.35.117:3306/zeus?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: nova-service
+  name: nova-service
+spec:
+  ports:
+    - port: 9090
+      targetPort: 8080
+      name: http
+      nodePort: 30081
+  type: NodePort
+  selector:
+    app: nova-service

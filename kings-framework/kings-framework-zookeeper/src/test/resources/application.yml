@@ -1,0 +1,16 @@
+kings.zookeeper.host: localhost:30181
+kings.zookeeper.namespace: local-amethyst-local
+kings.zookeeper.retry-type: RETRY_ONE_TIME
+kings.zookeeper.retry.sleepMsBetweenRetries: 100
+kings.zookeeper.listen-connect-state: false
+logging.level:
+  org.springframework: debug
+  io:
+    kings:
+      framework: debug
+kings:
+  election:
+    enabled: off
+    type: zookeeper
+    zookeeper:
+      path: /local-elected-path
