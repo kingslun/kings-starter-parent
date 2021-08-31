@@ -23,5 +23,10 @@
             <groupId>io.kings</groupId>
             <artifactId>kings-framework-data</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.kubernetes/client-java -->
+        <dependency>
+            <groupId>io.kubernetes</groupId>
+            <artifactId>client-java</artifactId>
+        </dependency>
     </dependencies>
 </project>

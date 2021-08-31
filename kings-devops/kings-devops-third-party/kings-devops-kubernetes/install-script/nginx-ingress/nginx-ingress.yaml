@@ -53,7 +53,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: default-http-backend
-          image: registry.cn-qingdao.aliyuncs.com/kubernetes_xingej/defaultbackend-amd64:1.5      #建议提前在node节点下载镜像；
+          image: chenliujin/defaultbackend:latest
           livenessProbe:
             httpGet:
               path: /healthz
@@ -260,7 +260,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: nginx-ingress-controller
-          image: suisrc/ingress-nginx:0.30.0   #建议提前在node节点下载镜像；
+          image: suisrc/ingress-nginx:0.30.0
           args:
             - /nginx-ingress-controller
             - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
