@@ -1,5 +1,12 @@
 logging:
-  level.com.kings.demo: trace
+  level.com.kings.framework: trace
 spring:
   application:
     name: kings-app
+  redis:
+    database: 30379
+    host: localhost
+  datasource:
+    url: jdbc:mysql://localhost:30306/local
+    username: root
+    password: password
