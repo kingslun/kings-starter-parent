@@ -18,80 +18,77 @@ import java.util.Optional;
  */
 public class ProtoStuffSerializer implements Serializer {
 
-    /**
-     * schema thread local
-     */
-    private final ThreadLocal<RuntimeSchema<? extends Serializable>> schemaThreadLocal;
+  /**
+   * schema thread local
+   */
+  private final ThreadLocal<RuntimeSchema<? extends Serializable>> schemaThreadLocal;
 
-    public ProtoStuffSerializer() {
-        schemaThreadLocal = new ThreadLocal<>();
-    }
+  public ProtoStuffSerializer() {
+    schemaThreadLocal = new ThreadLocal<>();
+  }
 
-    /**
-     * 序列化参数对象
-     *
-     * @param serializable 参数对象
-     * @return serialized bytes
-     * @throws SerializeException 序列化异常
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E extends Serializable> byte[] serialize(E serializable) throws SerializeException {
-        if (serializable == null) {
-            return EMPTY_BYTE_ARRAY;
-        }
-        try {
-            final RuntimeSchema<E> runtimeSchema = (RuntimeSchema<E>) RuntimeSchema.createFrom(
-                serializable.getClass());
-            schemaThreadLocal.set(runtimeSchema);
-            return ProtostuffIOUtil
-                .toByteArray(serializable, runtimeSchema,
-                    LinkedBuffer.allocate(DEFAULT_BUFFER_SIZE));
-        } catch (Exception e) {
-            throw new SerializeException("proto stuff serialized failed,cause:" + e.getMessage(),
-                e);
-        }
+  /**
+   * 序列化参数对象
+   *
+   * @param serializable 参数对象
+   * @return serialized bytes
+   * @throws SerializeException 序列化异常
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <E extends Serializable> byte[] serialize(E serializable) throws SerializeException {
+    if (serializable == null) {
+      return EMPTY_BYTE_ARRAY;
     }
+    try {
+      final RuntimeSchema<E> runtimeSchema = (RuntimeSchema<E>) RuntimeSchema.createFrom(
+          serializable.getClass());
+      schemaThreadLocal.set(runtimeSchema);
+      return ProtostuffIOUtil
+          .toByteArray(serializable, runtimeSchema, LinkedBuffer.allocate(DEFAULT_BUFFER_SIZE));
+    } catch (Exception e) {
+      throw new SerializeException("proto stuff serialized failed,cause:" + e.getMessage(), e);
+    }
+  }
 
-    /**
-     * 反序列化对象
-     *
-     * @param bytes data bytes
-     * @return obj
-     * @throws SerializeException 序列化异常
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <E extends Serializable> E deserialize(byte[] bytes) throws SerializeException {
-        if (bytes == null || bytes.length <= 0) {
-            return null;
-        }
-        try {
-            RuntimeSchema<E> runtimeSchema = (RuntimeSchema<E>) schemaThreadLocal.get();
-            E serial = runtimeSchema.newMessage();
-            ProtostuffIOUtil.mergeFrom(bytes, serial, runtimeSchema);
-            return serial;
-        } catch (Exception e) {
-            throw new SerializeException("proto stuff deserialize failed,cause:" + e.getMessage(),
-                e);
-        } finally {
-            schemaThreadLocal.remove();
-        }
+  /**
+   * 反序列化对象
+   *
+   * @param bytes data bytes
+   * @return obj
+   * @throws SerializeException 序列化异常
+   */
+  @Override
+  @SuppressWarnings("unchecked")
+  public <E extends Serializable> E deserialize(byte[] bytes) throws SerializeException {
+    if (bytes == null || bytes.length <= 0) {
+      return null;
     }
+    try {
+      RuntimeSchema<E> runtimeSchema = (RuntimeSchema<E>) schemaThreadLocal.get();
+      E serial = runtimeSchema.newMessage();
+      ProtostuffIOUtil.mergeFrom(bytes, serial, runtimeSchema);
+      return serial;
+    } catch (Exception e) {
+      throw new SerializeException("proto stuff deserialize failed,cause:" + e.getMessage(), e);
+    } finally {
+      schemaThreadLocal.remove();
+    }
+  }
 
-    /**
-     * destroy failed
-     */
-    @Override
-    public void destroy() {
-        Optional.of(schemaThreadLocal).ifPresent(ThreadLocal::remove);
-    }
+  /**
+   * destroy failed
+   */
+  @Override
+  public void destroy() {
+    Optional.of(schemaThreadLocal).ifPresent(ThreadLocal::remove);
+  }
 
-    /**
-     * init failed
-     */
-    @Override
-    public void complete() {
-        //not support exception
-    }
+  /**
+   * init failed
+   */
+  @Override
+  public void complete() {
+    //not support exception
+  }
 }
