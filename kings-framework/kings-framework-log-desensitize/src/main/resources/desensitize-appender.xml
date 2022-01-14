@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<included>
+  <appender name="desensitize-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 文件名 -->
+      <fileNamePattern>${LOG_PATH}/${APP_NAME}/desensitize/%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>10</maxHistory>
+    </rollingPolicy>
+    <encoder class="io.kings.framework.log.desensitize.PatternLayoutEncoder">
+      <desensitize>${LOG_DESENSITIZE}</desensitize>
+      <depth>${LOG_DESENSITIZE_DEPTH}</depth>
+      <maxLength>${LOG_DESENSITIZE_MAXLENGTH}</maxLength>
+      <matchType>${LOG_DESENSITIZE_MATCH_TYPE}</matchType>
+      <regular>${LOG_DESENSITIZE_MATCH_REGULAR}</regular>
+      <regularEndWith>${LOG_DESENSITIZE_MATCH_REGULAR_END_WITH}</regularEndWith>
+      <useIntern>${LOG_DESENSITIZE_USE_STRING_INTERN}</useIntern>
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+</included>

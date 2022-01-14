@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <property name="APP_NAME" value="desensitize-demo"/>
+  <!--  脱敏开关  -->
+  <property name="LOG_DESENSITIZE" value="true"/>
+  <!--  脱敏深度 超过将不再脱敏 -->
+  <property name="LOG_DESENSITIZE_DEPTH" value="2"/>
+  <!--  脱敏日志最大长度 超过将不再脱敏 -->
+  <property name="LOG_DESENSITIZE_MAXLENGTH" value="1024"/>
+  <!--  脱敏日志解析方案 有关键字解析(KEYWORD)、正则解析(REGEXP)【默认 KEYWORD 】-->
+  <property name="LOG_DESENSITIZE_MATCH_TYPE" value="KEYWORD"/>
+  <!--  是否启用string intern节约heap内存-->
+  <property name="LOG_DESENSITIZE_USE_STRING_INTERN" value="false"/>
+  <property name="LOG_DESENSITIZE_MATCH_REGULAR"
+    value="MOBILE_PHONE:mobile_phone|chinese_name:chinese_name"/>
+  <property name="LOG_DESENSITIZE_MATCH_REGULAR_END_WITH" value=","/>
+  <!--  自定义appender、logger-->
+  <include resource="not-desensitize-appender.xml"/>
+  <logger name="not-desensitize-logger" level="info" additivity="false">
+    <!--    <appender-ref ref="console-appender"/>-->
+    <appender-ref ref="not-desensitize-appender"/>
+  </logger>
+  <include resource="base-logback.xml"/>
+</configuration>

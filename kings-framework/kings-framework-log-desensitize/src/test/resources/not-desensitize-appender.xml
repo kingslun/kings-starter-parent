@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<included>
+  <appender name="not-desensitize-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- 文件名 -->
+      <fileNamePattern>/data/log/${APP_NAME}/not-desensitize/%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>10</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %level [%X{userId}] : %msg%n</pattern>
+    </encoder>
+  </appender>
+</included>

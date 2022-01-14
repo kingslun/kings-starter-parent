@@ -14,5 +14,6 @@
         <module>kings-app-demo</module>
         <module>kings-base</module>
         <module>kings-spring-security</module>
+        <module>kings-framework-test</module>
     </modules>
 </project>
