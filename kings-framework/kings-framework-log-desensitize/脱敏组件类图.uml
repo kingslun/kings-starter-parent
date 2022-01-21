@@ -1,0 +1,1129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.aihuishou.audit.log.desensitize.LogSensitiveConverter</OriginalElement>
+  <nodes>
+    <node x="3245.1250000000005" y="1151.0">com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher</node>
+    <node x="2291.2155975877217" y="558.0">com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment</node>
+    <node x="2991.2155975877217" y="893.0">com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult</node>
+    <node x="3186.458333333334" y="547.0">com.aihuishou.audit.log.desensitize.match.AbstractMatchResult</node>
+    <node x="2951.458333333334" y="580.0">com.aihuishou.audit.log.desensitize.LogContext.SensitiveLogContext</node>
+    <node x="1944.4030975877217" y="266.0">com.aihuishou.audit.log.desensitize.match.regular.Regular</node>
+    <node x="3007.9655975877217" y="1233.0">com.aihuishou.audit.log.desensitize.AbstractLogConverter</node>
+    <node x="229.15309758772173" y="0.0">com.aihuishou.audit.log.desensitize.StringAppenderFacade</node>
+    <node x="3607.9981154057004" y="23.5">com.aihuishou.audit.log.desensitize.match.Segment</node>
+    <node x="3469.458333333334" y="569.0">com.aihuishou.audit.log.desensitize.match.MatchResult.CursorMatchPair</node>
+    <node x="824.0280975877217" y="603.5">com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade</node>
+    <node x="3099.125" y="300.5">com.aihuishou.audit.log.desensitize.LogContext</node>
+    <node x="1202.7780975877217" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize</node>
+    <node x="957.2780975877217" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize</node>
+    <node x="2882.9655975877217" y="1514.0">com.aihuishou.audit.log.desensitize.LogSensitiveConverter</node>
+    <node x="1662.0814487390335" y="300.5">com.aihuishou.audit.log.desensitize.DesensitizeApi</node>
+    <node x="544.6114309210548" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize</node>
+    <node x="3472.3731154057004" y="300.5">com.aihuishou.audit.log.desensitize.match.MatchResult</node>
+    <node x="500.40309758772173" y="160.5">com.aihuishou.audit.log.desensitize.IogCondition</node>
+    <node x="2427.5925507127204" y="137.0">com.aihuishou.audit.log.desensitize.ReflectionLogContext</node>
+    <node x="1304.4012129934213" y="603.5">com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender</node>
+    <node x="1465.7780975877217" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize</node>
+    <node x="268.1530975877215" y="266.0">com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender</node>
+    <node x="3234.270833333334" y="148.0">com.aihuishou.audit.log.desensitize.DesensitizeContext.DefaultContext</node>
+    <node x="329.61143092105476" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize</node>
+    <node x="3043.1250000000005" y="1151.0">com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher</node>
+    <node x="2669.5925507127204" y="160.5">com.aihuishou.audit.log.desensitize.StopWatch</node>
+    <node x="254.1530975877215" y="160.5">com.aihuishou.audit.log.desensitize.StringAppenderFacade.AppenderException</node>
+    <node x="2515.5397820723665" y="23.5">com.aihuishou.audit.log.desensitize.DesensitizeContext</node>
+    <node x="3547.238384046054" y="905.5">com.aihuishou.audit.log.desensitize.match.LogMatcher</node>
+    <node x="3894.4583333333335" y="160.5">com.aihuishou.audit.log.desensitize.match.MatchPair</node>
+    <node x="1241.1512129934213" y="905.5">com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize</node>
+    <node x="1702.7780975877217" y="1151.0">com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize</node>
+    <node x="2513.2155975877217" y="882.0">com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="81.0" y="-14.0" />
+      <point x="1405.2780975877217" y="1049.0" />
+      <point x="1756.0833333333337" y="1049.0" />
+      <point x="1756.0833333333337" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-69.66666666666652" y="-26.5" />
+      <point x="3026.048930921055" y="850.0" />
+      <point x="2142.4030975877217" y="850.0" />
+      <point x="2142.4030975877217" y="116.0" />
+      <point x="702.7064487390334" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-82.125" y="-70.5" />
+      <point x="3213.833333333334" y="505.0" />
+      <point x="2111.9030975877217" y="505.0" />
+      <point x="2111.9030975877217" y="116.0" />
+      <point x="702.7064487390334" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher" target="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" relationship="CREATE">
+      <point x="-57.666666666666515" y="-14.0" />
+      <point x="3273.958333333334" y="1119.0" />
+      <point x="3095.7155975877217" y="1119.0" />
+      <point x="0.0" y="26.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.Segment" relationship="DEPENDENCY">
+      <point x="-18.083333333333485" y="-37.5" />
+      <point x="2603.6322642543882" y="860.0" />
+      <point x="2027.4030975877217" y="860.0" />
+      <point x="2027.4030975877217" y="740.0" />
+      <point x="3175.958333333334" y="740.0" />
+      <point x="3175.958333333334" y="485.0" />
+      <point x="3786.433662280701" y="485.0" />
+      <point x="3786.433662280701" y="116.0" />
+      <point x="3667.9981154057004" y="116.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="-59.666666666666515" y="-59.5" />
+      <point x="2321.048930921055" y="525.0" />
+      <point x="2192.6530975877217" y="525.0" />
+      <point x="2192.6530975877217" y="455.0" />
+      <point x="2534.488384046054" y="455.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.DesensitizeApi" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="41.75" y="-14.0" />
+      <point x="1787.3314487390335" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-83.0" y="-14.0" />
+      <point x="586.1114309210548" y="1119.0" />
+      <point x="155.90309758772128" y="1119.0" />
+      <point x="155.90309758772128" y="1019.0" />
+      <point x="286.3008840460541" y="1019.0" />
+      <point x="286.3008840460541" y="780.0" />
+      <point x="479.65309758772173" y="780.0" />
+      <point x="479.65309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-83.0" y="-14.0" />
+      <point x="586.1114309210548" y="1119.0" />
+      <point x="155.90309758772128" y="1119.0" />
+      <point x="155.90309758772128" y="1019.0" />
+      <point x="1488.6512129934213" y="1019.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchPair" relationship="CREATE">
+      <point x="18.083333333333485" y="-37.5" />
+      <point x="2639.798930921055" y="860.0" />
+      <point x="2844.7155975877217" y="860.0" />
+      <point x="2844.7155975877217" y="730.0" />
+      <point x="3973.9583333333335" y="730.0" />
+      <point x="3973.9583333333335" y="234.0" />
+      <point x="3942.4583333333335" y="234.0" />
+      <point x="-16.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-18.083333333333485" y="-37.5" />
+      <point x="2603.6322642543882" y="860.0" />
+      <point x="2027.4030975877217" y="860.0" />
+      <point x="2027.4030975877217" y="740.0" />
+      <point x="360.6530975877213" y="740.0" />
+      <point x="360.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.LogMatcher" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="3619.238384046054" y="720.0" />
+      <point x="3662.958333333334" y="720.0" />
+      <point x="3662.958333333334" y="525.0" />
+      <point x="3678.3803796600882" y="525.0" />
+      <point x="3678.3803796600882" y="475.0" />
+      <point x="3595.7064487390335" y="475.0" />
+      <point x="49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="-82.125" y="-70.5" />
+      <point x="3213.833333333334" y="505.0" />
+      <point x="2111.9030975877217" y="505.0" />
+      <point x="2111.9030975877217" y="435.0" />
+      <point x="2534.488384046054" y="435.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-72.0" y="-14.0" />
+      <point x="993.2780975877217" y="1109.0" />
+      <point x="165.90309758772128" y="1109.0" />
+      <point x="165.90309758772128" y="1029.0" />
+      <point x="11.0" y="1029.0" />
+      <point x="11.0" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1065.2780975877217" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="57.666666666666515" y="-14.0" />
+      <point x="3389.291666666667" y="1129.0" />
+      <point x="3353.7155975877217" y="1129.0" />
+      <point x="3353.7155975877217" y="1089.0" />
+      <point x="2855.2155975877217" y="1089.0" />
+      <point x="2855.2155975877217" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-59.666666666666515" y="-59.5" />
+      <point x="2321.048930921055" y="525.0" />
+      <point x="2192.6530975877217" y="525.0" />
+      <point x="2192.6530975877217" y="116.0" />
+      <point x="702.7064487390334" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-65.0" y="-14.0" />
+      <point x="362.11143092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1039.0" />
+      <point x="1488.6512129934213" y="1039.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.DesensitizeContext.DefaultContext" relationship="CREATE">
+      <point x="-27.375" y="-70.5" />
+      <point x="3268.583333333334" y="525.0" />
+      <point x="3291.350328947368" y="525.0" />
+      <point x="3291.350328947368" y="505.0" />
+      <point x="3348.8106154057004" y="505.0" />
+      <point x="3348.8106154057004" y="244.0" />
+      <point x="3361.770833333334" y="244.0" />
+      <point x="42.5" y="26.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="GENERALIZATION">
+      <point x="-57.5" y="-14.0" />
+      <point x="881.5280975877217" y="505.0" />
+      <point x="371.1530975877213" y="505.0" />
+      <point x="371.1530975877213" y="495.0" />
+      <point x="356.1530975877215" y="495.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-65.0" y="-14.0" />
+      <point x="362.11143092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1039.0" />
+      <point x="204.71755071272082" y="1039.0" />
+      <point x="204.71755071272082" y="770.0" />
+      <point x="479.65309758772173" y="770.0" />
+      <point x="479.65309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogSensitiveConverter" target="com.aihuishou.audit.log.desensitize.match.LogMatcher" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="2997.4655975877217" y="1483.0" />
+      <point x="2619.208333333334" y="1483.0" />
+      <point x="2619.208333333334" y="1129.0" />
+      <point x="3060.1250000000005" y="1129.0" />
+      <point x="3060.1250000000005" y="1079.0" />
+      <point x="3571.238384046054" y="1079.0" />
+      <point x="-48.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade" target="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" relationship="INNER_CLASS">
+      <point x="-57.5" y="14.0" />
+      <point x="881.5280975877217" y="750.0" />
+      <point x="2567.4655975877217" y="750.0" />
+      <point x="-54.25" y="-37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="72.0" y="-14.0" />
+      <point x="1137.2780975877217" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="DEPENDENCY">
+      <point x="-82.125" y="-70.5" />
+      <point x="3213.833333333334" y="505.0" />
+      <point x="2111.9030975877217" y="505.0" />
+      <point x="2111.9030975877217" y="405.0" />
+      <point x="1787.3314487390335" y="405.0" />
+      <point x="41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.regular.Regular" relationship="DEPENDENCY">
+      <point x="-18.083333333333485" y="-37.5" />
+      <point x="2603.6322642543882" y="860.0" />
+      <point x="2027.4030975877217" y="860.0" />
+      <point x="2027.4030975877217" y="525.0" />
+      <point x="2032.9030975877217" y="525.0" />
+      <point x="2032.9030975877217" y="385.0" />
+      <point x="2062.1530975877217" y="385.0" />
+      <point x="39.25" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="REALIZATION">
+      <point x="55.25" y="-14.0" />
+      <point x="1470.1512129934213" y="425.0" />
+      <point x="2356.675884046054" y="425.0" />
+      <point x="2356.675884046054" y="116.0" />
+      <point x="2478.7897820723665" y="116.0" />
+      <point x="2478.7897820723665" y="96.0" />
+      <point x="2591.6647820723665" y="96.0" />
+      <point x="-25.375" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="DEPENDENCY">
+      <point x="57.666666666666515" y="-14.0" />
+      <point x="3389.291666666667" y="1129.0" />
+      <point x="3353.7155975877217" y="1129.0" />
+      <point x="3353.7155975877217" y="1089.0" />
+      <point x="3840.7155975877217" y="1089.0" />
+      <point x="3840.7155975877217" y="525.0" />
+      <point x="3678.3803796600882" y="525.0" />
+      <point x="3678.3803796600882" y="475.0" />
+      <point x="3595.7064487390335" y="475.0" />
+      <point x="49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.MatchResult.CursorMatchPair" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="INNER_CLASS">
+      <point x="-45.75" y="-48.5" />
+      <point x="3515.208333333334" y="475.0" />
+      <point x="3546.3731154057004" y="475.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade" relationship="CREATE">
+      <point x="18.083333333333485" y="-37.5" />
+      <point x="2639.798930921055" y="860.0" />
+      <point x="2844.7155975877217" y="860.0" />
+      <point x="2844.7155975877217" y="730.0" />
+      <point x="996.5280975877217" y="730.0" />
+      <point x="57.5" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" target="com.aihuishou.audit.log.desensitize.IogCondition" relationship="DEPENDENCY">
+      <point x="-79.0" y="-14.0" />
+      <point x="1280.6512129934213" y="860.0" />
+      <point x="352.8008840460541" y="860.0" />
+      <point x="352.8008840460541" y="820.0" />
+      <point x="570.1530975877217" y="820.0" />
+      <point x="570.1530975877217" y="244.0" />
+      <point x="537.9030975877217" y="244.0" />
+      <point x="-37.5" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="-69.66666666666652" y="-26.5" />
+      <point x="3026.048930921055" y="850.0" />
+      <point x="2142.4030975877217" y="850.0" />
+      <point x="2142.4030975877217" y="720.0" />
+      <point x="2480.7155975877217" y="720.0" />
+      <point x="2480.7155975877217" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-61.0" y="-14.0" />
+      <point x="1733.2780975877217" y="1079.0" />
+      <point x="486.85954632675475" y="1079.0" />
+      <point x="486.85954632675475" y="989.0" />
+      <point x="112.48643092105476" y="989.0" />
+      <point x="112.48643092105476" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher" target="com.aihuishou.audit.log.desensitize.match.LogMatcher" relationship="REALIZATION">
+      <point x="60.666666666666515" y="-14.0" />
+      <point x="3194.791666666667" y="1109.0" />
+      <point x="3180.4655975877217" y="1109.0" />
+      <point x="3180.4655975877217" y="1069.0" />
+      <point x="3619.238384046054" y="1069.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.MatchResult.CursorMatchPair" target="com.aihuishou.audit.log.desensitize.match.MatchPair" relationship="REALIZATION">
+      <point x="45.75" y="-48.5" />
+      <point x="3606.708333333334" y="515.0" />
+      <point x="3995.9583333333335" y="515.0" />
+      <point x="3995.9583333333335" y="244.0" />
+      <point x="4006.4583333333335" y="244.0" />
+      <point x="48.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchPair" relationship="TO_ONE">
+      <point x="27.375" y="-70.5" />
+      <point x="3323.333333333334" y="525.0" />
+      <point x="3301.350328947368" y="525.0" />
+      <point x="3301.350328947368" y="495.0" />
+      <point x="3962.9583333333335" y="495.0" />
+      <point x="3962.9583333333335" y="244.0" />
+      <point x="3974.4583333333335" y="244.0" />
+      <point x="16.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher" target="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" relationship="CREATE">
+      <point x="-60.666666666666515" y="-14.0" />
+      <point x="3073.458333333334" y="1109.0" />
+      <point x="2621.7155975877217" y="1109.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-72.33333333333326" y="-14.0" />
+      <point x="1501.9447642543882" y="1089.0" />
+      <point x="289.60954632675475" y="1089.0" />
+      <point x="289.60954632675475" y="1009.0" />
+      <point x="1488.6512129934213" y="1009.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="61.0" y="-14.0" />
+      <point x="1855.2780975877217" y="1129.0" />
+      <point x="1824.5280975877217" y="1129.0" />
+      <point x="1824.5280975877217" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-72.0" y="-14.0" />
+      <point x="993.2780975877217" y="1109.0" />
+      <point x="165.90309758772128" y="1109.0" />
+      <point x="165.90309758772128" y="1029.0" />
+      <point x="181.40309758772128" y="1029.0" />
+      <point x="181.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogContext.SensitiveLogContext" target="com.aihuishou.audit.log.desensitize.DesensitizeContext.DefaultContext" relationship="GENERALIZATION">
+      <point x="71.33333333333303" y="-37.5" />
+      <point x="3129.791666666667" y="465.0" />
+      <point x="3260.6647820723665" y="465.0" />
+      <point x="3260.6647820723665" y="244.0" />
+      <point x="3276.770833333334" y="244.0" />
+      <point x="-42.5" y="26.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="INNER_CLASS">
+      <point x="-58.66666666666663" y="-48.5" />
+      <point x="297.48643092105476" y="244.0" />
+      <point x="243.6530975877215" y="244.0" />
+      <point x="243.6530975877215" y="116.0" />
+      <point x="299.9030975877215" y="116.0" />
+      <point x="299.9030975877215" y="106.0" />
+      <point x="345.15309758772173" y="106.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-81.0" y="-14.0" />
+      <point x="1243.2780975877217" y="1099.0" />
+      <point x="175.90309758772128" y="1099.0" />
+      <point x="175.90309758772128" y="999.0" />
+      <point x="186.40309758772128" y="999.0" />
+      <point x="186.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.AbstractLogConverter" target="com.aihuishou.audit.log.desensitize.match.regular.Regular" relationship="CREATE">
+      <point x="0.0" y="-114.5" />
+      <point x="3145.9655975877217" y="1201.0" />
+      <point x="1922.9030975877217" y="1201.0" />
+      <point x="1922.9030975877217" y="860.0" />
+      <point x="2011.9030975877217" y="860.0" />
+      <point x="2011.9030975877217" y="415.0" />
+      <point x="1983.6530975877217" y="415.0" />
+      <point x="-39.25" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="GENERALIZATION">
+      <point x="-55.25" y="-14.0" />
+      <point x="1359.6512129934213" y="505.0" />
+      <point x="371.1530975877213" y="505.0" />
+      <point x="371.1530975877213" y="495.0" />
+      <point x="356.1530975877215" y="495.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogSensitiveConverter" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="2997.4655975877217" y="1483.0" />
+      <point x="2502.7155975877217" y="1483.0" />
+      <point x="2502.7155975877217" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-61.0" y="-14.0" />
+      <point x="1733.2780975877217" y="1079.0" />
+      <point x="486.85954632675475" y="1079.0" />
+      <point x="486.85954632675475" y="989.0" />
+      <point x="191.40309758772128" y="989.0" />
+      <point x="191.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchResult.CursorMatchPair" relationship="CREATE">
+      <point x="18.083333333333485" y="-37.5" />
+      <point x="2639.798930921055" y="860.0" />
+      <point x="2844.7155975877217" y="860.0" />
+      <point x="2844.7155975877217" y="730.0" />
+      <point x="3560.958333333334" y="730.0" />
+      <point x="0.0" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1574.2780975877217" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-79.0" y="-14.0" />
+      <point x="1280.6512129934213" y="860.0" />
+      <point x="352.8008840460541" y="860.0" />
+      <point x="352.8008840460541" y="820.0" />
+      <point x="489.90309758772173" y="820.0" />
+      <point x="489.90309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1324.2780975877217" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="TO_ONE">
+      <point x="27.375" y="-70.5" />
+      <point x="3323.333333333334" y="525.0" />
+      <point x="3301.350328947368" y="525.0" />
+      <point x="3301.350328947368" y="435.0" />
+      <point x="2921.6856154057004" y="435.0" />
+      <point x="2921.6856154057004" y="415.0" />
+      <point x="3152.0" y="415.0" />
+      <point x="-17.625" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-72.33333333333326" y="-14.0" />
+      <point x="1501.9447642543882" y="1089.0" />
+      <point x="289.60954632675475" y="1089.0" />
+      <point x="289.60954632675475" y="1009.0" />
+      <point x="286.3008840460541" y="1009.0" />
+      <point x="286.3008840460541" y="810.0" />
+      <point x="479.65309758772173" y="810.0" />
+      <point x="479.65309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-72.33333333333326" y="-14.0" />
+      <point x="1501.9447642543882" y="1089.0" />
+      <point x="289.60954632675475" y="1089.0" />
+      <point x="289.60954632675475" y="1009.0" />
+      <point x="191.40309758772128" y="1009.0" />
+      <point x="191.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.ReflectionLogContext" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="REALIZATION">
+      <point x="0.0" y="-37.5" />
+      <point x="2538.5925507127204" y="116.0" />
+      <point x="2478.7897820723665" y="116.0" />
+      <point x="2478.7897820723665" y="96.0" />
+      <point x="2591.6647820723665" y="96.0" />
+      <point x="-25.375" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-61.0" y="-14.0" />
+      <point x="1733.2780975877217" y="1079.0" />
+      <point x="486.85954632675475" y="1079.0" />
+      <point x="486.85954632675475" y="989.0" />
+      <point x="1488.6512129934213" y="989.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="CREATE">
+      <point x="0.0" y="-14.0" />
+      <point x="-55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.AppenderException" relationship="CREATE">
+      <point x="0.0" y="-48.5" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.DesensitizeApi" target="com.aihuishou.audit.log.desensitize.IogCondition" relationship="INTERFACE_GENERALIZATION">
+      <point x="-41.75" y="-14.0" />
+      <point x="1703.8314487390335" y="244.0" />
+      <point x="612.9030975877217" y="244.0" />
+      <point x="37.5" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogSensitiveConverter" target="com.aihuishou.audit.log.desensitize.AbstractLogConverter" relationship="GENERALIZATION">
+      <point x="76.33333333333348" y="-14.0" />
+      <point x="3073.798930921055" y="1493.0" />
+      <point x="3145.9655975877217" y="1493.0" />
+      <point x="0.0" y="114.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment" target="com.aihuishou.audit.log.desensitize.match.Segment" relationship="REALIZATION">
+      <point x="59.666666666666515" y="-59.5" />
+      <point x="2440.3822642543882" y="475.0" />
+      <point x="3414.770833333334" y="475.0" />
+      <point x="3414.770833333334" y="116.0" />
+      <point x="3627.9981154057004" y="116.0" />
+      <point x="-40.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogContext.SensitiveLogContext" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="REALIZATION">
+      <point x="0.0" y="-37.5" />
+      <point x="3058.458333333334" y="455.0" />
+      <point x="3222.5" y="455.0" />
+      <point x="52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.AbstractLogConverter" target="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher" relationship="CREATE">
+      <point x="0.0" y="-114.5" />
+      <point x="3145.9655975877217" y="1201.0" />
+      <point x="3134.1250000000005" y="1201.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-83.0" y="-14.0" />
+      <point x="586.1114309210548" y="1119.0" />
+      <point x="155.90309758772128" y="1119.0" />
+      <point x="155.90309758772128" y="1019.0" />
+      <point x="176.40309758772128" y="1019.0" />
+      <point x="176.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogContext" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="3169.625" y="106.0" />
+      <point x="2642.4147820723665" y="106.0" />
+      <point x="25.375" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="TO_ONE">
+      <point x="-90.41666666666652" y="-37.5" />
+      <point x="2531.298930921055" y="760.0" />
+      <point x="381.6530975877213" y="760.0" />
+      <point x="381.6530975877213" y="525.0" />
+      <point x="414.81976425438825" y="525.0" />
+      <point x="58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="3134.1250000000005" y="1129.0" />
+      <point x="3145.9655975877217" y="1129.0" />
+      <point x="3145.9655975877217" y="1099.0" />
+      <point x="2740.7155975877217" y="1099.0" />
+      <point x="2740.7155975877217" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.AbstractLogConverter" target="com.aihuishou.audit.log.desensitize.match.LogMatcher" relationship="TO_ONE">
+      <point x="92.0" y="-114.5" />
+      <point x="3237.9655975877217" y="1211.0" />
+      <point x="3855.1250000000005" y="1211.0" />
+      <point x="3855.1250000000005" y="1129.0" />
+      <point x="3667.238384046054" y="1129.0" />
+      <point x="48.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="1794.2780975877217" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-83.0" y="-14.0" />
+      <point x="586.1114309210548" y="1119.0" />
+      <point x="155.90309758772128" y="1119.0" />
+      <point x="155.90309758772128" y="1019.0" />
+      <point x="11.0" y="1019.0" />
+      <point x="11.0" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="72.33333333333348" y="-14.0" />
+      <point x="1646.611430921055" y="1059.0" />
+      <point x="1814.5280975877217" y="1059.0" />
+      <point x="1814.5280975877217" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogContext.SensitiveLogContext" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="INNER_CLASS">
+      <point x="-71.33333333333303" y="-37.5" />
+      <point x="2987.125000000001" y="445.0" />
+      <point x="3187.25" y="445.0" />
+      <point x="17.625" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogSensitiveConverter" target="com.aihuishou.audit.log.desensitize.LogContext.SensitiveLogContext" relationship="CREATE">
+      <point x="-76.33333333333348" y="-14.0" />
+      <point x="2921.1322642543882" y="1493.0" />
+      <point x="2547.4655975877217" y="1493.0" />
+      <point x="2547.4655975877217" y="1119.0" />
+      <point x="2866.2155975877217" y="1119.0" />
+      <point x="2866.2155975877217" y="820.0" />
+      <point x="3058.458333333334" y="820.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="83.0" y="-14.0" />
+      <point x="752.1114309210548" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" relationship="DEPENDENCY">
+      <point x="-65.0" y="-14.0" />
+      <point x="362.11143092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1039.0" />
+      <point x="176.40309758772128" y="1039.0" />
+      <point x="176.40309758772128" y="525.0" />
+      <point x="345.6530975877213" y="525.0" />
+      <point x="345.6530975877213" y="515.0" />
+      <point x="297.48643092105476" y="515.0" />
+      <point x="-58.66666666666663" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.MatchPair" target="com.aihuishou.audit.log.desensitize.match.Segment" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="3958.4583333333335" y="106.0" />
+      <point x="3707.9981154057004" y="106.0" />
+      <point x="40.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-72.0" y="-14.0" />
+      <point x="993.2780975877217" y="1109.0" />
+      <point x="165.90309758772128" y="1109.0" />
+      <point x="165.90309758772128" y="1029.0" />
+      <point x="1488.6512129934213" y="1029.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" relationship="GENERALIZATION">
+      <point x="65.0" y="-14.0" />
+      <point x="492.11143092105476" y="1069.0" />
+      <point x="1685.4564487390335" y="1069.0" />
+      <point x="1685.4564487390335" y="979.0" />
+      <point x="1359.6512129934213" y="979.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="REALIZATION">
+      <point x="90.41666666666652" y="-37.5" />
+      <point x="2712.1322642543882" y="840.0" />
+      <point x="3448.958333333334" y="840.0" />
+      <point x="3448.958333333334" y="525.0" />
+      <point x="3453.958333333334" y="525.0" />
+      <point x="3453.958333333334" y="475.0" />
+      <point x="3497.0397820723665" y="475.0" />
+      <point x="-49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.MatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchPair" relationship="DEPENDENCY">
+      <point x="37.0" y="-14.0" />
+      <point x="3583.3731154057004" y="244.0" />
+      <point x="3910.4583333333335" y="244.0" />
+      <point x="-48.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" target="com.aihuishou.audit.log.desensitize.match.regular.Regular" relationship="DEPENDENCY">
+      <point x="-69.66666666666652" y="-26.5" />
+      <point x="3026.048930921055" y="850.0" />
+      <point x="2142.4030975877217" y="850.0" />
+      <point x="2142.4030975877217" y="720.0" />
+      <point x="2038.4030975877217" y="720.0" />
+      <point x="2038.4030975877217" y="525.0" />
+      <point x="2032.9030975877217" y="525.0" />
+      <point x="2032.9030975877217" y="385.0" />
+      <point x="2062.1530975877217" y="385.0" />
+      <point x="39.25" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.DesensitizeContext.DefaultContext" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="REALIZATION">
+      <point x="-42.5" y="-26.5" />
+      <point x="3276.770833333334" y="116.0" />
+      <point x="2478.7897820723665" y="116.0" />
+      <point x="2478.7897820723665" y="96.0" />
+      <point x="2591.6647820723665" y="96.0" />
+      <point x="-25.375" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.AbstractLogConverter" target="com.aihuishou.audit.log.desensitize.match.LogMatcher" relationship="DEPENDENCY">
+      <point x="-92.0" y="-114.5" />
+      <point x="3053.9655975877217" y="1211.0" />
+      <point x="2920.6250000000005" y="1211.0" />
+      <point x="2920.6250000000005" y="1129.0" />
+      <point x="3060.1250000000005" y="1129.0" />
+      <point x="3060.1250000000005" y="1079.0" />
+      <point x="3571.238384046054" y="1079.0" />
+      <point x="-48.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.strategy.SecurityLogAppender" relationship="DEPENDENCY">
+      <point x="-81.0" y="-14.0" />
+      <point x="1243.2780975877217" y="1099.0" />
+      <point x="175.90309758772128" y="1099.0" />
+      <point x="175.90309758772128" y="999.0" />
+      <point x="1488.6512129934213" y="999.0" />
+      <point x="1488.6512129934213" y="720.0" />
+      <point x="1470.1512129934213" y="720.0" />
+      <point x="55.25" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-81.0" y="-14.0" />
+      <point x="1243.2780975877217" y="1099.0" />
+      <point x="175.90309758772128" y="1099.0" />
+      <point x="175.90309758772128" y="999.0" />
+      <point x="286.3008840460541" y="999.0" />
+      <point x="286.3008840460541" y="800.0" />
+      <point x="479.65309758772173" y="800.0" />
+      <point x="479.65309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment" relationship="CREATE">
+      <point x="18.083333333333485" y="-37.5" />
+      <point x="2639.798930921055" y="860.0" />
+      <point x="2844.7155975877217" y="860.0" />
+      <point x="2844.7155975877217" y="730.0" />
+      <point x="2380.7155975877217" y="730.0" />
+      <point x="0.0" y="59.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.IogCondition" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="575.4030975877217" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.EmailDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-61.0" y="-14.0" />
+      <point x="1733.2780975877217" y="1079.0" />
+      <point x="486.85954632675475" y="1079.0" />
+      <point x="486.85954632675475" y="989.0" />
+      <point x="467.5508840460541" y="989.0" />
+      <point x="467.5508840460541" y="830.0" />
+      <point x="660.9030975877217" y="830.0" />
+      <point x="660.9030975877217" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.StringAppenderFacade.StringAppender" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="REALIZATION">
+      <point x="58.66666666666663" y="-48.5" />
+      <point x="414.81976425438825" y="244.0" />
+      <point x="468.6530975877215" y="244.0" />
+      <point x="468.6530975877215" y="116.0" />
+      <point x="422.486430921055" y="116.0" />
+      <point x="77.33333333333326" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchPair" relationship="CREATE">
+      <point x="-27.375" y="-70.5" />
+      <point x="3268.583333333334" y="525.0" />
+      <point x="3291.350328947368" y="525.0" />
+      <point x="3291.350328947368" y="505.0" />
+      <point x="3973.9583333333335" y="505.0" />
+      <point x="3973.9583333333335" y="234.0" />
+      <point x="3942.4583333333335" y="234.0" />
+      <point x="-16.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.DefaultSegment" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="TO_ONE">
+      <point x="0.0" y="-59.5" />
+      <point x="2380.7155975877217" y="465.0" />
+      <point x="2921.6856154057004" y="465.0" />
+      <point x="2921.6856154057004" y="415.0" />
+      <point x="3152.0" y="415.0" />
+      <point x="-17.625" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="-18.083333333333485" y="-37.5" />
+      <point x="2603.6322642543882" y="860.0" />
+      <point x="2027.4030975877217" y="860.0" />
+      <point x="2027.4030975877217" y="740.0" />
+      <point x="2480.7155975877217" y="740.0" />
+      <point x="2480.7155975877217" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.StringAppenderFacade.AppenderException" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.0" />
+      <point x="356.1530975877215" y="116.0" />
+      <point x="299.9030975877215" y="116.0" />
+      <point x="299.9030975877215" y="106.0" />
+      <point x="345.15309758772173" y="106.0" />
+      <point x="0.0" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" relationship="GENERALIZATION">
+      <point x="54.25" y="-37.5" />
+      <point x="2675.9655975877217" y="830.0" />
+      <point x="3095.7155975877217" y="830.0" />
+      <point x="3095.7155975877217" y="710.0" />
+      <point x="3295.958333333334" y="710.0" />
+      <point x="0.0" y="70.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="REALIZATION">
+      <point x="82.125" y="-70.5" />
+      <point x="3378.083333333334" y="525.0" />
+      <point x="3453.958333333334" y="525.0" />
+      <point x="3453.958333333334" y="475.0" />
+      <point x="3497.0397820723665" y="475.0" />
+      <point x="-49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatcher" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="3134.1250000000005" y="1129.0" />
+      <point x="3145.9655975877217" y="1129.0" />
+      <point x="3145.9655975877217" y="1099.0" />
+      <point x="3737.1231154057" y="1099.0" />
+      <point x="3737.1231154057" y="525.0" />
+      <point x="3678.3803796600882" y="525.0" />
+      <point x="3678.3803796600882" y="475.0" />
+      <point x="3595.7064487390335" y="475.0" />
+      <point x="49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.AbstractLogConverter" target="com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher" relationship="CREATE">
+      <point x="0.0" y="-114.5" />
+      <point x="3145.9655975877217" y="1201.0" />
+      <point x="3331.6250000000005" y="1201.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="57.5" y="-14.0" />
+      <point x="996.5280975877216" y="515.0" />
+      <point x="2121.9030975877217" y="515.0" />
+      <point x="2121.9030975877217" y="445.0" />
+      <point x="2534.488384046054" y="445.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="REALIZATION">
+      <point x="69.66666666666652" y="-26.5" />
+      <point x="3165.3822642543882" y="860.0" />
+      <point x="3458.958333333334" y="860.0" />
+      <point x="3458.958333333334" y="525.0" />
+      <point x="3453.958333333334" y="525.0" />
+      <point x="3453.958333333334" y="475.0" />
+      <point x="3497.0397820723665" y="475.0" />
+      <point x="-49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="427.11143092105476" y="1059.0" />
+      <point x="499.1758840460541" y="1059.0" />
+      <point x="499.1758840460541" y="840.0" />
+      <point x="692.5280975877217" y="840.0" />
+      <point x="692.5280975877217" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.DesensitizeContext.DefaultContext" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="INNER_CLASS">
+      <point x="42.5" y="-26.5" />
+      <point x="3361.770833333334" y="96.0" />
+      <point x="2693.1647820723665" y="96.0" />
+      <point x="76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.ChineseNameDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="669.1114309210548" y="1059.0" />
+      <point x="609.9753289473674" y="1059.0" />
+      <point x="609.9753289473674" y="850.0" />
+      <point x="813.5280975877217" y="850.0" />
+      <point x="813.5280975877217" y="525.0" />
+      <point x="1703.8314487390335" y="525.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.MobilePhoneDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-81.0" y="-14.0" />
+      <point x="1243.2780975877217" y="1099.0" />
+      <point x="175.90309758772128" y="1099.0" />
+      <point x="175.90309758772128" y="999.0" />
+      <point x="95.98643092105476" y="999.0" />
+      <point x="95.98643092105476" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-18.083333333333485" y="-37.5" />
+      <point x="2603.6322642543882" y="860.0" />
+      <point x="2027.4030975877217" y="860.0" />
+      <point x="2027.4030975877217" y="740.0" />
+      <point x="1933.9030975877217" y="740.0" />
+      <point x="1933.9030975877217" y="116.0" />
+      <point x="702.7064487390334" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.BankCardDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-72.33333333333326" y="-14.0" />
+      <point x="1501.9447642543882" y="1089.0" />
+      <point x="289.60954632675475" y="1089.0" />
+      <point x="289.60954632675475" y="1009.0" />
+      <point x="95.98643092105476" y="1009.0" />
+      <point x="95.98643092105476" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.IDCardDesensitize" target="com.aihuishou.audit.log.desensitize.StringAppenderFacade" relationship="DEPENDENCY">
+      <point x="-65.0" y="-14.0" />
+      <point x="362.11143092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1129.0" />
+      <point x="95.98643092105476" y="1039.0" />
+      <point x="0.0" y="1039.0" />
+      <point x="0.0" y="116.0" />
+      <point x="19.384217379387337" y="116.0" />
+      <point x="19.384217379387337" y="106.0" />
+      <point x="267.81976425438825" y="106.0" />
+      <point x="-77.33333333333337" y="37.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.keyword.KeywordMatchResult.StringAppenderFacade" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="57.5" y="-14.0" />
+      <point x="996.5280975877216" y="515.0" />
+      <point x="2121.9030975877217" y="515.0" />
+      <point x="2121.9030975877217" y="116.0" />
+      <point x="702.7064487390334" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegexpMatcher" target="com.aihuishou.audit.log.desensitize.match.LogMatcher" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="3331.6250000000005" y="1109.0" />
+      <point x="3180.4655975877217" y="1109.0" />
+      <point x="3180.4655975877217" y="1069.0" />
+      <point x="3619.238384046054" y="1069.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.LogMatcher" target="com.aihuishou.audit.log.desensitize.LogContext" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="3619.238384046054" y="720.0" />
+      <point x="2940.958333333334" y="720.0" />
+      <point x="2940.958333333334" y="525.0" />
+      <point x="2534.488384046054" y="525.0" />
+      <point x="2534.488384046054" y="425.0" />
+      <point x="3116.75" y="425.0" />
+      <point x="-52.875" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" target="com.aihuishou.audit.log.desensitize.match.regular.Regular" relationship="DEPENDENCY">
+      <point x="-82.125" y="-70.5" />
+      <point x="3213.833333333334" y="505.0" />
+      <point x="2111.9030975877217" y="505.0" />
+      <point x="2111.9030975877217" y="395.0" />
+      <point x="2032.9030975877217" y="395.0" />
+      <point x="2032.9030975877217" y="385.0" />
+      <point x="2062.1530975877217" y="385.0" />
+      <point x="39.25" y="48.5" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.AbstractLogDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeApi" relationship="REALIZATION">
+      <point x="79.0" y="-14.0" />
+      <point x="1438.6512129934213" y="860.0" />
+      <point x="1703.8314487390335" y="860.0" />
+      <point x="-41.75" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.strategy.PasswordDesensitize" target="com.aihuishou.audit.log.desensitize.DesensitizeContext" relationship="DEPENDENCY">
+      <point x="-72.0" y="-14.0" />
+      <point x="993.2780975877217" y="1109.0" />
+      <point x="165.90309758772128" y="1109.0" />
+      <point x="165.90309758772128" y="1029.0" />
+      <point x="286.3008840460541" y="1029.0" />
+      <point x="286.3008840460541" y="790.0" />
+      <point x="479.65309758772173" y="790.0" />
+      <point x="479.65309758772173" y="116.0" />
+      <point x="702.7064487390335" y="116.0" />
+      <point x="702.7064487390335" y="106.0" />
+      <point x="2540.9147820723665" y="106.0" />
+      <point x="-76.125" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.MatchResult" target="com.aihuishou.audit.log.desensitize.StopWatch" relationship="INTERFACE_GENERALIZATION">
+      <point x="-37.0" y="-14.0" />
+      <point x="3509.3731154057004" y="234.0" />
+      <point x="2737.0925507127204" y="234.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.LogSensitiveConverter" target="com.aihuishou.audit.log.desensitize.match.MatchResult" relationship="DEPENDENCY">
+      <point x="0.0" y="-14.0" />
+      <point x="2997.4655975877217" y="1483.0" />
+      <point x="3889.7155975877217" y="1483.0" />
+      <point x="3889.7155975877217" y="525.0" />
+      <point x="3678.3803796600882" y="525.0" />
+      <point x="3678.3803796600882" y="475.0" />
+      <point x="3595.7064487390335" y="475.0" />
+      <point x="49.333333333333485" y="14.0" />
+    </edge>
+    <edge source="com.aihuishou.audit.log.desensitize.match.regexp.RegExpMatchResult" target="com.aihuishou.audit.log.desensitize.match.AbstractMatchResult" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="3095.7155975877217" y="710.0" />
+      <point x="3295.958333333334" y="710.0" />
+      <point x="0.0" y="70.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3675488498639624" showDependencies="true" x="2011.4999999999998" y="770.9999999999999" />
+  <SelectedNodes>
+    <node>com.aihuishou.audit.log.desensitize.LogSensitiveConverter</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

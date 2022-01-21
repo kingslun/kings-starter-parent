@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:latest
 COPY target/app.jar /root/startup/app.jar
 WORKDIR /root/startup/
 EXPOSE 8080
