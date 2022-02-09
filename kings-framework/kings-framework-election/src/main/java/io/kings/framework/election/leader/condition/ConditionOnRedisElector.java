@@ -1,11 +1,14 @@
 package io.kings.framework.election.leader.condition;
 
-import io.kings.framework.core.condition.PropertyCondition;
-import org.springframework.context.annotation.Conditional;
-
-import java.lang.annotation.*;
-
 import static io.kings.framework.election.leader.DistributedElectionProperties.ELECTION_TYPE_PREFIX;
+
+import io.kings.framework.core.condition.AbstractPropertyCondition;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.context.annotation.Conditional;
 
 /**
  * redis选举器
@@ -20,22 +23,25 @@ import static io.kings.framework.election.leader.DistributedElectionProperties.E
 @Conditional(ConditionOnRedisElector.OnRedisElectorCondition.class)
 @ConditionOnElection
 public @interface ConditionOnRedisElector {
-    class OnRedisElectorCondition extends PropertyCondition {
+
+    class OnRedisElectorCondition extends AbstractPropertyCondition {
+
         @Override
-        protected boolean matches() {
-            return super.expectedly(ELECTION_TYPE_PREFIX, "redis") || super.expectedly(ELECTION_TYPE_PREFIX, "REDIS");
+        public boolean match() {
+            return super.expectation(ELECTION_TYPE_PREFIX, "redis") || super.expectation(
+                ELECTION_TYPE_PREFIX, "REDIS");
         }
 
         @Override
-        public String onMatch() {
+        public String onMatched() {
             return "RedisElector Condition Success";
         }
 
         @Override
-        protected String onMismatch() {
+        public String onMismatch() {
             return String.format(
-                    "RedisElector Condition Failure,Maybe because the configuration:%s is missing or not redis",
-                    ELECTION_TYPE_PREFIX);
+                "RedisElector Condition Failure,Maybe because the configuration:%s is missing or not redis",
+                ELECTION_TYPE_PREFIX);
         }
     }
 }

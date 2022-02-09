@@ -4,26 +4,25 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class ConditionTest {
-    private static class Ignore extends PropertyCondition {
-        @Override
-        protected boolean matches() {
-            return super.off("key1") && super.off("key2", false) ||
-                    super.on("key3") || super.on("key4", false);
-        }
+
+    private static class Switch extends AbstractPropertyCondition {
 
         @Override
-        protected String onMismatch() {
-            return "Ignore missing";
+        public boolean match() {
+            return super.off("key1");
         }
+    }
+
+    private static class NotBlank extends AbstractPropertyCondition {
 
         @Override
-        public String onMatch() {
-            return "Ignore matched";
+        public boolean match() {
+            return super.notBlank("key1");
         }
     }
 
     @Test
     public void run() {
-        Assertions.assertThat(new Ignore()).isNotNull();
+        Assertions.assertThat(new Switch()).isNotNull();
     }
 }

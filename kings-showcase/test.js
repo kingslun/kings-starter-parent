@@ -1,17 +1,10 @@
-function transList(val) {
-  let data = this.transList, empty = !data || !data.length,
-      filtered = empty ? [] : data.filter(i => i.orgCode === val);
-  return empty || !filtered.length ? '' : filtered[0].channelName;
+function filterCodeValue(arr, oArr = [], code = 'code', value = 'value') {
+  let res = {};
+  arr.forEach(q => res[q[code]] = q[value])
+  oArr.forEach(q => res[q[code]] = q[value])
+  return res;
 }
 
-function fun(arg) {
-  if (arg.a) {
-    console.log("aaa")
-  } else if (arg.b) {
-    console.log("bbb")
-  } else {
-    console.log("ccc")
-  }
-}
-
-fun({a: true, b: true})
+let arg0 = [{code: '0', value: '新保'}, {code: '1', value: '续保'}]
+let arg1 = [{code: '2', value: '旧保'}, {code: '3', value: '臭保'}]
+console.log(filterCodeValue(arg0, arg1))

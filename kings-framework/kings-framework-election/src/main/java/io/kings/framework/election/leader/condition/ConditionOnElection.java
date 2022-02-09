@@ -1,11 +1,14 @@
 package io.kings.framework.election.leader.condition;
 
-import io.kings.framework.core.condition.PropertyCondition;
-import org.springframework.context.annotation.Conditional;
-
-import java.lang.annotation.*;
-
 import static io.kings.framework.election.leader.DistributedElectionProperties.ELECTION_SWITCH_PREFIX;
+
+import io.kings.framework.core.condition.AbstractPropertyCondition;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.springframework.context.annotation.Conditional;
 
 /**
  * redis选举器
@@ -19,22 +22,24 @@ import static io.kings.framework.election.leader.DistributedElectionProperties.E
 @Documented
 @Conditional(ConditionOnElection.OnElectionCondition.class)
 @interface ConditionOnElection {
-    class OnElectionCondition extends PropertyCondition {
+
+    class OnElectionCondition extends AbstractPropertyCondition {
+
         @Override
-        protected boolean matches() {
+        public boolean match() {
             return super.on(ELECTION_SWITCH_PREFIX, true);
         }
 
         @Override
-        public String onMatch() {
+        public String onMatched() {
             return "Election Condition Success";
         }
 
         @Override
-        protected String onMismatch() {
+        public String onMismatch() {
             return String.format(
-                    "Election Condition Failure,Maybe because the configuration:%s is missing or off/false",
-                    ELECTION_SWITCH_PREFIX);
+                "Election Condition Failure,Maybe because the configuration:%s is missing or off/false",
+                ELECTION_SWITCH_PREFIX);
         }
     }
 }
