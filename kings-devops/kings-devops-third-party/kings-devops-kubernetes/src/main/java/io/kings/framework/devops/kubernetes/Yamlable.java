@@ -8,4 +8,5 @@ package io.kings.framework.devops.kubernetes;
  * @since v1.0
  */
 public interface Yamlable {
+
 }

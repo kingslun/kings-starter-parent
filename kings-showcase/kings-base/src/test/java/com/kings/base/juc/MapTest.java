@@ -1,13 +1,13 @@
 package com.kings.base.juc;
 
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class MapTest {
+
     @Test
     void currentMap() {
         Map<String, String> map = new ConcurrentHashMap<>();
@@ -26,6 +26,7 @@ class MapTest {
     }
 
     static class Person {
+
         private final String name;
         private final int age;
 
@@ -41,7 +42,9 @@ class MapTest {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == this) return true;
+            if (obj == this) {
+                return true;
+            }
             if (obj instanceof Person) {
                 Person that = (Person) obj;
                 return Objects.equals(this.name, that.name) && (this.age ^ that.age) == 0;
@@ -52,9 +55,9 @@ class MapTest {
         @Override
         public String toString() {
             return "Person{" +
-                    "name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
         }
     }
 }

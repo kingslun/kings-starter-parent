@@ -8,6 +8,7 @@ package io.kings.framework.data.exception;
  * @since v2.0
  */
 public class SerializeDecorateException extends SerializeException {
+
     public SerializeDecorateException() {
         super();
     }

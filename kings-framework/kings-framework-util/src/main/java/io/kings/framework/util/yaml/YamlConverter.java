@@ -8,4 +8,5 @@ package io.kings.framework.util.yaml;
  * @since v2.0
  */
 public interface YamlConverter {
+
 }

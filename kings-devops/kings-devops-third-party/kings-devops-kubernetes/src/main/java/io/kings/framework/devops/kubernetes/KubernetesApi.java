@@ -1,14 +1,12 @@
 package io.kings.framework.devops.kubernetes;
 
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
+import java.util.function.Supplier;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.function.Supplier;
-
 /**
- * k8s接口
- * 可进行namespace/pod/deployment/job等资源crud操作
+ * k8s接口 可进行namespace/pod/deployment/job等资源crud操作
  *
  * @param <C> client type
  * @author lun.wang

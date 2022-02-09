@@ -6,7 +6,12 @@ import io.kings.framework.devops.openapi.exception.ApplicationPatchException;
 import io.kings.framework.devops.openapi.model.ApplicationVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 应用管理restapi
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/application")
 @Tag(name = "应用管理", description = "应用相关restAPI")
 public interface ApplicationOpenAPI {
+
     /**
      * 创建应用
      *

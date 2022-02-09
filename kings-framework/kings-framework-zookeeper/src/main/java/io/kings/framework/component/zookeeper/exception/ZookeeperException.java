@@ -10,6 +10,7 @@ import io.kings.framework.core.exception.BeanLifecycleException;
  * @since v2.7.5
  */
 public class ZookeeperException extends BeanLifecycleException {
+
     public ZookeeperException() {
         super();
     }

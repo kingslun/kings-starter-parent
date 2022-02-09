@@ -1,7 +1,6 @@
 package io.kings.framework.data.serializer;
 
 import io.kings.framework.data.exception.SerializeDecorateException;
-
 import java.io.Serializable;
 
 /**
@@ -12,6 +11,7 @@ import java.io.Serializable;
  * @since v2.0
  */
 public interface SerializeDecorator<I extends Serializable, O> {
+
     /**
      * decode the date before serialize
      *

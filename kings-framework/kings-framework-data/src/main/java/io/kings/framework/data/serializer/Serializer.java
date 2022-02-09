@@ -3,8 +3,11 @@ package io.kings.framework.data.serializer;
 import io.kings.framework.core.Nameable;
 import io.kings.framework.core.bean.BeanLifecycle;
 import io.kings.framework.data.exception.SerializeException;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * 序列化接口 序列化zookeeper读写的value类型 必须包含序列化和反序列化方法
@@ -14,6 +17,7 @@ import java.io.*;
  * @since v2.8.6
  */
 public interface Serializer extends BeanLifecycle, Nameable {
+
     byte[] EMPTY_BYTE_ARRAY = new byte[0];
     int DEFAULT_BUFFER_SIZE = 1024;
     String SERIALIZE_ENABLE_PREFIX = "kings.serialization.enabled";
@@ -39,7 +43,7 @@ public interface Serializer extends BeanLifecycle, Nameable {
                 return EMPTY_BYTE_ARRAY;
             }
             try (ByteArrayOutputStream bos = new ByteArrayOutputStream(DEFAULT_BUFFER_SIZE);
-                 ObjectOutputStream oos = new ObjectOutputStream(bos)) {
+                ObjectOutputStream oos = new ObjectOutputStream(bos)) {
                 oos.writeObject(serializable);
                 oos.flush();
                 return bos.toByteArray();
@@ -58,12 +62,13 @@ public interface Serializer extends BeanLifecycle, Nameable {
         @Override
         public <E extends Serializable> E deserialize(byte[] bytes) throws SerializeException {
             try (ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                 ObjectInputStream ois = new ObjectInputStream(bis)) {
+                ObjectInputStream ois = new ObjectInputStream(bis)) {
                 @SuppressWarnings("unchecked")
                 E e = (E) ois.readObject();
                 return e;
             } catch (Exception e) {
-                throw new SerializeException("jdk deserialize failed " + e.getLocalizedMessage(), e);
+                throw new SerializeException("jdk deserialize failed " + e.getLocalizedMessage(),
+                    e);
             }
         }
     };

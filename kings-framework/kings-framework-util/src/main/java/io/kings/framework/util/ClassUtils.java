@@ -12,6 +12,7 @@ import java.util.Set;
  * @since v2.0
  */
 public class ClassUtils {
+
     private ClassUtils() {
         throw new IllegalAccessError("not support");
     }

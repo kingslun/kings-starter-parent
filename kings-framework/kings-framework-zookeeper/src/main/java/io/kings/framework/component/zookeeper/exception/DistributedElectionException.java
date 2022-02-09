@@ -8,6 +8,7 @@ package io.kings.framework.component.zookeeper.exception;
  * @since v2.7.5
  */
 public class DistributedElectionException extends DistributedException {
+
     public DistributedElectionException() {
         super();
     }

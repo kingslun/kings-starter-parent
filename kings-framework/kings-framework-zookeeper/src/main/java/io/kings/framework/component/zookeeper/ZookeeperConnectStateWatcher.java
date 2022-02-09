@@ -8,6 +8,7 @@ package io.kings.framework.component.zookeeper;
  * @since v2.5.2
  */
 interface ZookeeperConnectStateWatcher<K, V> {
+
     /**
      * 初始化
      *

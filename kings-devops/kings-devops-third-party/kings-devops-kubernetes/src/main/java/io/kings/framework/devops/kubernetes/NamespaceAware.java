@@ -1,9 +1,8 @@
 package io.kings.framework.devops.kubernetes;
 
-import org.springframework.beans.factory.Aware;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import org.springframework.beans.factory.Aware;
 
 /**
  * 节点终结器
@@ -15,6 +14,7 @@ import java.text.SimpleDateFormat;
  */
 @FunctionalInterface
 public interface NamespaceAware<S> extends Aware {
+
     String METHOD_NAME = "namespace";
 
     S namespace(String namespace);

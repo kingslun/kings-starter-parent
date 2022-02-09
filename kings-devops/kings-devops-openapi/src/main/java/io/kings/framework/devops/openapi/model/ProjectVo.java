@@ -3,12 +3,11 @@ package io.kings.framework.devops.openapi.model;
 import io.kings.framework.data.Enumerable;
 import io.kings.framework.devops.openapi.exception.JenkinsProjectException;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serializable;
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * @author lun.wang
@@ -20,7 +19,9 @@ import java.util.Arrays;
 @ToString
 @Schema(name = "Jenkins项目信息描述对象")
 public class ProjectVo implements Serializable {
+
     static class JenkinsProjectTypeNotFoundException extends JenkinsProjectException {
+
         JenkinsProjectTypeNotFoundException() {
             super(Arrays.toString(Type.values()) + " defined");
         }
@@ -37,8 +38,7 @@ public class ProjectVo implements Serializable {
         private final String desc;
 
         /**
-         * find first type in Type values
-         * 应：有且仅有唯一的code 否则异常或抛错
+         * find first type in Type values 应：有且仅有唯一的code 否则异常或抛错
          *
          * @param code 应用类型代码 供front与backend匹配使用
          * @return Type of project
@@ -46,7 +46,7 @@ public class ProjectVo implements Serializable {
          */
         static Type of(int code) throws JenkinsProjectException {
             return Arrays.stream(Type.values()).filter(i -> i.code == code).findFirst()
-                    .orElseThrow(JenkinsProjectTypeNotFoundException::new);
+                .orElseThrow(JenkinsProjectTypeNotFoundException::new);
         }
 
         Type(int code, String desc) {

@@ -8,6 +8,7 @@ package io.kings.framework.component.zookeeper.exception;
  * @since v2.8.6
  */
 public class ZookeeperSerializeException extends DistributedException {
+
     public ZookeeperSerializeException() {
         super();
     }

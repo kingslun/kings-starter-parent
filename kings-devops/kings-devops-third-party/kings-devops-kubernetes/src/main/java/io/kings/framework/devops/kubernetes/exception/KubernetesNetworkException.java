@@ -8,6 +8,7 @@ package io.kings.framework.devops.kubernetes.exception;
  * @since v2.0
  */
 public class KubernetesNetworkException extends KubernetesException {
+
     public KubernetesNetworkException(Throwable cause) {
         super(cause);
     }

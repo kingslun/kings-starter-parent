@@ -1,29 +1,38 @@
 package io.kings.framework.devops.kubernetes.watch;
 
-import io.fabric8.kubernetes.api.model.*;
+import io.fabric8.kubernetes.api.model.ContainerStatus;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.PodCondition;
+import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Queue;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-
 @Slf4j
 public abstract class AbstractFabric8PodsWatcher implements
-        Fabric8PodsWatcher {
+    Fabric8PodsWatcher {
+
     /**
-     * 重试连接k8s的开关
-     * 默认不重连 -只有在connect 成功后断连才允许reconnect
+     * 重试连接k8s的开关 默认不重连 -只有在connect 成功后断连才允许reconnect
      */
     private volatile boolean retryable = false;
     /**
@@ -52,22 +61,23 @@ public abstract class AbstractFabric8PodsWatcher implements
         THREADS = new AtomicInteger(1);
         //获取1/4的CPU执行-可根据实际工作量来进行动态调整
         DEFAULT = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() / 4,
-                r -> {
-                    Thread worker = new Thread(r, "K8sPodStatusWatcher" + THREADS.getAndIncrement());
-                    worker.setUncaughtExceptionHandler(
-                            (t, e) -> log.warn("Pod watcher Thread name:{} report:{}", t.getName(), e.getMessage()));
-                    return worker;
-                });
+            r -> {
+                Thread worker = new Thread(r, "K8sPodStatusWatcher" + THREADS.getAndIncrement());
+                worker.setUncaughtExceptionHandler(
+                    (t, e) -> log.warn("Pod watcher Thread name:{} report:{}", t.getName(),
+                        e.getMessage()));
+                return worker;
+            });
     }
 
     protected AbstractFabric8PodsWatcher(KubernetesClient client,
-                                         K8sPodListener listener) {
+        K8sPodListener listener) {
         this(client, listener, DEFAULT);
     }
 
     protected AbstractFabric8PodsWatcher(KubernetesClient client,
-                                         K8sPodListener listener,
-                                         ExecutorService service) {
+        K8sPodListener listener,
+        ExecutorService service) {
         Assert.notNull(client, "Add pods listener without KubernetesClient");
         Assert.notNull(listener, "Listen on pods without an owner");
         Assert.notNull(service, "Please configure an executors threads pool");
@@ -125,10 +135,8 @@ public abstract class AbstractFabric8PodsWatcher implements
     }
 
     /**
-     * pod状态判断
-     * conditions 分别有四个状态 Initialized Ready ContainersReady PodScheduled
-     * containerStatuses分别有两种状态 started ready
-     * 如果一个为false则表示pod并非running状态
+     * pod状态判断 conditions 分别有四个状态 Initialized Ready ContainersReady PodScheduled
+     * containerStatuses分别有两种状态 started ready 如果一个为false则表示pod并非running状态
      */
     private static final Predicate<PodStatus> READY = status -> {
         List<PodCondition> conditions = status.getConditions();
@@ -140,7 +148,7 @@ public abstract class AbstractFabric8PodsWatcher implements
         }
         for (ContainerStatus status1 : statuses) {
             if (Objects.equals(Boolean.FALSE, status1.getReady()) ||
-                    Objects.equals(Boolean.FALSE, status1.getStarted())) {
+                Objects.equals(Boolean.FALSE, status1.getStarted())) {
                 return false;
             }
         }
@@ -169,35 +177,27 @@ public abstract class AbstractFabric8PodsWatcher implements
     };
 
     /**
-     * pod是否Terminating状态
-     * 目前fabric8检测的k8s pod Terminating共有4种状态
+     * pod是否Terminating状态 目前fabric8检测的k8s pod Terminating共有4种状态
      * <p>
-     * 其中三种为shutdown之初到彻底delete之间
-     * - 分三阶段 running->ContainersNotReady
-     * 一种为delete状态 不在此处验证
+     * 其中三种为shutdown之初到彻底delete之间 - 分三阶段 running->ContainersNotReady 一种为delete状态 不在此处验证
      * </p>
-     * 他们的特点是metadata信息包含deletionTimestamp时间凭证
-     * deletionGracePeriodSeconds：为具体优雅停机最大等待时间（猜测）这个值在会在最后一次置空 因此不能拿来衡量
+     * 他们的特点是metadata信息包含deletionTimestamp时间凭证 deletionGracePeriodSeconds：为具体优雅停机最大等待时间（猜测）这个值在会在最后一次置空
+     * 因此不能拿来衡量
      */
     private static final Predicate<String> TERMINATING_ = StringUtils::hasText;
 
     /**
-     * 区分是watcher初始化还是真正的pod新建
-     * 真正的新建条件
-     * 1.spec未分配node name
-     * 2.phase为Pending状态
-     * 3.不包含状态信息和容器状态信息
-     * 4.不包含如果容器IP信息
-     * 5.不包含开启时间信息
+     * 区分是watcher初始化还是真正的pod新建 真正的新建条件 1.spec未分配node name 2.phase为Pending状态 3.不包含状态信息和容器状态信息
+     * 4.不包含如果容器IP信息 5.不包含开启时间信息
      */
     private static final BiPredicate<K8sPodListener.Pod, PodStatus> ADD_RUNNING =
-            (pod, status) ->
-                    StringUtils.hasText(pod.getNodeName()) ||
-                            !Objects.equals(K8sPodListener.PENDING, pod.getPhase()) ||
-                            StringUtils.hasText(pod.getStartTime()) ||
-                            StringUtils.hasText(pod.getHostIp()) || StringUtils.hasText(pod.getPodIp()) ||
-                            !CollectionUtils.isEmpty(status.getConditions()) ||
-                            !CollectionUtils.isEmpty(status.getContainerStatuses());
+        (pod, status) ->
+            StringUtils.hasText(pod.getNodeName()) ||
+                !Objects.equals(K8sPodListener.PENDING, pod.getPhase()) ||
+                StringUtils.hasText(pod.getStartTime()) ||
+                StringUtils.hasText(pod.getHostIp()) || StringUtils.hasText(pod.getPodIp()) ||
+                !CollectionUtils.isEmpty(status.getConditions()) ||
+                !CollectionUtils.isEmpty(status.getContainerStatuses());
 
     /**
      * K8s pod监听器 负责衔接fabric8框架和K8sPodListener的桥梁
@@ -206,6 +206,7 @@ public abstract class AbstractFabric8PodsWatcher implements
      */
     @Slf4j
     static class PodWatcher implements Watcher<Pod> {
+
         private final K8sPodListener listener;
         private final ExecutorService executorService;
         /**
@@ -215,8 +216,8 @@ public abstract class AbstractFabric8PodsWatcher implements
         private final Retryable retryable;
 
         protected PodWatcher(K8sPodListener listener, ExecutorService executorService,
-                             Callable<Boolean> retryHook,
-                             Retryable retryable) {
+            Callable<Boolean> retryHook,
+            Retryable retryable) {
             this.listener = listener;
             this.executorService = executorService;
             this.retryHook = retryHook;
@@ -269,7 +270,8 @@ public abstract class AbstractFabric8PodsWatcher implements
                     }
                     final List<PodCondition> conditions = status.getConditions();
                     final List<ContainerStatus> containerStatuses = status.getContainerStatuses();
-                    if (CollectionUtils.isEmpty(conditions) || CollectionUtils.isEmpty(containerStatuses)) {
+                    if (CollectionUtils.isEmpty(conditions) || CollectionUtils.isEmpty(
+                        containerStatuses)) {
                         //正常非pending状态不会至此
                         this.submit(bak.withStatus(K8sPodListener.PodStatus.UNKNOWN));
                         break;
@@ -311,7 +313,8 @@ public abstract class AbstractFabric8PodsWatcher implements
                     log.debug("Retry to connect to k8s node...");
                     Future<Boolean> result = this.executorService.submit(this.retryHook);
                     if (Boolean.TRUE.equals(result.get())) {
-                        log.debug("Retry to add the pods listener success to the kubernetes container!");
+                        log.debug(
+                            "Retry to add the pods listener success to the kubernetes container!");
                         break;
                     }
                     //try again in {i} seconds

@@ -3,16 +3,20 @@ package io.kings.framework.component.zookeeper;
 import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.data.exception.SerializeException;
 import io.kings.framework.data.serializer.Serializer;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.*;
-import org.apache.zookeeper.KeeperException;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.BackgroundCallback;
+import org.apache.curator.framework.api.CreateBuilder;
+import org.apache.curator.framework.api.CuratorEvent;
+import org.apache.curator.framework.api.DeleteBuilder;
+import org.apache.curator.framework.api.SetDataBuilder;
+import org.apache.curator.framework.api.UnhandledErrorListener;
+import org.apache.zookeeper.KeeperException;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 异步操作实现
@@ -22,10 +26,11 @@ import java.util.concurrent.ExecutorService;
  * @since v2.7.2
  */
 class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
-        implements ZookeeperAsync<String, Serializable>, BackgroundCallback,
-        UnhandledErrorListener, ZookeeperReader<String, Serializable> {
+    implements ZookeeperAsync<String, Serializable>, BackgroundCallback,
+    UnhandledErrorListener, ZookeeperReader<String, Serializable> {
+
     protected ZookeeperAsyncProvider(CuratorFramework curatorFramework,
-                                     ExecutorService threadPool, Serializer serializer) {
+        ExecutorService threadPool, Serializer serializer) {
         super(curatorFramework, threadPool);
         this.serializer = serializer;
     }
@@ -61,8 +66,8 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperAsync<String, Serializable> openAsync(
-            ZookeeperAsyncCallback<String, Serializable> operatorCallback,
-            ZookeeperAsyncErrorListener errorListener) {
+        ZookeeperAsyncCallback<String, Serializable> operatorCallback,
+        ZookeeperAsyncErrorListener errorListener) {
         this.operatorCallback = operatorCallback;
         this.errorListener = errorListener;
         return this;
@@ -77,7 +82,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent)
-            throws Exception {
+        throws Exception {
         if (this.operatorCallback != null) {
             operatorCallback.call(this, convert(curatorEvent));
         }
@@ -86,7 +91,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     @Override
     public void unhandledError(String s, Throwable throwable) {
         Optional.ofNullable(this.errorListener)
-                .ifPresent(listener -> listener.onFail(throwable, s));
+            .ifPresent(listener -> listener.onFail(throwable, s));
     }
 
     /**
@@ -97,7 +102,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     private ZookeeperAsyncResponse convert(CuratorEvent curatorEvent) throws SerializeException {
         ZookeeperAsyncResponse.ZookeeperAsyncResponseBuilder builder =
-                ZookeeperAsyncResponse.builder();
+            ZookeeperAsyncResponse.builder();
         switch (curatorEvent.getType()) {
             case SET_DATA:
                 builder.asyncType(ZookeeperAsyncType.UPDATE);
@@ -153,8 +158,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * close client or other close work
-     * help for GC
+     * close client or other close work help for GC
      */
     @Override
     public void close() {
@@ -176,8 +180,8 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> create(String s, Serializable s2, NodeMode mode,
-                                                        boolean recurse, Serializer serializer)
-            throws ZookeeperException {
+        boolean recurse, Serializer serializer)
+        throws ZookeeperException {
         try {
             Assert.notNull(mode, "NodeMode must not be null");
             if (!this.contains(path0(s))) {
@@ -185,8 +189,9 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
                 //create mode
                 super.withMode(builder, mode);
                 builder.inBackground(this, this.threadPool()).withUnhandledErrorListener(this);
-                return super.create(builder, recurse, s, s2, Optional.ofNullable(serializer).orElse(this.serializer),
-                        this);
+                return super.create(builder, recurse, s, s2,
+                    Optional.ofNullable(serializer).orElse(this.serializer),
+                    this);
             } else {
                 throw new ZookeeperException(String.format("Node exists for %s", s));
             }
@@ -205,14 +210,14 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteWithVersion(String s, int version)
-            throws ZookeeperException {
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for deleteWithVersion by:%s", s));
+                    String.format("No Path been Created for deleteWithVersion by:%s", s));
             }
             curatorFramework.delete().withVersion(version).inBackground(this, this.threadPool())
-                    .withUnhandledErrorListener(this).forPath(path0(s));
+                .withUnhandledErrorListener(this).forPath(path0(s));
             return this;
         } catch (Exception e) {
             throw new ZookeeperException(e);
@@ -220,8 +225,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * 删除一个节点，强制保证删除
-     * 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
+     * 删除一个节点，强制保证删除 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
      *
      * @param s key
      * @return this
@@ -229,15 +233,15 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteForce(String s)
-            throws ZookeeperException {
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for deleteForce by:%s", s));
+                    String.format("No Path been Created for deleteForce by:%s", s));
             }
             curatorFramework.delete().guaranteed()
-                    .inBackground(this, this.threadPool())
-                    .withUnhandledErrorListener(this).forPath(path0(s));
+                .inBackground(this, this.threadPool())
+                .withUnhandledErrorListener(this).forPath(path0(s));
             return this;
         } catch (Exception e) {
             throw new ZookeeperException(e);
@@ -254,15 +258,15 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> delete(String s, boolean recurse)
-            throws ZookeeperException {
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for delete by:%s", s));
+                    String.format("No Path been Created for delete by:%s", s));
             }
             final DeleteBuilder delete = curatorFramework.delete();
             delete.inBackground(this, this.threadPool())
-                    .withUnhandledErrorListener(this);
+                .withUnhandledErrorListener(this);
             if (recurse) {
                 delete.deletingChildrenIfNeeded();
             }
@@ -274,8 +278,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * 更新数据节点数据
-     * 注意：该接口会返回一个Stat实例
+     * 更新数据节点数据 注意：该接口会返回一个Stat实例
      *
      * @param s  key
      * @param s2 value
@@ -284,21 +287,22 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> update(String s, Serializable s2, Integer version,
-                                                        Serializer serializer)
-            throws ZookeeperException {
+        Serializer serializer)
+        throws ZookeeperException {
         try {
             Assert.notNull(s2, "data must not be empty");
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for update by:%s", s));
+                    String.format("No Path been Created for update by:%s", s));
             }
             final SetDataBuilder setDataBuilder = curatorFramework.setData();
             if (version != null) {
                 setDataBuilder.withVersion(version);
             }
             setDataBuilder.inBackground(this, this.threadPool())
-                    .withUnhandledErrorListener(this)
-                    .forPath(path0(s), serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
+                .withUnhandledErrorListener(this)
+                .forPath(path0(s),
+                    serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
             return this;
         } catch (Exception e) {
             throw new ZookeeperException(e);
@@ -306,8 +310,7 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * 读取一个节点的数据内容
-     * 注意，此方法返的返回值是byte[] --> V
+     * 读取一个节点的数据内容 注意，此方法返的返回值是byte[] --> V
      *
      * @param s          key
      * @param serializer 序列化器
@@ -319,12 +322,12 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
         try {
             if (!contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for get by:%s", s));
+                    String.format("No Path been Created for get by:%s", s));
             }
             byte[] data = curatorFramework.getData()
-                    .inBackground(this, this.threadPool())
-                    .withUnhandledErrorListener(this)
-                    .forPath(path0(s));
+                .inBackground(this, this.threadPool())
+                .withUnhandledErrorListener(this)
+                .forPath(path0(s));
             return this.deserialize(serializer == null ? this.serializer : serializer, data);
         } catch (KeeperException.NoNodeException e) {
             return "";
@@ -334,9 +337,8 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * 获取某个节点的所有子节点路径
-     * 注意：该方法的返回值为List,获得ZNode的子节点Path列表。 可以调用额外的方法(监控、后台处理或者获取状态watch, background or get stat)
-     * 并在最后调用forPath()指定要操作的父ZNode
+     * 获取某个节点的所有子节点路径 注意：该方法的返回值为List,获得ZNode的子节点Path列表。 可以调用额外的方法(监控、后台处理或者获取状态watch, background or
+     * get stat) 并在最后调用forPath()指定要操作的父ZNode
      *
      * @param s key
      * @return children keys
@@ -347,12 +349,12 @@ class ZookeeperAsyncProvider extends AbstractZookeeper<Serializable>
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                        String.format("No Path been Created for children by:%s", s));
+                    String.format("No Path been Created for children by:%s", s));
             }
             final List<String> paths =
-                    curatorFramework.getChildren()
-                            .inBackground(this, this.threadPool())
-                            .withUnhandledErrorListener(this).forPath(path0(s));
+                curatorFramework.getChildren()
+                    .inBackground(this, this.threadPool())
+                    .withUnhandledErrorListener(this).forPath(path0(s));
             if (CollectionUtils.isEmpty(paths)) {
                 return new String[0];
             }

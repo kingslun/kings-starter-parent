@@ -10,6 +10,7 @@ import java.util.Objects;
  * @since v2.0
  */
 abstract class AbstractKubernetesResource<C, S> implements NamespaceAware<S> {
+
     protected String namespace;
     protected final C client;
 

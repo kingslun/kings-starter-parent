@@ -4,10 +4,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.util.Assert;
-
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.util.Assert;
 
 /**
  * 默认采用fabric8的K8s实现
@@ -27,6 +26,7 @@ import java.util.function.Supplier;
  */
 @Slf4j
 class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClassLoaderAware {
+
     /**
      * 客户端缓存-操作过得k8s集群都应缓存下来 以便后续操作不重新加载客户端
      */
@@ -47,6 +47,7 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
      */
     @Slf4j
     private static class KubernetesProxy<S> implements InvocationHandler {
+
         private final S subclass;
 
         KubernetesProxy(S subclass) {
@@ -58,7 +59,8 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             String className = method.getDeclaringClass().getSimpleName();
             String methodName = method.getName();
-            log.debug("[{}#{}] begin to invoke with:{}", className, methodName, Arrays.toString(args));
+            log.debug("[{}#{}] begin to invoke with:{}", className, methodName,
+                Arrays.toString(args));
             try {
                 Object result = method.invoke(subclass, args);
                 if (Objects.equals(NamespaceAware.METHOD_NAME, methodName)) {
@@ -82,7 +84,8 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
                 } else {
                     outer = new KubernetesException(target);
                 }
-                log.error("[{}#{}] invoked failure cause:{}", className, methodName, outer.getMessage(), outer);
+                log.error("[{}#{}] invoked failure cause:{}", className, methodName,
+                    outer.getMessage(), outer);
                 throw outer;
             }
         }
@@ -90,17 +93,21 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
 
     @Override
     public PodResource podResource(Long id, Supplier<KubernetesClient> clientSupplier) {
-        PodResource podResource = new PodResource.DefaultPodResource(this.client(id, clientSupplier));
-        return (PodResource) Proxy.newProxyInstance(this.classLoader, new Class[]{PodResource.class},
-                new KubernetesProxy<>(podResource));
+        PodResource podResource = new PodResource.DefaultPodResource(
+            this.client(id, clientSupplier));
+        return (PodResource) Proxy.newProxyInstance(this.classLoader,
+            new Class[]{PodResource.class},
+            new KubernetesProxy<>(podResource));
     }
 
     @Override
-    public DeploymentResource deploymentResource(Long id, Supplier<KubernetesClient> clientSupplier) {
+    public DeploymentResource deploymentResource(Long id,
+        Supplier<KubernetesClient> clientSupplier) {
         DeploymentResource deploymentResource =
-                new DeploymentResource.DefaultDeploymentResource(this.client(id, clientSupplier));
-        return (DeploymentResource) Proxy.newProxyInstance(this.classLoader, new Class[]{DeploymentResource.class},
-                new KubernetesProxy<>(deploymentResource));
+            new DeploymentResource.DefaultDeploymentResource(this.client(id, clientSupplier));
+        return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
+            new Class[]{DeploymentResource.class},
+            new KubernetesProxy<>(deploymentResource));
     }
 
     @Override

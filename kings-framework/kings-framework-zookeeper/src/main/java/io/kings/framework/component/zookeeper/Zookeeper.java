@@ -5,11 +5,10 @@ import io.kings.framework.component.zookeeper.exception.ZookeeperSerializeExcept
 import io.kings.framework.core.bean.BeanLifecycle;
 import io.kings.framework.data.exception.SerializeException;
 import io.kings.framework.data.serializer.Serializer;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
 import java.io.Serializable;
 import java.util.concurrent.ExecutorService;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * <p>最基础的抽象</p>
@@ -19,6 +18,7 @@ import java.util.concurrent.ExecutorService;
  * @since v2.7.4
  */
 interface Zookeeper extends AutoCloseable, BeanLifecycle {
+
     /**
      * 内部线程池获取 可以暴露出去给外部使用
      *
@@ -75,7 +75,7 @@ interface Zookeeper extends AutoCloseable, BeanLifecycle {
      * @since v2.8.6
      */
     default <D extends Serializable, S extends Serializer> D deserialize(
-            S serializer, byte[] data) throws SerializeException {
+        S serializer, byte[] data) throws SerializeException {
         Assert.notNull(serializer, "[ZookeeperSerializer] is null");
         if (data == null || data.length <= 0) {
             return null;

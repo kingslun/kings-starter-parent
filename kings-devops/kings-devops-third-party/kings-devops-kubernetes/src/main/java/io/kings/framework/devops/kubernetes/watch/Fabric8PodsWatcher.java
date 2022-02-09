@@ -3,7 +3,8 @@ package io.kings.framework.devops.kubernetes.watch;
 import org.springframework.beans.factory.DisposableBean;
 
 public interface Fabric8PodsWatcher extends DisposableBean,
-        Retryable, Closeable {
+    Retryable, Closeable {
+
     /**
      * 对指定namespace下的pods开启监听
      *

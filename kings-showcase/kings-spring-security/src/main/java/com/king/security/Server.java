@@ -1,5 +1,6 @@
 package com.king.security;
 
+import javax.annotation.Resource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-
 /**
  * @author lunkings
  */
@@ -22,19 +21,21 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 @RestController
 public class Server extends WebSecurityConfigurerAdapter {
+
     @Configuration
     @EnableAuthorizationServer
     static class AuthServer extends AuthorizationServerConfigurerAdapter {
+
         @Resource
         private BCryptPasswordEncoder passwordEncoder;
 
         @Override
         public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
             configurer.inMemory()
-                    .withClient("auth-client")
-                    .secret(passwordEncoder.encode("secret"))
-                    .authorizedGrantTypes("app")
-                    .redirectUris("http://localhost:8080/hello");
+                .withClient("auth-client")
+                .secret(passwordEncoder.encode("secret"))
+                .authorizedGrantTypes("app")
+                .redirectUris("http://localhost:8080/hello");
         }
     }
 
@@ -53,8 +54,8 @@ public class Server extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder.encode("123456"))
-                .roles("admin");
+            .withUser("user")
+            .password(passwordEncoder.encode("123456"))
+            .roles("admin");
     }
 }

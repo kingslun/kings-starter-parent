@@ -10,14 +10,17 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.Deployment;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
-
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * deployment资源api
@@ -27,8 +30,11 @@ import java.util.stream.Collectors;
  * @since v2.0
  */
 public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
-    class DefaultDeploymentResource extends AbstractKubernetesResource<KubernetesClient, DeploymentResource>
-            implements DeploymentResource {
+
+    class DefaultDeploymentResource extends
+        AbstractKubernetesResource<KubernetesClient, DeploymentResource>
+        implements DeploymentResource {
+
         private final Yaml yaml;
 
         DefaultDeploymentResource(KubernetesClient client) {
@@ -49,9 +55,12 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
         @Override
         public boolean restart(String name) throws KubernetesException {
             // modify /spec/template/metadata/labels/updatedTimestamp
-            RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource = this.resource(name);
-            final io.fabric8.kubernetes.api.model.apps.Deployment deployment = this.supplierWrapper(resource).get();
-            final Map<String, String> labels = deployment.getSpec().getTemplate().getMetadata().getLabels();
+            RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource = this.resource(
+                name);
+            final io.fabric8.kubernetes.api.model.apps.Deployment deployment = this.supplierWrapper(
+                resource).get();
+            final Map<String, String> labels = deployment.getSpec().getTemplate().getMetadata()
+                .getLabels();
             labels.put("updatedTimestamp", String.valueOf(System.currentTimeMillis()));
             return resource.patch(deployment) != null;
         }
@@ -59,8 +68,10 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
         @Override
         public boolean rollback(String name, String image) {
             Assert.hasText(image, "rollback deployment must had an image");
-            RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource = this.resource(name);
-            final io.fabric8.kubernetes.api.model.apps.Deployment deployment = this.supplierWrapper(resource).get();
+            RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource = this.resource(
+                name);
+            final io.fabric8.kubernetes.api.model.apps.Deployment deployment = this.supplierWrapper(
+                resource).get();
 //          /spec/template/spec/containers/0/image
             deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(image);
             return resource.patch(deployment) != null;
@@ -76,15 +87,18 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
             DeploymentList deploymentList;
             if (StringUtils.hasText(labelKey)) {
                 deploymentList =
-                        super.client.apps().deployments().inNamespace(super.namespace).withLabel(labelKey, labelValue)
-                                .list();
+                    super.client.apps().deployments().inNamespace(super.namespace)
+                        .withLabel(labelKey, labelValue)
+                        .list();
             } else {
-                deploymentList = super.client.apps().deployments().inNamespace(super.namespace).list();
+                deploymentList = super.client.apps().deployments().inNamespace(super.namespace)
+                    .list();
             }
             if (deploymentList == null || CollectionUtils.isEmpty(deploymentList.getItems())) {
                 return Collections.emptyList();
             }
-            return deploymentList.getItems().stream().map(this::convert).collect(Collectors.toList());
+            return deploymentList.getItems().stream().map(this::convert)
+                .collect(Collectors.toList());
         }
 
         private Deployment convert(io.fabric8.kubernetes.api.model.apps.Deployment item) {
@@ -110,7 +124,8 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
             deployment.setMatchLabels(spec.getSelector().getMatchLabels());
             deployment.setType(spec.getStrategy().getType());
             deployment.setMaxSurge(spec.getStrategy().getRollingUpdate().getMaxSurge().getStrVal());
-            deployment.setMaxUnavailable(spec.getStrategy().getRollingUpdate().getMaxUnavailable().getStrVal());
+            deployment.setMaxUnavailable(
+                spec.getStrategy().getRollingUpdate().getMaxUnavailable().getStrVal());
             deployment.setUpdatedReplicas(status.getUpdatedReplicas());
             deployment.setReadyReplicas(status.getReadyReplicas());
             deployment.setUnavailableReplicas(status.getUnavailableReplicas());
@@ -134,8 +149,9 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
         }
 
         private Supplier<io.fabric8.kubernetes.api.model.apps.Deployment> supplierWrapper(
-                RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource) {
-            return () -> Optional.ofNullable(resource.get()).orElseThrow(KubernetesResourceNotFoundException::new);
+            RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource) {
+            return () -> Optional.ofNullable(resource.get())
+                .orElseThrow(KubernetesResourceNotFoundException::new);
         }
 
         /**
@@ -144,7 +160,8 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
          * @param name deployment name
          * @return resource of fabric8
          */
-        private RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource(String name) {
+        private RollableScalableResource<io.fabric8.kubernetes.api.model.apps.Deployment, ?> resource(
+            String name) {
             Assert.hasText(name, "query deployment must had an name");
             return super.client.apps().deployments().inNamespace(super.namespace).withName(name);
         }
@@ -152,7 +169,9 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
         @Override
         public boolean replace(String name, String yaml) throws KubernetesException {
             return this.resource(name)
-                    .replace(this.yaml.loadAs(yaml, io.fabric8.kubernetes.api.model.apps.Deployment.class)) != null;
+                .replace(
+                    this.yaml.loadAs(yaml, io.fabric8.kubernetes.api.model.apps.Deployment.class))
+                != null;
         }
 
         @Override
@@ -164,7 +183,8 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
             Integer availableReplicas = status.getAvailableReplicas();
             // 已经准备好的副本数
             Integer readyReplicas = status.getReadyReplicas();
-            if (Objects.equals(replicas, availableReplicas) && Objects.equals(availableReplicas, readyReplicas)) {
+            if (Objects.equals(replicas, availableReplicas) && Objects.equals(availableReplicas,
+                readyReplicas)) {
                 return Deployment.Status.SUCCESS;
             } else {
                 return Deployment.Status.ONGOING;
@@ -215,9 +235,8 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
     String getConfigYaml(String name) throws KubernetesException;
 
     /**
-     * 根据标签或查询所有的deployment集合
-     * kubectl get deployment |grep name
-     * labelKey和labelValue为一个过滤键值对 要么同时有值要么同时为空
+     * 根据标签或查询所有的deployment集合 kubectl get deployment |grep name labelKey和labelValue为一个过滤键值对
+     * 要么同时有值要么同时为空
      *
      * @param labelKey   标签键
      * @param labelValue 标签值
@@ -226,8 +245,7 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
     List<Deployment> getList(String labelKey, String labelValue) throws KubernetesException;
 
     /**
-     * 精准查询deployment
-     * kubectl get deployment name
+     * 精准查询deployment kubectl get deployment name
      *
      * @param name name
      * @return Deployment
@@ -235,8 +253,7 @@ public interface DeploymentResource extends NamespaceAware<DeploymentResource> {
     Deployment getOne(String name) throws KubernetesException;
 
     /**
-     * 重新部署 deployment
-     * kubectl apply -f deployment.yaml
+     * 重新部署 deployment kubectl apply -f deployment.yaml
      *
      * @param name name
      * @param yaml deployment配置

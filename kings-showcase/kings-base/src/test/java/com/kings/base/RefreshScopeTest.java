@@ -18,7 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @Configuration
 @RunWith(SpringRunner.class)
 class RefreshScopeTest {
+
     static class MyEvent extends ApplicationEvent {
+
         @Getter
         private final String name;
 
@@ -30,13 +32,14 @@ class RefreshScopeTest {
         @Override
         public String toString() {
             return "MyEvent{" +
-                    "name='" + name + '\'' +
-                    '}';
+                "name='" + name + '\'' +
+                '}';
         }
     }
 
     @Configuration
     static class RefreshScopeBean {
+
         @Value("spring.application.name")
         private String name;
         @Autowired

@@ -9,6 +9,7 @@ package io.kings.framework.component.zookeeper;
  */
 @FunctionalInterface
 public interface ZookeeperAsyncCallback<K, V> {
+
     /**
      * callback
      *

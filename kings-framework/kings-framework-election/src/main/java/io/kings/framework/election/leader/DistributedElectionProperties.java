@@ -1,12 +1,11 @@
 package io.kings.framework.election.leader;
 
+import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lun.wang
@@ -17,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 @ToString
 @ConfigurationProperties(prefix = DistributedElectionProperties.ELECTION_PREFIX)
 public class DistributedElectionProperties {
+
     static final String ELECTION_PREFIX = "kings.election";
     public static final String ELECTION_TYPE_PREFIX = ELECTION_PREFIX + ".type";
     public static final String ELECTION_SWITCH_PREFIX = ELECTION_PREFIX + ".enabled";
@@ -36,6 +36,7 @@ public class DistributedElectionProperties {
     @Setter
     @ToString
     static class Redis {
+
         /**
          * cluster key
          */
@@ -62,6 +63,7 @@ public class DistributedElectionProperties {
     @Setter
     @ToString
     public static class Zookeeper {
+
         /**
          * zk选举使用的path
          */

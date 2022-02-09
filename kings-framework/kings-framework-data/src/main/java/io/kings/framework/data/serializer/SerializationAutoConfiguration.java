@@ -1,5 +1,7 @@
 package io.kings.framework.data.serializer;
 
+import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -10,14 +12,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.lang.NonNull;
 
-import java.util.ServiceLoader;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
- * 序列化组件自动装配
- * 根据配置初始化个性化序列化组件
- * 目前支持三种序列化功能 详细可查阅{@link Serializer}
- * 暂时只开放序列化器IOC管理
+ * 序列化组件自动装配 根据配置初始化个性化序列化组件 目前支持三种序列化功能 详细可查阅{@link Serializer} 暂时只开放序列化器IOC管理
  *
  * @author lun.kings
  * @date 2020/8/1 6:19 下午
@@ -26,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @ConditionOnSerialize
 @ConditionalOnMissingBean(Serializer.class)
 public class SerializationAutoConfiguration implements ApplicationContextAware {
+
     /**
      * 根据配置装配个性化序列化器
      */
@@ -41,15 +38,17 @@ public class SerializationAutoConfiguration implements ApplicationContextAware {
                 def.set(false);
                 // 通过BeanDefinitionBuilder创建bean定义
                 BeanDefinitionBuilder definition =
-                        BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass());
+                    BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass());
                 // 注册bean
-                beanFactory.registerBeanDefinition(serializer.name(), definition.getRawBeanDefinition());
+                beanFactory.registerBeanDefinition(serializer.name(),
+                    definition.getRawBeanDefinition());
             });
             if (def.get()) {
                 Serializer serializer = Serializer.DEFAULT_;
                 // 通过BeanDefinitionBuilder创建bean定义
                 BeanDefinition definition =
-                        BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass()).getBeanDefinition();
+                    BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass())
+                        .getBeanDefinition();
                 // 注册bean
                 beanFactory.registerBeanDefinition(serializer.name(), definition);
             }

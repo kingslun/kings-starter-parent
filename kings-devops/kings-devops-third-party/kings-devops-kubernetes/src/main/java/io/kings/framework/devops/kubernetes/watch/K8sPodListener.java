@@ -6,9 +6,7 @@ import lombok.ToString;
 
 /**
  * <p>
- * k8s容器pod实例监听器 监听实例扩容、缩容、更新事件
- * exp: 对单环境下指定namespace下的pods进行监听
- * env===>ns===>pod
+ * k8s容器pod实例监听器 监听实例扩容、缩容、更新事件 exp: 对单环境下指定namespace下的pods进行监听 env===>ns===>pod
  * </p>
  *
  * @author lun.wang
@@ -16,19 +14,20 @@ import lombok.ToString;
  * @since 1.0
  */
 public interface K8sPodListener extends NamingAware {
+
     /**
      * 环境信息提供者
      */
     String env();
 
     /**
-     * K8s虚拟机节点实例信息描述对象
-     * pod描述信息
+     * K8s虚拟机节点实例信息描述对象 pod描述信息
      */
     @Getter
     @Setter
     @ToString
     class Pod {
+
         /**
          * *** 所属环境 *** not empty
          */
@@ -126,6 +125,7 @@ public interface K8sPodListener extends NamingAware {
     }
 
     class Exception extends RuntimeException {
+
         public Exception(String message) {
             super(message);
         }
@@ -181,8 +181,7 @@ public interface K8sPodListener extends NamingAware {
     }
 
     /**
-     * pod准备阶段 这个阶段可能会频繁调用 因为节点初始化和重启、停机等多个阶段都会有对应准备流程 因此此事件是共享的
-     * 共享PENDING和TERMINATING两种状态
+     * pod准备阶段 这个阶段可能会频繁调用 因为节点初始化和重启、停机等多个阶段都会有对应准备流程 因此此事件是共享的 共享PENDING和TERMINATING两种状态
      *
      * @param pod 正在准备的pod
      * @see PodStatus#PENDING,PodStatus#TERMINATING

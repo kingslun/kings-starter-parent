@@ -6,13 +6,13 @@ import java.util.function.Consumer;
  * 连接zk服务器的状态监听器 在断开连接或者重连等状态触发时调用对应api
  *
  * @author lun.wang
- * @date 2020/4/22 2:56 下午
- * 回调参数列表包含zookeeper本生 可以直接使用
+ * @date 2020/4/22 2:56 下午 回调参数列表包含zookeeper本生 可以直接使用
  * @see KingsZookeeper
  * @see Consumer
  * @since v2.5.2
  */
 public interface ZookeeperConnectionStateListener {
+
     /**
      * 连接状态 正常连接成功之后调用一次
      *

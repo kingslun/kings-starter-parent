@@ -2,7 +2,14 @@ package com.kings.base.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -11,10 +18,12 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
-
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class NettyServer {
+
     private final int port;
 
     NettyServer(int port) {
@@ -23,14 +32,16 @@ class NettyServer {
 
     @ChannelHandler.Sharable
     static class MessageHandler extends SimpleChannelInboundHandler<String> {
+
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String s) {
-            System.out.println("服务端读到消息" + s);
+            log.debug("服务端读到消息" + s);
             //解决方案2：用户自定义的定时任务 -> 该任务提交到scheduleTaskQueue中
-            ctx.channel().eventLoop().schedule(() -> {
-                ctx.writeAndFlush(Unpooled.copiedBuffer("Hello,客户端~喵3~", CharsetUtil.UTF_8));
-            }, 5, TimeUnit.SECONDS);
+            ctx.channel().eventLoop().schedule(() ->
+                    ctx.writeAndFlush(Unpooled.copiedBuffer("Hello,客户端~喵3~", CharsetUtil.UTF_8))
+                , 5, TimeUnit.SECONDS);
         }
+
     }
 
     void start() {
@@ -39,23 +50,23 @@ class NettyServer {
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
             b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class) // (3)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast("framer",
-                                    new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
-                            pipeline.addLast("decoder", new StringDecoder());
-                            pipeline.addLast("encoder", new StringEncoder());
-                            pipeline.addLast("handler", new MessageHandler());
-                            System.out.println("SimpleChatClient:" + ch.remoteAddress() + "连接上");
-                        }
-                    })  //(4)
-                    .option(ChannelOption.SO_BACKLOG, 128)          // (5)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+                .channel(NioServerSocketChannel.class) // (3)
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel ch) throws Exception {
+                        ChannelPipeline pipeline = ch.pipeline();
+                        pipeline.addLast("framer",
+                            new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                        pipeline.addLast("decoder", new StringDecoder());
+                        pipeline.addLast("encoder", new StringEncoder());
+                        pipeline.addLast("handler", new MessageHandler());
+                        log.debug("SimpleChatClient:" + ch.remoteAddress() + "连接上");
+                    }
+                })  //(4)
+                .option(ChannelOption.SO_BACKLOG, 128)          // (5)
+                .childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
 
-            System.out.println("SimpleChatServer 启动了");
+            log.debug("SimpleChatServer 启动了");
 
             // 绑定端口，开始接收进来的连接
             ChannelFuture f = b.bind(port).sync(); // (7)
@@ -65,11 +76,12 @@ class NettyServer {
             f.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             e.printStackTrace();
         } finally {
             workerGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();
-            System.out.println("SimpleChatServer 关闭了");
+            log.debug("SimpleChatServer 关闭了");
         }
     }
 

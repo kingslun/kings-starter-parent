@@ -8,6 +8,7 @@ package io.kings.framework.component.zookeeper;
  * @since v2.5.2
  */
 public interface ZookeeperPathAndChildrenWatcher<K, V> extends ZookeeperConnectStateWatcher<K, V> {
+
     /**
      * 节点增加
      *

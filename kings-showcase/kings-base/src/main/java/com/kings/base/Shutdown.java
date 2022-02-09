@@ -1,13 +1,16 @@
 package com.kings.base;
 
 public class Shutdown {
+
     private static final class ShutDown0 extends Thread {
+
         private ShutDown0(String name) {
             super(name);
         }
 
         @Override
         public void run() {
+            // document why this method is empty
         }
     }
 

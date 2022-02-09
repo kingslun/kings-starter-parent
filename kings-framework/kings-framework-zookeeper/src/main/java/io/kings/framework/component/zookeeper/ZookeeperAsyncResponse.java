@@ -1,16 +1,14 @@
 package io.kings.framework.component.zookeeper;
 
+import java.io.Serializable;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * 异步事件
- * remove some filed
+ * 异步事件 remove some filed
  *
  * @author lun.wang
  * @date 2020/4/24 5:23 下午
@@ -22,6 +20,7 @@ import java.util.List;
 @ToString
 @Builder
 public class ZookeeperAsyncResponse {
+
     /**
      * 异步类型
      */

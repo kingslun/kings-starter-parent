@@ -11,9 +11,9 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public abstract class AbstractDistributedElection implements DistributedElection {
+
     /**
-     * is leader
-     * 本机为leader时调用 处理相关逻辑
+     * is leader 本机为leader时调用 处理相关逻辑
      */
     @Override
     public void leader() {
@@ -23,8 +23,7 @@ public abstract class AbstractDistributedElection implements DistributedElection
     }
 
     /**
-     * lost leader
-     * 本机丢失leader时调用 处理相关逻辑
+     * lost leader 本机丢失leader时调用 处理相关逻辑
      */
     @Override
     public void lostLeader() {

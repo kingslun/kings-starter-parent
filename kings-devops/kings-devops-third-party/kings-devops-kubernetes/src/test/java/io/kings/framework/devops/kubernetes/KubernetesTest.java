@@ -8,6 +8,12 @@ import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.Deployment;
 import io.kings.framework.devops.kubernetes.model.Pod;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.function.Supplier;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,18 +24,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.function.Supplier;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {KubernetesTest.class},
-        webEnvironment = SpringBootTest.WebEnvironment.NONE)
+    webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Import(DefaultKubernetesApi.class)
 public class KubernetesTest {
+
     @Autowired
     private KubernetesApi<KubernetesClient> kubernetesApi;
     /**
@@ -39,7 +39,7 @@ public class KubernetesTest {
         final String master = "https://localhost:6443/";
         String command = "kubectl -n kube-system describe secret default| awk '$1==\"token:\"{print $2}'";
         try (InputStream in = Runtime.getRuntime().exec(command).getInputStream();
-             ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             byte[] buffer = new byte[1024];
             int len;
             while ((len = in.read(buffer)) != -1) {
@@ -48,7 +48,8 @@ public class KubernetesTest {
             final String token = new String(out.toByteArray(), StandardCharsets.UTF_8);
             final boolean trustCerts = true;
             Config config =
-                    new ConfigBuilder().withMasterUrl(master).withOauthToken(token).withTrustCerts(trustCerts).build();
+                new ConfigBuilder().withMasterUrl(master).withOauthToken(token)
+                    .withTrustCerts(trustCerts).build();
             return new DefaultKubernetesClient(config);//使用默认的就足够了
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -99,7 +100,7 @@ public class KubernetesTest {
         String labelKey = "app";
         String labelValue = "redis";
         List<Deployment> deployments =
-                this.deploymentResource.namespace(this.namespace).getList(labelKey, labelValue);
+            this.deploymentResource.namespace(this.namespace).getList(labelKey, labelValue);
         Assertions.assertThat(deployments).isNotEmpty();
         deployments.forEach(System.out::println);
     }
@@ -120,13 +121,15 @@ public class KubernetesTest {
     @Test
     public void deploymentRollback() throws KubernetesException {
         String image = "redis:latest";
-        boolean rollback = this.deploymentResource.namespace(this.namespace).rollback(this.name, image);
+        boolean rollback = this.deploymentResource.namespace(this.namespace)
+            .rollback(this.name, image);
         Assertions.assertThat(rollback).isTrue();
     }
 
     @Test
     public void deploymentConfigYaml() throws KubernetesException {
-        String configYaml = this.deploymentResource.namespace(this.namespace).getConfigYaml(this.name);
+        String configYaml = this.deploymentResource.namespace(this.namespace)
+            .getConfigYaml(this.name);
         Assertions.assertThat(configYaml).isNotBlank();
         System.out.println(configYaml);
     }
@@ -140,13 +143,15 @@ public class KubernetesTest {
     @Test
     public void deploymentReplace() throws KubernetesException {
         String config = this.deploymentResource.namespace(this.namespace).getConfigYaml(this.name);
-        boolean replace = this.deploymentResource.namespace(this.namespace).replace(this.name, config);
+        boolean replace = this.deploymentResource.namespace(this.namespace)
+            .replace(this.name, config);
         Assertions.assertThat(replace).isTrue();
     }
 
     @Test
     public void deploymentStatus() throws KubernetesException {
-        Deployment.Status status = this.deploymentResource.namespace(this.namespace).getStatus(this.name);
+        Deployment.Status status = this.deploymentResource.namespace(this.namespace)
+            .getStatus(this.name);
         Assertions.assertThat(status).isNotNull();
         System.out.println(status);
     }
@@ -156,7 +161,8 @@ public class KubernetesTest {
         //mock delete for all case
         DeploymentResource bak = this.deploymentResource;
         this.deploymentResource = Mockito.mock(DeploymentResource.class);
-        Mockito.doReturn(this.deploymentResource).when(this.deploymentResource).namespace(this.namespace);
+        Mockito.doReturn(this.deploymentResource).when(this.deploymentResource)
+            .namespace(this.namespace);
         Mockito.doReturn(true).when(this.deploymentResource).delete(this.name);
         boolean delete = this.deploymentResource.namespace(this.namespace).delete(this.name);
         Assertions.assertThat(delete).isTrue();

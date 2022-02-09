@@ -1,11 +1,10 @@
 package io.kings.framework.component.zookeeper;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.io.Serializable;
 
 /**
  * 事物操作结果对象
@@ -20,6 +19,7 @@ import java.io.Serializable;
 @ToString
 @AllArgsConstructor
 public class ZookeeperTransactionResponse implements Serializable {
+
     private ZookeeperTransactionType operationType;
     private String forPath;
     private String resultPath;

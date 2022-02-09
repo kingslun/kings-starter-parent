@@ -1,8 +1,7 @@
 package io.kings.framework.component.zookeeper;
 
 /**
- * 异步事件
- * remove some type
+ * 异步事件 remove some type
  *
  * @author lun.wang
  * @date 2020/4/24 5:23 下午

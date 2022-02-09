@@ -19,6 +19,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Setter
 @ToString
 public class ZookeeperProperties {
+
     public static final String ZK_PREFIX = "kings.zookeeper";
     public static final String ZK_ELECTION_PREFIX = ZK_PREFIX + ".leaderElection";
     /**
@@ -65,6 +66,7 @@ public class ZookeeperProperties {
     @Setter
     @ToString
     public static class Retry {
+
         /**
          * 重试次数 默认3次
          */
@@ -89,6 +91,7 @@ public class ZookeeperProperties {
     @Setter
     @ToString
     static class Threads {
+
         /**
          * thread name for zookeeper
          */

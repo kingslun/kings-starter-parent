@@ -27,27 +27,25 @@ public enum RetryType {
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new RetryUntilElapsed(
-                    retry.getRetryCount() * retry.getSleepMsBetweenRetries(),
-                    retry.getSleepMsBetweenRetries());
+                retry.getRetryCount() * retry.getSleepMsBetweenRetries(),
+                retry.getSleepMsBetweenRetries());
         }
     },
 
     /**
-     * RetryNTimes(int n, int sleepMsBetweenRetries)
-     * 指定重连次数
+     * RetryNTimes(int n, int sleepMsBetweenRetries) 指定重连次数
      */
     RETRY_N_TIMES {
         @Override
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new RetryNTimes(retry.getRetryCount(),
-                    retry.getSleepMsBetweenRetries());
+                retry.getSleepMsBetweenRetries());
         }
     },
 
     /**
-     * RetryOneTime(int sleepMsBetweenRetry)
-     * 重连一次,简单粗暴
+     * RetryOneTime(int sleepMsBetweenRetry) 重连一次,简单粗暴
      */
     RETRY_ONE_TIME {
         @Override
@@ -58,8 +56,8 @@ public enum RetryType {
     },
 
     /**
-     * ExponentialBackoffRetry(int baseSleepTimeMs, int maxRetries)
-     * ExponentialBackoffRetry(int baseSleepTimeMs, int maxRetries, int maxSleepMs)
+     * ExponentialBackoffRetry(int baseSleepTimeMs, int maxRetries) ExponentialBackoffRetry(int
+     * baseSleepTimeMs, int maxRetries, int maxSleepMs)
      * <p>
      * 时间间隔 = baseSleepTimeMs * Math.max(1, random.nextInt(1 << (retryCount + 1)))
      */
@@ -68,8 +66,8 @@ public enum RetryType {
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new ExponentialBackoffRetry(
-                    retry.getSleepMsBetweenRetries(),
-                    retry.getRetryCount());
+                retry.getSleepMsBetweenRetries(),
+                retry.getRetryCount());
         }
     };
 

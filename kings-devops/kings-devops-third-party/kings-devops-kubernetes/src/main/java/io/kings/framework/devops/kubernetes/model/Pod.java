@@ -1,10 +1,9 @@
 package io.kings.framework.devops.kubernetes.model;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
 
 /**
  * kubernetes pod描述对象
@@ -35,8 +34,7 @@ public class Pod {
      */
     private String hostIp;
     /**
-     * 实例所在节点名称
-     * kubernetes节点
+     * 实例所在节点名称 kubernetes节点
      */
     private String nodeName;
     /**
@@ -67,6 +65,7 @@ public class Pod {
     @Setter
     @ToString
     public static class Container {
+
         /**
          * 容器名称
          */

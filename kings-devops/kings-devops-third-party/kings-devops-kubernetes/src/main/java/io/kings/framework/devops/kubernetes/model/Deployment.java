@@ -2,12 +2,11 @@ package io.kings.framework.devops.kubernetes.model;
 
 import io.kings.framework.data.Enumerable;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
+import java.util.Arrays;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * kubernetes deployment描述对象
@@ -20,6 +19,7 @@ import java.util.Map;
 @Setter
 @ToString
 public class Deployment {
+
     /**
      * 名称
      */
@@ -102,7 +102,7 @@ public class Deployment {
 
         public static Status of(int code) {
             return Arrays.stream(Status.values()).filter(i -> i.getCode() == code).findFirst()
-                    .orElseThrow(KubernetesDeploymentStatusNotFoundException::new);
+                .orElseThrow(KubernetesDeploymentStatusNotFoundException::new);
         }
 
         static class KubernetesDeploymentStatusNotFoundException extends KubernetesException {

@@ -16,12 +16,14 @@ import java.util.regex.Pattern;
  * @since v1.0
  */
 public class IpUtil {
+
     private static final String ANY_HOST = "0.0.0.0";
     private static final String LOCALHOST = "127.0.0.1";
     private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
     private static InetAddress localAddress = null;
 
     private static class NetworkException extends RuntimeException {
+
         public NetworkException(String message, Throwable cause) {
             super(message, cause);
         }
@@ -34,7 +36,7 @@ public class IpUtil {
         if (address != null && !address.isLoopbackAddress()) {
             String name = address.getHostAddress();
             return name != null && !ANY_HOST.equals(name) && !LOCALHOST.equals(name) &&
-                    IP_PATTERN.matcher(name).matches();
+                IP_PATTERN.matcher(name).matches();
         } else {
             return false;
         }
@@ -59,7 +61,7 @@ public class IpUtil {
                     }
                 }
             }
-        } catch (Throwable var8) {
+        } catch (Exception var8) {
             throw new NetworkException("failure to fetch local InetAddress", var8);
         }
         return localAddress;

@@ -4,8 +4,7 @@ import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.data.serializer.Serializer;
 
 /**
- * 可轮询操作的函数 遵循fluent风格的服务
- * 因为外界会调用 所以不能为包级私有
+ * 可轮询操作的函数 遵循fluent风格的服务 因为外界会调用 所以不能为包级私有
  *
  * @author lun.wang
  * @date 2020/4/30 5:37 下午
@@ -15,8 +14,7 @@ public interface ZookeeperWriter<K, V> {
     /*======================zookeeper轮询操作==========================*/
 
     /**
-     * 创建一个节点，初始内容为空
-     * 如果没有设置节点属性，节点创建模式默认为持久化节点，内容默认为空
+     * 创建一个节点，初始内容为空 如果没有设置节点属性，节点创建模式默认为持久化节点，内容默认为空
      *
      * @param k key
      * @return this
@@ -47,7 +45,8 @@ public interface ZookeeperWriter<K, V> {
      * @return this
      * @throws ZookeeperException failed
      */
-    default ZookeeperWriter<K, V> create(K k, V v, Serializer serializer) throws ZookeeperException {
+    default ZookeeperWriter<K, V> create(K k, V v, Serializer serializer)
+        throws ZookeeperException {
         return create(k, v, NodeMode.PERSISTENT, serializer);
     }
 
@@ -75,7 +74,7 @@ public interface ZookeeperWriter<K, V> {
      * @see NodeMode
      */
     default ZookeeperWriter<K, V> create(K k, V v, NodeMode mode, Serializer serializer)
-            throws ZookeeperException {
+        throws ZookeeperException {
         return create(k, v, mode, true, serializer);
     }
 
@@ -92,13 +91,12 @@ public interface ZookeeperWriter<K, V> {
      * @see NodeMode
      */
     ZookeeperWriter<K, V> create(K k, V v, NodeMode mode, boolean recurse, Serializer serializer)
-            throws ZookeeperException;
+        throws ZookeeperException;
 
     /*=================================delete operation===================================*/
 
     /**
-     * 删除一个节点
-     * 注意，此方法只能删除叶子节点，否则会抛出异常。
+     * 删除一个节点 注意，此方法只能删除叶子节点，否则会抛出异常。
      *
      * @param k key
      * @return this
@@ -119,8 +117,7 @@ public interface ZookeeperWriter<K, V> {
     ZookeeperWriter<K, V> deleteWithVersion(K k, int version) throws ZookeeperException;
 
     /**
-     * 删除一个节点，强制保证删除
-     * 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
+     * 删除一个节点，强制保证删除 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
      *
      * @param k key
      * @return this
@@ -141,8 +138,7 @@ public interface ZookeeperWriter<K, V> {
     /*=================================update operation===================================*/
 
     /**
-     * 更新数据节点数据
-     * 注意：该接口会返回一个Stat实例
+     * 更新数据节点数据 注意：该接口会返回一个Stat实例
      *
      * @param k key
      * @param v value
@@ -154,8 +150,7 @@ public interface ZookeeperWriter<K, V> {
     }
 
     /**
-     * 更新数据节点数据
-     * 注意：该接口会返回一个Stat实例
+     * 更新数据节点数据 注意：该接口会返回一个Stat实例
      *
      * @param k          key
      * @param v          value
@@ -163,7 +158,8 @@ public interface ZookeeperWriter<K, V> {
      * @return this
      * @throws ZookeeperException failed
      */
-    default ZookeeperWriter<K, V> update(K k, V v, Serializer serializer) throws ZookeeperException {
+    default ZookeeperWriter<K, V> update(K k, V v, Serializer serializer)
+        throws ZookeeperException {
         return this.update(k, v, null, serializer);
     }
 
@@ -191,11 +187,10 @@ public interface ZookeeperWriter<K, V> {
      * @throws ZookeeperException failed
      */
     ZookeeperWriter<K, V> update(K k, V v, Integer version, Serializer serializer)
-            throws ZookeeperException;
+        throws ZookeeperException;
 
     /**
-     * 注意：该方法返回一个Stat实例，用于检查ZNode是否不存在的操作.
-     * 可以调用额外的方法(监控或者后台处理)并在最后调用forPath()指定要操作的ZNode
+     * 注意：该方法返回一个Stat实例，用于检查ZNode是否不存在的操作. 可以调用额外的方法(监控或者后台处理)并在最后调用forPath()指定要操作的ZNode
      *
      * @param k key
      * @return true不存在 or false存在

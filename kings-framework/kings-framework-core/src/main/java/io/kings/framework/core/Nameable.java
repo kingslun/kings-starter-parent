@@ -8,6 +8,7 @@ package io.kings.framework.core;
  * @since v2.0
  */
 public interface Nameable {
+
     /**
      * 返回此对象的唯一标识符（名字）
      *

@@ -8,6 +8,7 @@ package io.kings.framework.component.zookeeper.exception;
  * @since v2.7.5
  */
 public class ZookeeperAsyncException extends ZookeeperException {
+
     public ZookeeperAsyncException() {
         super();
     }

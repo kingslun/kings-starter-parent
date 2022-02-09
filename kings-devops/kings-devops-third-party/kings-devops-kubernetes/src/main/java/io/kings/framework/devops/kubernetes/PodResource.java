@@ -6,13 +6,12 @@ import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.model.Pod;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 /**
  * pod资源相关api
@@ -22,6 +21,7 @@ import java.util.Objects;
  * @since v2.0
  */
 public interface PodResource extends NamespaceAware<PodResource> {
+
     /**
      * 根据name删除pod
      *
@@ -50,7 +50,8 @@ public interface PodResource extends NamespaceAware<PodResource> {
     /**
      * pod资源的默认实现 采用fabric8客户端实现
      */
-    class DefaultPodResource extends AbstractKubernetesResource<KubernetesClient, PodResource> implements PodResource {
+    class DefaultPodResource extends
+        AbstractKubernetesResource<KubernetesClient, PodResource> implements PodResource {
 
         DefaultPodResource(KubernetesClient client) {
             super(client);
@@ -64,7 +65,8 @@ public interface PodResource extends NamespaceAware<PodResource> {
 
         @Override
         public List<Pod> findByLabel(String label) {
-            return convert(client.pods().inNamespace(super.namespace).withLabel(label).list().getItems());
+            return convert(
+                client.pods().inNamespace(super.namespace).withLabel(label).list().getItems());
         }
 
         private List<Pod> convert(List<io.fabric8.kubernetes.api.model.Pod> pods) {
@@ -91,18 +93,21 @@ public interface PodResource extends NamespaceAware<PodResource> {
                     podContainers.add(container);
                 });
                 pod1.setContainers(podContainers);
-                List<ContainerStatus> containerStatusList = v1Pod.getStatus().getContainerStatuses();
+                List<ContainerStatus> containerStatusList = v1Pod.getStatus()
+                    .getContainerStatuses();
                 if (!CollectionUtils.isEmpty(containerStatusList)) {
                     ContainerStatus containerStatus = containerStatusList.get(0);
                     pod1.setRestartCount(containerStatus.getRestartCount());
-                    pod1.setPhase(Objects.equals(Boolean.TRUE, containerStatus.getReady()) ? "Running" :
+                    pod1.setPhase(
+                        Objects.equals(Boolean.TRUE, containerStatus.getReady()) ? "Running" :
                             "Pod状态：" + pod1.getPhase() + ", 容器状态：Terminating");
                     ContainerState lastState = containerStatus.getLastState();
                     if (lastState == null) {
                         pod1.setLastTerminatingPhase("");
                     } else {
                         pod1.setLastTerminatingPhase(
-                                lastState.getTerminated() == null ? "" : lastState.getTerminated().getReason());
+                            lastState.getTerminated() == null ? ""
+                                : lastState.getTerminated().getReason());
                     }
                 }
                 returned.add(pod1);
@@ -112,7 +117,8 @@ public interface PodResource extends NamespaceAware<PodResource> {
 
         @Override
         public String fetchLog(String podName, String container) {
-            return client.pods().inNamespace(super.namespace).withName(podName).inContainer(container).getLog();
+            return client.pods().inNamespace(super.namespace).withName(podName)
+                .inContainer(container).getLog();
         }
     }
 }

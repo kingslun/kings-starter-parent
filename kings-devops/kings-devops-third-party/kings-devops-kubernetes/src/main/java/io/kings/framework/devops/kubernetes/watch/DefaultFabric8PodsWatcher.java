@@ -2,16 +2,14 @@ package io.kings.framework.devops.kubernetes.watch;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
+import java.util.concurrent.ExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
-import java.util.concurrent.ExecutorService;
-
 /**
- * 基于Fabric8框架实现的对k8s集群下指定namespace节点下所有pod实例状态监控管理的注册中心
- * 能基于pod生命周期内各个阶段进行快速响应
- * feature:对pod宕机进行检测 发送钉钉通知
- * See <a href="http://code.aihuishou.com/fusion/ahs-nova/-/issues/4">shutdown listing</a> for a details of the feature
+ * 基于Fabric8框架实现的对k8s集群下指定namespace节点下所有pod实例状态监控管理的注册中心 能基于pod生命周期内各个阶段进行快速响应 feature:对pod宕机进行检测
+ * 发送钉钉通知 See <a href="http://code.aihuishou.com/fusion/ahs-nova/-/issues/4">shutdown listing</a>
+ * for a details of the feature
  *
  * @see K8sPodListener 通过对pod各阶段的状态变更抽离的监听接口 是对各阶段响应后的业务逻辑进行抽离和封装
  */
@@ -22,13 +20,13 @@ public class DefaultFabric8PodsWatcher extends AbstractFabric8PodsWatcher {
         super(client, listener);
     }
 
-    public DefaultFabric8PodsWatcher(KubernetesClient client, K8sPodListener listener, ExecutorService service) {
+    public DefaultFabric8PodsWatcher(KubernetesClient client, K8sPodListener listener,
+        ExecutorService service) {
         super(client, listener, service);
     }
 
     /**
-     * 对K8s集群下所有的pods添加监听器
-     * 支持指定namespace下的pods进行监听
+     * 对K8s集群下所有的pods添加监听器 支持指定namespace下的pods进行监听
      *
      * @param ns namespace不传默认监听所有
      * @author lun.wang

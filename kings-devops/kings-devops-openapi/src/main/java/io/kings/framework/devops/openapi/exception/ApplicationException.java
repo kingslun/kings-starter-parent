@@ -8,6 +8,7 @@ package io.kings.framework.devops.openapi.exception;
  * @since v1.0
  */
 class ApplicationException extends Exception {
+
     public ApplicationException(String message) {
         super(message);
     }

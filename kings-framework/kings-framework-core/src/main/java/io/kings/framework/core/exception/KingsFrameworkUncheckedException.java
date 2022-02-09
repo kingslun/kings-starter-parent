@@ -1,14 +1,14 @@
 package io.kings.framework.core.exception;
 
 /**
- * 公共异常定义
- * 非受检异常
+ * 公共异常定义 非受检异常
  *
  * @author lun.wang
  * @date 2021/8/10 5:20 下午
  * @since v1.0
  */
 public class KingsFrameworkUncheckedException extends RuntimeException {
+
     public KingsFrameworkUncheckedException() {
         super();
     }

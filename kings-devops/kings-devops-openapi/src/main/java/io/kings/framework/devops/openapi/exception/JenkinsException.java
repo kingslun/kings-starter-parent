@@ -8,6 +8,7 @@ package io.kings.framework.devops.openapi.exception;
  * @since v1.0
  */
 class JenkinsException extends Exception {
+
     public JenkinsException(String message) {
         super(message);
     }

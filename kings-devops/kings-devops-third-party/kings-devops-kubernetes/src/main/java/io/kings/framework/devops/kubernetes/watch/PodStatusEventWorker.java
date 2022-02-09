@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
  * @since v1.1
  */
 class PodStatusEventWorker implements Runnable {
+
     private final K8sPodListener.Pod pod;
     private final K8sPodListener listener;
 

@@ -8,5 +8,6 @@ package io.kings.framework.devops.kubernetes.watch;
  * @since v1.0
  */
 interface Closeable extends AutoCloseable {
+
     void close();
 }

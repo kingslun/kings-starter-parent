@@ -1,14 +1,17 @@
 package io.kings.framework.election.leader;
 
 import io.kings.framework.util.IpUtil;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.util.CollectionUtils;
-
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * <p>
@@ -20,8 +23,10 @@ import java.util.concurrent.ScheduledExecutorService;
  * @since v1.0
  */
 @Slf4j
-final class RedisDistributedElectionRegistry extends DistributedElectionRegistry.AbstractDistributedElectionRegistry
-        implements DistributedElectionRegistry {
+final class RedisDistributedElectionRegistry extends
+    DistributedElectionRegistry.AbstractDistributedElectionRegistry
+    implements DistributedElectionRegistry {
+
     private final DistributedElectionProperties.Redis properties;
     private final ScheduledExecutorService leaderElection;
     private final RedisTemplate<String, String> template;
@@ -29,12 +34,13 @@ final class RedisDistributedElectionRegistry extends DistributedElectionRegistry
     private static final String LOCAL_HOST = IpUtil.getIp();
 
     RedisDistributedElectionRegistry(RedisTemplate<String, String> template,
-                                     DistributedElectionProperties.Redis properties) {
+        DistributedElectionProperties.Redis properties) {
         super();
         this.template = template;
         this.properties = properties;
         leaderElection =
-                Executors.newSingleThreadScheduledExecutor(r -> new Thread(r, properties.getElectionThreadName()));
+            Executors.newSingleThreadScheduledExecutor(
+                r -> new Thread(r, properties.getElectionThreadName()));
         this.selector = new Selector(this.template, this.properties, super.elections());
     }
 
@@ -50,8 +56,9 @@ final class RedisDistributedElectionRegistry extends DistributedElectionRegistry
         //register this server
         this.template.opsForZSet().add(properties.getGroups(), LOCAL_HOST, LOCAL_HOST.hashCode());
         //定时轮询 注意和scheduleWithFixedDelay的区别会在线程抛出异常时中断
-        this.leaderElection.scheduleAtFixedRate(this.selector, properties.getInitialDelay(), properties.getInterval(),
-                properties.getIntervalUnit());
+        this.leaderElection.scheduleAtFixedRate(this.selector, properties.getInitialDelay(),
+            properties.getInterval(),
+            properties.getIntervalUnit());
     }
 
     @Override
@@ -63,19 +70,21 @@ final class RedisDistributedElectionRegistry extends DistributedElectionRegistry
     }
 
     /**
-     * 定时轮询线程 轮询校验本机是否为leader
-     * 校验标准参考redis master-election节点值 根据IP hashcode最小值为标准
+     * 定时轮询线程 轮询校验本机是否为leader 校验标准参考redis master-election节点值 根据IP hashcode最小值为标准
      */
     private static class Selector implements Runnable {
+
         private final RedisTemplate<String, String> template;
         private final DistributedElectionProperties.Redis properties;
         private final Collection<DistributedElection> elections;
 
-        Selector(RedisTemplate<String, String> template, DistributedElectionProperties.Redis properties,
-                 Collection<DistributedElection> elections) {
+        Selector(RedisTemplate<String, String> template,
+            DistributedElectionProperties.Redis properties,
+            Collection<DistributedElection> elections) {
             this.template = template;
             this.properties = properties;
-            this.elections = CollectionUtils.isEmpty(elections) ? Collections.emptyList() : elections;
+            this.elections =
+                CollectionUtils.isEmpty(elections) ? Collections.emptyList() : elections;
         }
 
         void addElection(DistributedElection election) {
@@ -90,7 +99,7 @@ final class RedisDistributedElectionRegistry extends DistributedElectionRegistry
                 return;
             }
             Set<ZSetOperations.TypedTuple<String>> masters =
-                    template.opsForZSet().reverseRangeWithScores(properties.getGroups(), 0, 0);
+                template.opsForZSet().reverseRangeWithScores(properties.getGroups(), 0, 0);
             assert masters != null;
             Optional<ZSetOperations.TypedTuple<String>> optional = masters.stream().findFirst();
             String leader = optional.map(ZSetOperations.TypedTuple::getValue).orElse(null);

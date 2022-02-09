@@ -8,6 +8,7 @@ package io.kings.framework.devops.openapi.exception;
  * @since v1.0
  */
 public class ApplicationNotFoundException extends ApplicationException {
+
     public ApplicationNotFoundException(String message) {
         super(message);
     }

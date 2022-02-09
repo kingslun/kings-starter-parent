@@ -3,16 +3,20 @@ package io.kings.framework.component.zookeeper;
 import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperTransactionException;
 import io.kings.framework.data.serializer.Serializer;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.transaction.*;
-import org.springframework.util.CollectionUtils;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.transaction.CuratorOp;
+import org.apache.curator.framework.api.transaction.CuratorTransactionResult;
+import org.apache.curator.framework.api.transaction.OperationType;
+import org.apache.curator.framework.api.transaction.TransactionCreateBuilder;
+import org.apache.curator.framework.api.transaction.TransactionDeleteBuilder;
+import org.apache.curator.framework.api.transaction.TransactionSetDataBuilder;
+import org.springframework.util.CollectionUtils;
 
 /**
  * <p>事物操作实现</p>
@@ -22,7 +26,7 @@ import java.util.concurrent.ExecutorService;
  * @since v2.7.2
  */
 class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
-        implements ZookeeperTransaction<String, Serializable> {
+    implements ZookeeperTransaction<String, Serializable> {
 
     private static final String NO_PATH = "No Path been Created for update";
 
@@ -44,7 +48,8 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
         //初始化方法,空实现
     }
 
-    ZookeeperTransactionProvider(CuratorFramework client, ExecutorService threadPool, Serializer serializer) {
+    ZookeeperTransactionProvider(CuratorFramework client, ExecutorService threadPool,
+        Serializer serializer) {
         super(client, threadPool);
         this.serializer = serializer;
         transactionOperators = new ArrayList<>();
@@ -90,12 +95,13 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
         try {
             if (!CollectionUtils.isEmpty(this.transactionOperators)) {
                 final Collection<CuratorTransactionResult> transactionResults =
-                        this.curatorFramework.transaction().forOperations(this.transactionOperators);
+                    this.curatorFramework.transaction().forOperations(this.transactionOperators);
                 if (CollectionUtils.isEmpty(transactionResults)) {
                     return Collections.emptyList();
                 }
                 List<ZookeeperTransactionResponse> ret = new ArrayList<>(transactionResults.size());
-                transactionResults.forEach(r -> ret.add(new ZookeeperTransactionResponse(operationType(r.getType()),
+                transactionResults.forEach(
+                    r -> ret.add(new ZookeeperTransactionResponse(operationType(r.getType()),
                         r.getForPath(), r.getResultPath())));
                 return ret;
             } else {
@@ -119,14 +125,16 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
      * @see NodeMode
      */
     @Override
-    public ZookeeperWriter<String, Serializable> create(String s, Serializable s2, NodeMode nodeMode,
-                                                        boolean recurse, Serializer serializer)
-            throws ZookeeperException {
+    public ZookeeperWriter<String, Serializable> create(String s, Serializable s2,
+        NodeMode nodeMode,
+        boolean recurse, Serializer serializer)
+        throws ZookeeperException {
         try {
-            final TransactionCreateBuilder<CuratorOp> creator = this.curatorFramework.transactionOp().create();
+            final TransactionCreateBuilder<CuratorOp> creator = this.curatorFramework.transactionOp()
+                .create();
             super.withMode(creator, nodeMode);
             final CuratorOp curatorOp = creator.forPath(path0(s),
-                    serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
+                serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
             this.transactionOperators.add(curatorOp);
             return this;
         } catch (Exception e) {
@@ -144,12 +152,13 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteWithVersion(String s, int version)
-            throws ZookeeperException {
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(NO_PATH);
             }
-            final TransactionDeleteBuilder<CuratorOp> deleter = this.curatorFramework.transactionOp().delete();
+            final TransactionDeleteBuilder<CuratorOp> deleter = this.curatorFramework.transactionOp()
+                .delete();
             deleter.withVersion(version);
             final CuratorOp curatorOp = deleter.forPath(path0(s));
             this.transactionOperators.add(curatorOp);
@@ -160,8 +169,7 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
     }
 
     /**
-     * 删除一个节点，强制保证删除
-     * 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
+     * 删除一个节点，强制保证删除 接口是一个保障措施，只要客户端会话有效，那么会在后台持续进行删除操作，直到删除节点成功。
      *
      * @param s key
      * @return this
@@ -169,12 +177,13 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteForce(String s)
-            throws ZookeeperException {
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(NO_PATH);
             }
-            final TransactionDeleteBuilder<CuratorOp> deleter = this.curatorFramework.transactionOp().delete();
+            final TransactionDeleteBuilder<CuratorOp> deleter = this.curatorFramework.transactionOp()
+                .delete();
             final CuratorOp curatorOp = deleter.forPath(path0(s));
             this.transactionOperators.add(curatorOp);
             return this;
@@ -193,7 +202,7 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> delete(String s, boolean recurse)
-            throws ZookeeperException {
+        throws ZookeeperException {
         return this.deleteForce(s);
     }
 
@@ -208,18 +217,19 @@ class ZookeeperTransactionProvider extends AbstractZookeeper<Serializable>
      */
     @Override
     public ZookeeperWriter<String, Serializable> update(String s, Serializable s2, Integer version,
-                                                        Serializer serializer)
-            throws ZookeeperException {
+        Serializer serializer)
+        throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(NO_PATH);
             }
-            final TransactionSetDataBuilder<CuratorOp> updater = this.curatorFramework.transactionOp().setData();
+            final TransactionSetDataBuilder<CuratorOp> updater = this.curatorFramework.transactionOp()
+                .setData();
             if (version != null) {
                 updater.withVersion(version);
             }
             CuratorOp curatorOp = updater.forPath(path0(s),
-                    serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
+                serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
             this.transactionOperators.add(curatorOp);
             return this;
         } catch (Exception e) {
