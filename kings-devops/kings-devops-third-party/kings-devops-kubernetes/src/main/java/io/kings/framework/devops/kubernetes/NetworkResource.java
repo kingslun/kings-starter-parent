@@ -9,7 +9,7 @@ import io.kings.framework.devops.kubernetes.exception.KubernetesNetworkException
  * @date 2021/8/3 2:08 下午
  * @since v2.0
  */
-public interface NetworkResource {
+public interface NetworkResource extends KubernetesResource<NetworkResource> {
 
     void createService() throws KubernetesNetworkException;
 

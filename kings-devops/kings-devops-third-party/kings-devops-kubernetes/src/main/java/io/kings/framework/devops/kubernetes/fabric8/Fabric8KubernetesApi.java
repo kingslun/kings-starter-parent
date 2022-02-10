@@ -1,7 +1,13 @@
-package io.kings.framework.devops.kubernetes;
+package io.kings.framework.devops.kubernetes.fabric8;
+
+import static io.kings.framework.devops.kubernetes.KubernetesResource.NAMESPACE_METHOD;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.kings.framework.devops.kubernetes.DeploymentResource;
+import io.kings.framework.devops.kubernetes.KubernetesApi;
+import io.kings.framework.devops.kubernetes.NetworkResource;
+import io.kings.framework.devops.kubernetes.PodResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import java.lang.reflect.InvocationHandler;
@@ -15,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 /**
@@ -25,7 +32,7 @@ import org.springframework.util.Assert;
  * @since v2.0
  */
 @Slf4j
-class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClassLoaderAware {
+public class Fabric8KubernetesApi implements KubernetesApi<KubernetesClient>, BeanClassLoaderAware {
 
     /**
      * 客户端缓存-操作过得k8s集群都应缓存下来 以便后续操作不重新加载客户端
@@ -34,10 +41,8 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
 
     private KubernetesClient client(Long id, Supplier<KubernetesClient> clientSupplier) {
         Assert.notNull(id, "kubernetes must had a config id");
-        return this.clientMap.computeIfAbsent(id, i -> {
-            Objects.requireNonNull(clientSupplier);
-            return clientSupplier.get();
-        });
+        Objects.requireNonNull(clientSupplier);
+        return this.clientMap.computeIfAbsent(id, i -> clientSupplier.get());
     }
 
     private ClassLoader classLoader;
@@ -63,7 +68,7 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
                 Arrays.toString(args));
             try {
                 Object result = method.invoke(subclass, args);
-                if (Objects.equals(NamespaceAware.METHOD_NAME, methodName)) {
+                if (Objects.equals(NAMESPACE_METHOD, methodName)) {
                     //兼容NamespaceAware的级联操作
                     return proxy;
                 } else {
@@ -93,8 +98,7 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
 
     @Override
     public PodResource podResource(Long id, Supplier<KubernetesClient> clientSupplier) {
-        PodResource podResource = new PodResource.DefaultPodResource(
-            this.client(id, clientSupplier));
+        PodResource podResource = new Fabric8PodResource(this.client(id, clientSupplier));
         return (PodResource) Proxy.newProxyInstance(this.classLoader,
             new Class[]{PodResource.class},
             new KubernetesProxy<>(podResource));
@@ -104,7 +108,7 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
     public DeploymentResource deploymentResource(Long id,
         Supplier<KubernetesClient> clientSupplier) {
         DeploymentResource deploymentResource =
-            new DeploymentResource.DefaultDeploymentResource(this.client(id, clientSupplier));
+            new Fabric8DeploymentResource(this.client(id, clientSupplier));
         return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
             new Class[]{DeploymentResource.class},
             new KubernetesProxy<>(deploymentResource));
@@ -122,12 +126,12 @@ class DefaultKubernetesApi implements KubernetesApi<KubernetesClient>, BeanClass
     }
 
     @Override
-    public void start() throws KubernetesException {
+    public void complete() throws KubernetesException {
         log.debug("kubernetes manager is running...");
     }
 
     @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
+    public void setBeanClassLoader(@NonNull ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 }

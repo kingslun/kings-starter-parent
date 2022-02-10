@@ -1,6 +1,6 @@
 package io.kings.framework.devops.openapi.model;
 
-import io.kings.framework.data.Enumerable;
+import io.kings.framework.core.Enumerable;
 import io.kings.framework.devops.openapi.exception.JenkinsProjectException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;

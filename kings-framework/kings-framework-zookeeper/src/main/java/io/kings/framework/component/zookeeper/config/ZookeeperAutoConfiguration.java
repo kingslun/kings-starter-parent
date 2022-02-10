@@ -233,7 +233,7 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
     DistributedElection distributedElection() {
         return new AbstractDistributedElection() {
             @Override
-            public String name() {
+            public String getBeanName() {
                 return "Default DistributedElection by zookeeper";
             }
         };

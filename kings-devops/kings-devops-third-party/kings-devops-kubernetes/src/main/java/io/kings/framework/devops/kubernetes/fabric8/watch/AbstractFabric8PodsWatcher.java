@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.watch;
+package io.kings.framework.devops.kubernetes.fabric8.watch;
 
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
@@ -28,8 +28,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 @Slf4j
-public abstract class AbstractFabric8PodsWatcher implements
-    Fabric8PodsWatcher {
+public abstract class AbstractFabric8PodsWatcher implements Fabric8PodsWatcher {
 
     /**
      * 重试连接k8s的开关 默认不重连 -只有在connect 成功后断连才允许reconnect
@@ -190,7 +189,7 @@ public abstract class AbstractFabric8PodsWatcher implements
      * 区分是watcher初始化还是真正的pod新建 真正的新建条件 1.spec未分配node name 2.phase为Pending状态 3.不包含状态信息和容器状态信息
      * 4.不包含如果容器IP信息 5.不包含开启时间信息
      */
-    private static final BiPredicate<K8sPodListener.Pod, PodStatus> ADD_RUNNING =
+    private static final BiPredicate<EventPod, PodStatus> ADD_RUNNING =
         (pod, status) ->
             StringUtils.hasText(pod.getNodeName()) ||
                 !Objects.equals(K8sPodListener.PENDING, pod.getPhase()) ||
@@ -224,14 +223,14 @@ public abstract class AbstractFabric8PodsWatcher implements
             this.retryable = retryable;
         }
 
-        private void submit(K8sPodListener.Pod pod) {
+        private void submit(EventPod pod) {
             this.executorService.submit(new PodStatusEventWorker(this.listener, pod));
         }
 
-        private K8sPodListener.Pod convert(Pod pod) {
+        private EventPod convert(Pod pod) {
             final ObjectMeta metadata = pod.getMetadata();
             final PodStatus status = pod.getStatus();
-            K8sPodListener.Pod bak = new K8sPodListener.Pod();
+            EventPod bak = new EventPod();
             bak.setName(metadata.getName());
             bak.setDeployment(metadata.getLabels().get("app"));
             bak.setLanguage(metadata.getLabels().get("language"));
@@ -251,7 +250,7 @@ public abstract class AbstractFabric8PodsWatcher implements
         @Override
         public void eventReceived(Action action, Pod pod) {
             final PodStatus status = pod.getStatus();
-            K8sPodListener.Pod bak = convert(pod);
+            EventPod bak = convert(pod);
             switch (action) {
                 case MODIFIED:
                     /*
@@ -260,12 +259,12 @@ public abstract class AbstractFabric8PodsWatcher implements
                      * 1.phase一定是Pending状态的一定是还在初始化阶段
                      */
                     if (Objects.equals(K8sPodListener.PENDING, bak.getPhase())) {
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.PENDING));
+                        this.submit(bak.withStatus(EventPod.Status.PENDING));
                         break;
                     }
                     //2.Running状态的会有很多场景 Pending完成及shutdown/Terminating阶段都是Running
                     if (!Objects.equals(K8sPodListener.RUNNING, bak.getPhase())) {
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.UNKNOWN));
+                        this.submit(bak.withStatus(EventPod.Status.UNKNOWN));
                         break;
                     }
                     final List<PodCondition> conditions = status.getConditions();
@@ -273,32 +272,32 @@ public abstract class AbstractFabric8PodsWatcher implements
                     if (CollectionUtils.isEmpty(conditions) || CollectionUtils.isEmpty(
                         containerStatuses)) {
                         //正常非pending状态不会至此
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.UNKNOWN));
+                        this.submit(bak.withStatus(EventPod.Status.UNKNOWN));
                         break;
                     }
                     if (SHUTDOWN_.test(status)) {
                         //吧shutdown摘出来
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.SHUTDOWN));
+                        this.submit(bak.withStatus(EventPod.Status.SHUTDOWN));
                     } else if (TERMINATING_.test(pod.getMetadata().getDeletionTimestamp())) {
                         //吧Terminating摘出来
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.TERMINATING));
+                        this.submit(bak.withStatus(EventPod.Status.TERMINATING));
                     } else {
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.RUNNING));
+                        this.submit(bak.withStatus(EventPod.Status.RUNNING));
                     }
                     break;
                 case DELETED: //在删除deployment时触发 流程是先优雅停机所有节点,期间会触发多次MODIFIED 最终成功之后才会触发此入口
-                    this.submit(bak.withStatus(K8sPodListener.PodStatus.DELETE));
+                    this.submit(bak.withStatus(EventPod.Status.DELETE));
                     break;
                 case ADDED:
                     if (ADD_RUNNING.test(bak, status)) {
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.RUNNING));
+                        this.submit(bak.withStatus(EventPod.Status.RUNNING));
                     } else {
-                        this.submit(bak.withStatus(K8sPodListener.PodStatus.CREAT));
+                        this.submit(bak.withStatus(EventPod.Status.CREAT));
                     }
                     break;
                 case ERROR:
                     //目前未遇到过的状态 可能是pod异常时触发
-                    this.submit(bak.withStatus(K8sPodListener.PodStatus.UNKNOWN));
+                    this.submit(bak.withStatus(EventPod.Status.UNKNOWN));
                     break;
             }
         }

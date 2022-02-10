@@ -17,7 +17,6 @@ import java.io.Serializable;
  *
  * @author lun.kings
  * @date 2020/8/1 2:47 下午
- * @email lun.kings@zatech.com
  * @since v3.2.3
  */
 public class KryoSerializer implements Serializer, BeanLifecycle {

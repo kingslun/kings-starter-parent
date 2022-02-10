@@ -1,9 +1,8 @@
 package io.kings.framework.devops.kubernetes;
 
+import io.kings.framework.core.bean.BeanLifecycle;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import java.util.function.Supplier;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * k8s接口 可进行namespace/pod/deployment/job等资源crud操作
@@ -13,7 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
  * @date 2021/8/3 1:53 下午
  * @since v2.0
  */
-interface KubernetesApi<C> extends InitializingBean, DisposableBean {
+public interface KubernetesApi<C> extends BeanLifecycle {
 
     /**
      * 获取操作pod资源的API
@@ -53,15 +52,6 @@ interface KubernetesApi<C> extends InitializingBean, DisposableBean {
      *
      * @throws KubernetesException start failure
      */
-    void start() throws KubernetesException;
-
-    /**
-     * start at bean initialization
-     *
-     * @throws KubernetesException init failure
-     */
     @Override
-    default void afterPropertiesSet() throws KubernetesException {
-        start();
-    }
+    void complete() throws KubernetesException;
 }

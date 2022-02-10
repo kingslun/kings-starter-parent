@@ -26,18 +26,18 @@ public interface DistributedElectionRegistry extends BeanLifecycle {
          */
         protected void onRegister(DistributedElection leaderElection) {
             log.debug("doing something after DistributedElection:{} registered",
-                leaderElection.name());
+                leaderElection.getBeanName());
         }
 
         @Override
         public final void register(@NonNull DistributedElection leaderElection) {
-            if (elections.containsKey(leaderElection.name())) {
+            if (elections.containsKey(leaderElection.getBeanName())) {
                 return;
             }
-            elections.put(leaderElection.name(), leaderElection);
+            elections.put(leaderElection.getBeanName(), leaderElection);
             if (log.isDebugEnabled()) {
                 log.debug("Registered named ['{}'] DistributedElection success...",
-                    leaderElection.name());
+                    leaderElection.getBeanName());
             }
             this.onRegister(leaderElection);
         }

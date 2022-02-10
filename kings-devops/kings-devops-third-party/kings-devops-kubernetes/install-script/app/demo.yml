@@ -6,8 +6,11 @@ metadata:
     app: demo
 spec:
   strategy:
-    type: Recreate
-  replicas: 0
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 10
+      maxUnavailable: 10
+  replicas: 1
   template:
     metadata:
       name: demo
@@ -23,6 +26,13 @@ spec:
               memory: 128Mi
               cpu: 100m
           lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+              tcpSocket:
+                port: 10
+                host: 111.com
             preStop:
               exec:
                 command:
@@ -30,6 +40,19 @@ spec:
                   - "-c"
                   - "curl 10.181.52.33:8080/index"
       restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /data/log
+            type: ""
+          name: business-log
+        - emptyDir:
+            medium: Memory
+          name: istio-envoy
+        - name: istio-certs
+          secret:
+            defaultMode: 420
+            optional: true
+            secretName: a
   selector:
     matchLabels:
       app: demo

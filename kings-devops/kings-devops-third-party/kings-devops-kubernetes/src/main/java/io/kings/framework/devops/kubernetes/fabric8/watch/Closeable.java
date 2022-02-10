@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.watch;
+package io.kings.framework.devops.kubernetes.fabric8.watch;
 
 /**
  * 通道管理

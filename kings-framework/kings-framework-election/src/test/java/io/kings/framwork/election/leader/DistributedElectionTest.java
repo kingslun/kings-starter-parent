@@ -22,13 +22,13 @@ public class DistributedElectionTest {
     static class Master1 extends AbstractDistributedElection implements DistributedElection {
 
         @Override
-        public String name() {
+        public String getBeanName() {
             return "Master1";
         }
 
         @Override
         public void leader() {
-            log.info("{} become leader", this.name());
+            log.info("{} become leader", this.getBeanName());
         }
     }
 
@@ -37,13 +37,13 @@ public class DistributedElectionTest {
     static class Master2 extends AbstractDistributedElection implements DistributedElection {
 
         @Override
-        public String name() {
+        public String getBeanName() {
             return "Master2";
         }
 
         @Override
         public void leader() {
-            log.info("{} become leader", this.name());
+            log.info("{} become leader", this.getBeanName());
         }
     }
 

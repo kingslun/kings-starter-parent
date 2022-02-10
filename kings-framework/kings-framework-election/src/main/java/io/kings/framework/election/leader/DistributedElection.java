@@ -1,6 +1,6 @@
 package io.kings.framework.election.leader;
 
-import io.kings.framework.core.Nameable;
+import io.kings.framework.core.bean.BeanNameDefinition;
 
 /**
  * 分布式选举方案 可以采用多种实现 目前采用zookeeper、Redis
@@ -9,7 +9,7 @@ import io.kings.framework.core.Nameable;
  * @date 2020/4/20 4:31 下午
  * @since v2.0
  */
-public interface DistributedElection extends Nameable {
+public interface DistributedElection extends BeanNameDefinition {
 
     /**
      * is leader 本机为leader时调用 处理相关逻辑

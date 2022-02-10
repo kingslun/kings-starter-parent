@@ -1,4 +1,4 @@
-package io.kings.framework.data;
+package io.kings.framework.core;
 
 /**
  * 枚举接口用于描述一个枚举实例 常用的字典枚举项包含code和描述信息

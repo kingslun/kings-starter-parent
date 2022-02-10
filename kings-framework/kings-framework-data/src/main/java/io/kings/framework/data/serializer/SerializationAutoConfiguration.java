@@ -40,7 +40,7 @@ public class SerializationAutoConfiguration implements ApplicationContextAware {
                 BeanDefinitionBuilder definition =
                     BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass());
                 // 注册bean
-                beanFactory.registerBeanDefinition(serializer.name(),
+                beanFactory.registerBeanDefinition(serializer.getBeanName(),
                     definition.getRawBeanDefinition());
             });
             if (def.get()) {
@@ -50,7 +50,7 @@ public class SerializationAutoConfiguration implements ApplicationContextAware {
                     BeanDefinitionBuilder.genericBeanDefinition(serializer.getClass())
                         .getBeanDefinition();
                 // 注册bean
-                beanFactory.registerBeanDefinition(serializer.name(), definition);
+                beanFactory.registerBeanDefinition(serializer.getBeanName(), definition);
             }
         }
     }

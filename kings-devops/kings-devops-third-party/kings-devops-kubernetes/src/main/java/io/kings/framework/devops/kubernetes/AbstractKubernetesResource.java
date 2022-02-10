@@ -9,19 +9,20 @@ import java.util.Objects;
  * @date 2021/8/4 10:43 上午
  * @since v2.0
  */
-abstract class AbstractKubernetesResource<C, S> implements NamespaceAware<S> {
+public abstract class AbstractKubernetesResource<C, S extends KubernetesResource<S>>
+    implements KubernetesResource<S> {
 
     protected String namespace;
     protected final C client;
 
-    AbstractKubernetesResource(C client) {
+    protected AbstractKubernetesResource(C client) {
         Objects.requireNonNull(client);
         this.client = client;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public S namespace(String namespace) {
+    public S withNamespace(String namespace) {
         this.namespace = namespace;
         return (S) this;
     }

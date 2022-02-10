@@ -1,7 +1,7 @@
 package io.kings.framework.data.serializer;
 
-import io.kings.framework.core.Nameable;
 import io.kings.framework.core.bean.BeanLifecycle;
+import io.kings.framework.core.bean.BeanNameDefinition;
 import io.kings.framework.data.exception.SerializeException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @date 2020/7/6 4:48 下午
  * @since v2.8.6
  */
-public interface Serializer extends BeanLifecycle, Nameable {
+public interface Serializer extends BeanLifecycle, BeanNameDefinition {
 
     byte[] EMPTY_BYTE_ARRAY = new byte[0];
     int DEFAULT_BUFFER_SIZE = 1024;
@@ -26,7 +26,7 @@ public interface Serializer extends BeanLifecycle, Nameable {
      */
     Serializer DEFAULT_ = new Serializer() {
         @Override
-        public String name() {
+        public String getBeanName() {
             return "JDKSerializer";
         }
 
@@ -90,9 +90,4 @@ public interface Serializer extends BeanLifecycle, Nameable {
      * @throws SerializeException 序列化异常
      */
     <D extends Serializable> D deserialize(byte[] bytes) throws SerializeException;
-
-    @Override
-    default String name() {
-        return getClass().getSimpleName();
-    }
 }

@@ -52,7 +52,7 @@ public class Pod {
     /**
      * 创建时间
      */
-    private long creationTime;
+    private String creationTime;
     /**
      * 重启次数
      */

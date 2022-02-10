@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.watch;
+package io.kings.framework.devops.kubernetes.fabric8.watch;
 
 import org.springframework.util.Assert;
 
@@ -13,10 +13,10 @@ import org.springframework.util.Assert;
  */
 class PodStatusEventWorker implements Runnable {
 
-    private final K8sPodListener.Pod pod;
+    private final EventPod pod;
     private final K8sPodListener listener;
 
-    public PodStatusEventWorker(K8sPodListener listener, K8sPodListener.Pod pod) {
+    public PodStatusEventWorker(K8sPodListener listener, EventPod pod) {
         Assert.notNull(listener, "Apply kubernetes listener is null");
         Assert.notNull(pod, "Apply kubernetes listener arguments pod is null");
         this.pod = pod;
