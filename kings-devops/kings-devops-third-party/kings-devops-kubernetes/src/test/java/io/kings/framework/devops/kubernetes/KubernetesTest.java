@@ -87,7 +87,7 @@ public class KubernetesTest {
 
     @Test
     public void podResourceCurd() throws KubernetesException {
-        List<Pod> pods = this.podResource.withNamespace(this.namespace).findByLabel("app=redis");
+        List<Pod> pods = this.podResource.withNamespace(this.namespace).findByLabel("app=" + name);
         Assertions.assertThat(pods).isNotEmpty();
         System.out.print("###############################begin##############################");
         pods.forEach(System.out::println);
@@ -99,10 +99,8 @@ public class KubernetesTest {
 
     @Test
     public void deploymentGetList() throws KubernetesException {
-        String labelKey = "app";
-        String labelValue = "redis";
         List<Deployment> deployments =
-            this.deploymentResource.withNamespace(this.namespace).getList(labelKey, labelValue);
+            this.deploymentResource.withNamespace(this.namespace).getList("app", name);
         Assertions.assertThat(deployments).isNotEmpty();
         deployments.forEach(System.out::println);
     }

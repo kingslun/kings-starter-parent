@@ -40,19 +40,6 @@ spec:
                   - "-c"
                   - "curl 10.181.52.33:8080/index"
       restartPolicy: Always
-      volumes:
-        - hostPath:
-            path: /data/log
-            type: ""
-          name: business-log
-        - emptyDir:
-            medium: Memory
-          name: istio-envoy
-        - name: istio-certs
-          secret:
-            defaultMode: 420
-            optional: true
-            secretName: a
   selector:
     matchLabels:
       app: demo
