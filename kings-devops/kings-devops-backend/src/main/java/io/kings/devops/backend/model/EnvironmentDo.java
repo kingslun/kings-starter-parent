@@ -1,7 +1,5 @@
 package io.kings.devops.backend.model;
 
-import java.math.BigInteger;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
@@ -19,14 +17,9 @@ import lombok.ToString;
 @Setter
 @Entity
 @ToString
-@Table(name = "c_kubernetes")
-public class KubernetesDo extends BaseDo {
+@Table(name = "c_environment")
+public class EnvironmentDo extends BaseDo {
 
-    @Column(name = "env_id")
-    private BigInteger envId;
+    private String code;
     private String description;
-    @Column(name = "access_url")
-    private String accessUrl;
-    @Column(name = "access_token")
-    private String accessToken;
 }

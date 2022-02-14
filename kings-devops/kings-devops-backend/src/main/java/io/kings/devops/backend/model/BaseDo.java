@@ -1,8 +1,10 @@
 package io.kings.devops.backend.model;
 
 import java.math.BigInteger;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,16 +17,17 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@MappedSuperclass
 public class BaseDo {
 
     @Id
     private BigInteger id;
-    @Column(name = "is_delete")
-    private Character isDelete;
+    @Column(name = "is_deleted")
+    private Character isDeleted;
     private String creator;
     @Column(name = "create_time")
-    private String createTime;
+    private Date createTime;
     private String modifier;
     @Column(name = "modify_time")
-    private String modifyTime;
+    private Date modifyTime;
 }
