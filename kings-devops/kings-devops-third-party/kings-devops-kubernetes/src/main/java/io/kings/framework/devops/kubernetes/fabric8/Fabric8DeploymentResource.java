@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * deployment资源操作
@@ -32,11 +31,8 @@ class Fabric8DeploymentResource extends
     AbstractKubernetesResource<KubernetesClient, DeploymentResource>
     implements DeploymentResource {
 
-    private final Yaml yaml;
-
     Fabric8DeploymentResource(KubernetesClient client) {
         super(client);
-        this.yaml = new Yaml();
     }
 
     @Override
@@ -52,7 +48,7 @@ class Fabric8DeploymentResource extends
     @Override
     public boolean restart(String name) throws KubernetesException {
         // modify /spec/template/metadata/labels/updatedTimestamp
-        RollableScalableResource<Deployment, ?> resource = this.resource(name);
+        RollableScalableResource<Deployment> resource = this.resource(name);
         final Deployment deployment = this.supplierWrapper(resource).get();
         final Map<String, String> labels = deployment.getSpec().getTemplate().getMetadata()
             .getLabels();
@@ -63,7 +59,7 @@ class Fabric8DeploymentResource extends
     @Override
     public boolean rollback(String name, String image) {
         Assert.hasText(image, "rollback deployment must had an image");
-        RollableScalableResource<Deployment, ?> resource = this.resource(name);
+        RollableScalableResource<Deployment> resource = this.resource(name);
         final Deployment deployment = this.supplierWrapper(resource).get();
 //          /spec/template/spec/containers/0/image
         deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(image);
@@ -105,7 +101,7 @@ class Fabric8DeploymentResource extends
         return supplierWrapper(this.resource(name));
     }
 
-    private Supplier<Deployment> supplierWrapper(RollableScalableResource<Deployment, ?> resource) {
+    private Supplier<Deployment> supplierWrapper(RollableScalableResource<Deployment> resource) {
         return () -> Optional.ofNullable(resource.get())
             .orElseThrow(KubernetesResourceNotFoundException::new);
     }
@@ -116,14 +112,14 @@ class Fabric8DeploymentResource extends
      * @param name deployment name
      * @return resource of fabric8
      */
-    private RollableScalableResource<Deployment, ?> resource(String name) {
+    private RollableScalableResource<Deployment> resource(String name) {
         Assert.hasText(name, "query deployment must had an name");
         return super.client.apps().deployments().inNamespace(super.namespace).withName(name);
     }
 
     @Override
     public boolean replace(String name, String yaml) throws KubernetesException {
-        return this.resource(name).replace(this.yaml.loadAs(yaml, Deployment.class)) != null;
+        return this.resource(name).replace(super.yaml.loadAs(yaml, Deployment.class)) != null;
     }
 
     @Override

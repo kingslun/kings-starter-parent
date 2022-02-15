@@ -11,8 +11,28 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <packaging>pom</packaging>
+  <properties>
+    <java.version>1.8</java.version>
+    <spring.cloud.version>2020.0.3</spring.cloud.version>
+    <jmh.version>1.34</jmh.version>
+    <kubernetes.client.version>5.12.1</kubernetes.client.version>
+    <data.kryo.version>4.0.2</data.kryo.version>
+    <data.protostuff.version>1.7.2</data.protostuff.version>
+  </properties>
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-core</artifactId>
+        <version>${jmh.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.openjdk.jmh</groupId>
+        <artifactId>jmh-generator-annprocess</artifactId>
+        <version>${jmh.version}</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>io.kings</groupId>
         <artifactId>kings-framework-core</artifactId>
@@ -119,10 +139,19 @@
         <artifactId>kings-framework-code-processor</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <!-- https://mvnrepository.com/artifact/io.fabric8/kubernetes-client -->
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client</artifactId>
+        <version>${kubernetes.client.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring.cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-  <properties>
-    <data.kryo.version>4.0.2</data.kryo.version>
-    <data.protostuff.version>1.7.2</data.protostuff.version>
-  </properties>
 </project>

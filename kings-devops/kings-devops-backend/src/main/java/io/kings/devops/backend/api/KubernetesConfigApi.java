@@ -7,6 +7,6 @@ package io.kings.devops.backend.api;
  * @date 2022/2/14 10:42 AM
  * @since v2.3
  */
-public interface DockerHarborApi {
+public interface KubernetesConfigApi extends KubernetesConfigProvider {
 
 }

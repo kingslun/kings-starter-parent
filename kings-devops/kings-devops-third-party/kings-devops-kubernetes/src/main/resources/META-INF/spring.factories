@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.kings.framework.devops.kubernetes.config.KubernetesWatchAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.kings.framework.devops.kubernetes.config.KubernetesWatchAutoConfiguration

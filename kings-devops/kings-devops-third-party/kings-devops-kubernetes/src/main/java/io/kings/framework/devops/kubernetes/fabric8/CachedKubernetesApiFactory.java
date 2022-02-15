@@ -2,10 +2,16 @@ package io.kings.framework.devops.kubernetes.fabric8;
 
 import static io.kings.framework.devops.kubernetes.KubernetesResource.NAMESPACE_METHOD;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.kings.devops.backend.api.KubernetesConfigProvider;
+import io.kings.devops.backend.api.KubernetesDto;
 import io.kings.framework.devops.kubernetes.DeploymentResource;
 import io.kings.framework.devops.kubernetes.KubernetesApi;
+import io.kings.framework.devops.kubernetes.KubernetesApiFactory;
 import io.kings.framework.devops.kubernetes.NetworkResource;
 import io.kings.framework.devops.kubernetes.PodResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
@@ -15,10 +21,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.lang.NonNull;
@@ -32,33 +39,29 @@ import org.springframework.util.Assert;
  * @since v2.0
  */
 @Slf4j
-public class Fabric8KubernetesApi implements KubernetesApi<KubernetesClient>, BeanClassLoaderAware {
+public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
+    BeanClassLoaderAware {
+
+    private final KubernetesConfigProvider configProvider;
+
+    public CachedKubernetesApiFactory(KubernetesConfigProvider configProvider) {
+        this.configProvider = configProvider;
+    }
 
     /**
      * 客户端缓存-操作过得k8s集群都应缓存下来 以便后续操作不重新加载客户端
      */
-    final Map<Long, KubernetesClient> clientMap = new ConcurrentHashMap<>();
-
-    private KubernetesClient client(Long id, Supplier<KubernetesClient> clientSupplier) {
-        Assert.notNull(id, "kubernetes must had a config id");
-        Objects.requireNonNull(clientSupplier);
-        return this.clientMap.computeIfAbsent(id, i -> clientSupplier.get());
-    }
-
+    final Map<String, KubernetesApi> clientMap = new HashMap<>(16);
     private ClassLoader classLoader;
 
     /**
      * 代理k8s API的调用 处理log和common exception事宜
      */
     @Slf4j
-    private static class KubernetesProxy<S> implements InvocationHandler {
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class KubernetesProxy<D> implements InvocationHandler {
 
-        private final S subclass;
-
-        KubernetesProxy(S subclass) {
-            Objects.requireNonNull(subclass);
-            this.subclass = subclass;
-        }
+        private final D delegate;
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -67,7 +70,7 @@ public class Fabric8KubernetesApi implements KubernetesApi<KubernetesClient>, Be
             log.debug("[{}#{}] begin to invoke with:{}", className, methodName,
                 Arrays.toString(args));
             try {
-                Object result = method.invoke(subclass, args);
+                Object result = method.invoke(delegate, args);
                 if (Objects.equals(NAMESPACE_METHOD, methodName)) {
                     //兼容NamespaceAware的级联操作
                     return proxy;
@@ -96,42 +99,51 @@ public class Fabric8KubernetesApi implements KubernetesApi<KubernetesClient>, Be
         }
     }
 
-    @Override
-    public PodResource podResource(Long id, Supplier<KubernetesClient> clientSupplier) {
-        PodResource podResource = new Fabric8PodResource(this.client(id, clientSupplier));
-        return (PodResource) Proxy.newProxyInstance(this.classLoader,
-            new Class[]{PodResource.class},
-            new KubernetesProxy<>(podResource));
-    }
+    @AllArgsConstructor
+    private static class DefaultKubernetesApi implements KubernetesApi {
 
-    @Override
-    public DeploymentResource deploymentResource(Long id,
-        Supplier<KubernetesClient> clientSupplier) {
-        DeploymentResource deploymentResource =
-            new Fabric8DeploymentResource(this.client(id, clientSupplier));
-        return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
-            new Class[]{DeploymentResource.class},
-            new KubernetesProxy<>(deploymentResource));
-    }
+        private final KubernetesClient client;
+        private final ClassLoader classLoader;
 
-    @Override
-    public NetworkResource networkResource(Long id, Supplier<KubernetesClient> clientSupplier) {
-        throw new UnsupportedOperationException();
-    }
+        @Override
+        public PodResource podResource() {
+            PodResource podResource = new Fabric8PodResource(this.client);
+            return (PodResource) Proxy.newProxyInstance(classLoader,
+                new Class[]{PodResource.class}, new KubernetesProxy(podResource));
+        }
 
-    @Override
-    public void destroy() {
-        log.debug("kubernetes manager is cleaning...");
-        this.clientMap.clear();
-    }
+        @Override
+        public DeploymentResource deploymentResource() {
+            DeploymentResource deploymentResource = new Fabric8DeploymentResource(this.client);
+            return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
+                new Class[]{DeploymentResource.class}, new KubernetesProxy<>(deploymentResource));
+        }
 
-    @Override
-    public void complete() throws KubernetesException {
-        log.debug("kubernetes manager is running...");
+        @Override
+        public NetworkResource networkResource() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void close() {
+            this.client.close();
+        }
+
     }
 
     @Override
     public void setBeanClassLoader(@NonNull ClassLoader classLoader) {
         this.classLoader = classLoader;
+    }
+
+    @Override
+    public KubernetesApi instance(String env) {
+        return this.clientMap.computeIfAbsent(env, code -> {
+            Assert.notNull(code, "kubernetes must had a env code");
+            KubernetesDto dto = this.configProvider.getByEnvCode(code);
+            Config config = new ConfigBuilder().withMasterUrl(dto.getAccessUrl())
+                .withOauthToken(dto.getAccessToken()).withTrustCerts(true).build();
+            return new DefaultKubernetesApi(new DefaultKubernetesClient(config), this.classLoader);
+        });
     }
 }

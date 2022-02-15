@@ -14,6 +14,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface EnvironmentDao extends CrudRepository<EnvironmentDo, BigInteger> {
 
-    @Query("from EnvironmentDo where code = ?1")
+    @Query("from EnvironmentDo where code = :code")
     EnvironmentDo findByCode(String code);
 }

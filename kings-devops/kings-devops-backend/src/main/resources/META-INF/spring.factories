@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.kings.devops.backend.api.impl.MetadataConfigAutoConfiguration

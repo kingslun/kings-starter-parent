@@ -6,9 +6,9 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodCondition;
 import io.fabric8.kubernetes.api.model.PodStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.Watch;
 import io.fabric8.kubernetes.client.Watcher;
+import io.fabric8.kubernetes.client.WatcherException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -299,11 +299,13 @@ public abstract class AbstractFabric8PodsWatcher implements Fabric8PodsWatcher {
                     //目前未遇到过的状态 可能是pod异常时触发
                     this.submit(bak.withStatus(EventPod.Status.UNKNOWN));
                     break;
+                default:
+                    throw new UnsupportedOperationException();
             }
         }
 
         @Override
-        public void onClose(KubernetesClientException e) {
+        public void onClose(WatcherException e) {
             listener.onClose(new K8sPodListener.Exception(e));
             log.debug("Checked channel closed of the kubernetes container pods listener!");
             //对关闭的通道尝试重新建立

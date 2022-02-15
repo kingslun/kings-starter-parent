@@ -2,6 +2,7 @@ package io.kings.devops.backend.dao;
 
 import io.kings.devops.backend.model.KubernetesDo;
 import java.math.BigInteger;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -13,4 +14,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface KubernetesDao extends CrudRepository<KubernetesDo, BigInteger> {
 
+    @Query("from KubernetesDo where envId = (select id from EnvironmentDo where code=?1)")
+    KubernetesDo findByEnvCode(String code);
 }

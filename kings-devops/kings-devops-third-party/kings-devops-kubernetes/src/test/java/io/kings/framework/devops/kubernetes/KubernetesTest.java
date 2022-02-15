@@ -2,70 +2,38 @@ package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
-import io.kings.framework.devops.kubernetes.fabric8.Fabric8KubernetesApi;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.function.Supplier;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
+@EntityScan("io.kings.devops.backend.model")
+@EnableAutoConfiguration
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {KubernetesTest.class},
-    webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Import(Fabric8KubernetesApi.class)
+@SpringBootTest(classes = KubernetesTest.class)
 public class KubernetesTest {
 
     @Autowired
-    private KubernetesApi<KubernetesClient> kubernetesApi;
-    /**
-     * 本地默认客户端
-     */
-    private static final Supplier<KubernetesClient> SUPPLIER = () -> {
-        final String master = "https://localhost:6443/";
-        String command = "kubectl -n kube-system describe secret default| awk '$1==\"token:\"{print $2}'";
-        try (InputStream in = Runtime.getRuntime().exec(command).getInputStream();
-            ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = in.read(buffer)) != -1) {
-                out.write(buffer, 0, len);
-            }
-            final String token = new String(out.toByteArray(), StandardCharsets.UTF_8);
-            final boolean trustCerts = true;
-            Config config =
-                new ConfigBuilder().withMasterUrl(master).withOauthToken(token)
-                    .withTrustCerts(trustCerts).build();
-            return new DefaultKubernetesClient(config);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    };
+    private KubernetesApiFactory kubernetesApiFactory;
     private PodResource podResource;
     private DeploymentResource deploymentResource;
 
     @Before
     public void init() {
-        this.podResource = this.kubernetesApi.podResource(1L, SUPPLIER);
-        this.deploymentResource = this.kubernetesApi.deploymentResource(1L, SUPPLIER);
-        Assertions.assertThat(this.podResource).isNotNull();
-        Assertions.assertThat(this.deploymentResource).isNotNull();
+        KubernetesApi kubernetesApi = this.kubernetesApiFactory.instance("local");
+        Assertions.assertThat(kubernetesApi).isNotNull();
+        this.deploymentResource = kubernetesApi.deploymentResource();
+        this.podResource = kubernetesApi.podResource();
     }
 
     private final String namespace = "default";
