@@ -1,4 +1,4 @@
-kings.zookeeper.host: localhost:30181
+kings.zookeeper.host: localhost:2181
 kings.zookeeper.namespace: local-amethyst-local
 kings.zookeeper.retry-type: RETRY_ONE_TIME
 kings.zookeeper.retry.sleepMsBetweenRetries: 100

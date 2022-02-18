@@ -1,6 +1,11 @@
 package io.kings.framework.devops.kubernetes;
 
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.Gettable;
+import io.kings.framework.devops.kubernetes.exception.KubernetesException;
+import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import java.util.Objects;
+import org.springframework.util.Assert;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -28,5 +33,18 @@ public abstract class AbstractKubernetesResource<C, S extends KubernetesResource
     public S withNamespace(String namespace) {
         this.namespace = namespace;
         return (S) this;
+    }
+
+    protected <T> T get(Gettable<T> gettable) {
+        Assert.notNull(gettable, "NullPointException");
+        try {
+            T t = gettable.get();
+            if (t == null) {
+                throw new KubernetesResourceNotFoundException();
+            }
+            return t;
+        } catch (KubernetesClientException e) {
+            throw new KubernetesException(e);
+        }
     }
 }

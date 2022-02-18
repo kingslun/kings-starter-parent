@@ -23,10 +23,20 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = KubernetesTest.class)
 public class KubernetesTest {
 
+    private final String namespace = "default";
+    private final String name = "demo";
     @Autowired
     private KubernetesApiFactory kubernetesApiFactory;
     private PodResource podResource;
     private DeploymentResource deploymentResource;
+    private NetworkResource networkResource;
+
+    @Test
+    public void serviceStatus() {
+        Object status = this.networkResource.svc().withNamespace(namespace).status(name);
+        Assertions.assertThat(status).isNotNull();
+        System.out.println(status);
+    }
 
     @Before
     public void init() {
@@ -34,10 +44,8 @@ public class KubernetesTest {
         Assertions.assertThat(kubernetesApi).isNotNull();
         this.deploymentResource = kubernetesApi.deploymentResource();
         this.podResource = kubernetesApi.podResource();
+        networkResource = kubernetesApi.networkResource();
     }
-
-    private final String namespace = "default";
-    private final String name = "demo";
 
     public void podDelete(String name) throws KubernetesException {
         boolean del = this.podResource.withNamespace(this.namespace).delete(name);

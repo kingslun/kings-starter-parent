@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.fabric8;
+package io.kings.framework.devops.kubernetes;
 
 import static io.kings.framework.devops.kubernetes.KubernetesResource.NAMESPACE_METHOD;
 
@@ -9,11 +9,6 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.kings.devops.backend.api.KubernetesConfigProvider;
 import io.kings.devops.backend.api.KubernetesDto;
-import io.kings.framework.devops.kubernetes.DeploymentResource;
-import io.kings.framework.devops.kubernetes.KubernetesApi;
-import io.kings.framework.devops.kubernetes.KubernetesApiFactory;
-import io.kings.framework.devops.kubernetes.NetworkResource;
-import io.kings.framework.devops.kubernetes.PodResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import java.lang.reflect.InvocationHandler;
@@ -107,21 +102,23 @@ public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
 
         @Override
         public PodResource podResource() {
-            PodResource podResource = new Fabric8PodResource(this.client);
-            return (PodResource) Proxy.newProxyInstance(classLoader,
-                new Class[]{PodResource.class}, new KubernetesProxy(podResource));
+            PodResource podResource = new DefaultPodResource(this.client);
+            return (PodResource) Proxy.newProxyInstance(classLoader, new Class[]{PodResource.class},
+                new KubernetesProxy<>(podResource));
         }
 
         @Override
         public DeploymentResource deploymentResource() {
-            DeploymentResource deploymentResource = new Fabric8DeploymentResource(this.client);
+            DeploymentResource deploymentResource = new DefaultDeploymentResource(this.client);
             return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
                 new Class[]{DeploymentResource.class}, new KubernetesProxy<>(deploymentResource));
         }
 
         @Override
         public NetworkResource networkResource() {
-            throw new UnsupportedOperationException();
+            NetworkResource networkResource = new DefaultNetworkResource(this.client);
+            return (NetworkResource) Proxy.newProxyInstance(this.classLoader,
+                new Class[]{NetworkResource.class}, new KubernetesProxy<>(networkResource));
         }
 
         @Override

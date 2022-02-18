@@ -16,7 +16,24 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-oauth2</artifactId>
-      <version>2.2.4.RELEASE</version>
+      <version>2.2.5.RELEASE</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+          <groupId>org.springframework.security.oauth.boot</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security.oauth.boot</groupId>
+      <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+      <version>2.6.3</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>bcpkix-jdk15on</artifactId>
+          <groupId>org.bouncycastle</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
   <properties>
     <java.version>1.8</java.version>
-    <spring.cloud.version>2020.0.3</spring.cloud.version>
+    <spring.cloud.version>2021.0.0</spring.cloud.version>
     <jmh.version>1.34</jmh.version>
     <kubernetes.client.version>5.12.1</kubernetes.client.version>
     <data.kryo.version>4.0.2</data.kryo.version>
@@ -139,11 +139,13 @@
         <artifactId>kings-framework-code-processor</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <!-- https://mvnrepository.com/artifact/io.fabric8/kubernetes-client -->
+      <!-- https://mvnrepository.com/artifact/io.fabric8/kubernetes-client-project -->
       <dependency>
         <groupId>io.fabric8</groupId>
-        <artifactId>kubernetes-client</artifactId>
+        <artifactId>kubernetes-client-project</artifactId>
         <version>${kubernetes.client.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>

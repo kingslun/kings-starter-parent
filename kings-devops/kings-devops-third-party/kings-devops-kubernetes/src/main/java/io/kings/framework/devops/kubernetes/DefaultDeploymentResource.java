@@ -1,12 +1,10 @@
-package io.kings.framework.devops.kubernetes.fabric8;
+package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.api.model.apps.DeploymentList;
 import io.fabric8.kubernetes.api.model.apps.DeploymentStatus;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
-import io.kings.framework.devops.kubernetes.AbstractKubernetesResource;
-import io.kings.framework.devops.kubernetes.DeploymentResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
@@ -27,11 +25,11 @@ import org.springframework.util.StringUtils;
  * @date 2022/2/10 11:08 AM
  * @since v2.3
  */
-class Fabric8DeploymentResource extends
+class DefaultDeploymentResource extends
     AbstractKubernetesResource<KubernetesClient, DeploymentResource>
     implements DeploymentResource {
 
-    Fabric8DeploymentResource(KubernetesClient client) {
+    DefaultDeploymentResource(KubernetesClient client) {
         super(client);
     }
 

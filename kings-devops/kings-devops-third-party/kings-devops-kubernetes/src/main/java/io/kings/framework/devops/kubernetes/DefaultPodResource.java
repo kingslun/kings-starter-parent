@@ -1,9 +1,7 @@
-package io.kings.framework.devops.kubernetes.fabric8;
+package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.kings.framework.devops.kubernetes.AbstractKubernetesResource;
-import io.kings.framework.devops.kubernetes.PodResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import java.util.List;
 import org.springframework.util.Assert;
@@ -16,11 +14,11 @@ import org.springframework.util.Assert;
  * @since v2.3
  */
 
-class Fabric8PodResource
+class DefaultPodResource
     extends AbstractKubernetesResource<KubernetesClient, PodResource>
     implements PodResource {
 
-    Fabric8PodResource(KubernetesClient client) {
+    DefaultPodResource(KubernetesClient client) {
         super(client);
     }
 

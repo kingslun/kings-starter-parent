@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.fabric8.watch;
+package io.kings.framework.devops.kubernetes.watch;
 
 import org.springframework.util.Assert;
 

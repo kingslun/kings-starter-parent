@@ -30,9 +30,6 @@ spec:
               exec:
                 command:
                   - sh
-              tcpSocket:
-                port: 10
-                host: 111.com
             preStop:
               exec:
                 command:

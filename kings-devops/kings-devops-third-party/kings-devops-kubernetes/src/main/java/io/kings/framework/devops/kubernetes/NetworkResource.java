@@ -1,7 +1,5 @@
 package io.kings.framework.devops.kubernetes;
 
-import io.kings.framework.devops.kubernetes.exception.KubernetesNetworkException;
-
 /**
  * k8s网络管理 可以创建service/ingress等资源crud操作
  *
@@ -11,7 +9,7 @@ import io.kings.framework.devops.kubernetes.exception.KubernetesNetworkException
  */
 public interface NetworkResource extends KubernetesResource<NetworkResource> {
 
-    void createService() throws KubernetesNetworkException;
+    ServiceResource svc();
 
-    void createIngress() throws KubernetesNetworkException;
+    void createIngress();
 }

@@ -1,4 +1,4 @@
-package io.kings.framework.devops.kubernetes.fabric8.watch;
+package io.kings.framework.devops.kubernetes.watch;
 
 import io.fabric8.kubernetes.api.model.ContainerStatus;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
