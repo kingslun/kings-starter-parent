@@ -5,19 +5,26 @@ import static io.kings.framework.util.DateFormatUtil.LOCAL_TIME_PATTERN;
 
 import io.kings.framework.devops.kubernetes.exception.KubernetesTimeFormatException;
 import io.kings.framework.util.DateFormatUtil;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 /**
  * kubernetes资源公共api
  *
- * @param <S> subclass
  * @author lun.wang
  * @date 2022/2/10 11:22 AM
  * @since v2.3
  */
-public interface KubernetesResource<S extends KubernetesResource<S>> {
+public interface KubernetesResource {
 
     SimpleDateFormat KUBERNETES_TIME_PATTERN_FORMATTER = new SimpleDateFormat(
         KUBERNETES_TIME_PATTERN);
@@ -39,13 +46,40 @@ public interface KubernetesResource<S extends KubernetesResource<S>> {
         }
     }
 
-    String NAMESPACE_METHOD = "withNamespace";
+    @Getter
+    @Setter
+    @Accessors(fluent = true)
+    class Params<S extends Params<S>> implements Serializable {
 
-    /**
-     * fluent accessor
-     *
-     * @param namespace kube ns
-     * @return this
-     */
-    S withNamespace(String namespace);
+        @Nullable
+        private String namespace;
+        @NonNull
+        private String name;
+        @Nullable
+        private Map<String, String> labels;
+
+        @SuppressWarnings("unchecked")
+        public S namespace(String namespace) {
+            this.namespace = namespace;
+            return (S) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        public S name(String name) {
+            this.name = name;
+            return (S) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        public S labels(Map<String, String> labels) {
+            this.labels = labels;
+            return (S) this;
+        }
+
+        @SuppressWarnings("unchecked")
+        public S label(@NonNull String labelKey, @NonNull String labelValue) {
+            this.labels = Collections.singletonMap(labelKey, labelValue);
+            return (S) this;
+        }
+    }
 }

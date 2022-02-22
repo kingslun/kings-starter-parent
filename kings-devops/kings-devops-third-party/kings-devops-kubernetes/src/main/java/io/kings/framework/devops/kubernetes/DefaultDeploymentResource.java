@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -26,28 +25,30 @@ import org.springframework.util.StringUtils;
  * @since v2.3
  */
 class DefaultDeploymentResource extends
-    AbstractKubernetesResource<KubernetesClient, DeploymentResource>
-    implements DeploymentResource {
+    AbstractKubernetesResource<KubernetesClient> implements DeploymentResource {
 
     DefaultDeploymentResource(KubernetesClient client) {
         super(client);
     }
 
     @Override
-    public boolean delete(String name) throws KubernetesException {
-        return this.resource(name).delete();
+    public boolean delete(DeploymentResource.Params params) {
+        return this.resourceOpt(params).delete();
     }
 
     @Override
-    public boolean scale(String name, int replicas) {
-        return this.resource(name).scale(replicas) != null;
+    public boolean scale(DeploymentResource.Params params) {
+        if (params.replicas() < 0) {
+            throw new KubernetesException("Invalid replicas parameter");
+        }
+        return this.resourceOpt(params).scale(params.replicas()) != null;
     }
 
     @Override
-    public boolean restart(String name) throws KubernetesException {
+    public boolean restart(DeploymentResource.Params params) {
         // modify /spec/template/metadata/labels/updatedTimestamp
-        RollableScalableResource<Deployment> resource = this.resource(name);
-        final Deployment deployment = this.supplierWrapper(resource).get();
+        RollableScalableResource<Deployment> resource = this.resourceOpt(params);
+        final Deployment deployment = get(resource);
         final Map<String, String> labels = deployment.getSpec().getTemplate().getMetadata()
             .getLabels();
         labels.put("updatedTimestamp", String.valueOf(System.currentTimeMillis()));
@@ -55,29 +56,28 @@ class DefaultDeploymentResource extends
     }
 
     @Override
-    public boolean rollback(String name, String image) {
-        Assert.hasText(image, "rollback deployment must had an image");
-        RollableScalableResource<Deployment> resource = this.resource(name);
-        final Deployment deployment = this.supplierWrapper(resource).get();
+    public boolean rollback(DeploymentResource.Params params) {
+        Assert.hasText(params.image(), "rollback deployment must had an image");
+        RollableScalableResource<Deployment> resourceOpt = this.resourceOpt(params);
+        final Deployment deployment = get(resourceOpt);
 //          /spec/template/spec/containers/0/image
-        deployment.getSpec().getTemplate().getSpec().getContainers().get(0).setImage(image);
-        return resource.patch(deployment) != null;
+        deployment.getSpec().getTemplate().getSpec().getContainers().get(0)
+            .setImage(params.image());
+        return resourceOpt.patch(deployment) != null;
     }
 
     @Override
-    public String getConfigYaml(String name) {
-        return this.yaml.dump(this.supplier(name).get());
+    public String getConfigYaml(DeploymentResource.Params params) {
+        return this.yaml.dump(this.resource(params));
     }
 
     @Override
-    public List<Deployment> getList(String labelKey, String labelValue) {
-        DeploymentList deploymentList;
-        if (StringUtils.hasText(labelKey)) {
-            deploymentList = super.client.apps().deployments().inNamespace(super.namespace)
-                .withLabel(labelKey, labelValue).list();
-        } else {
-            deploymentList = super.client.apps().deployments().inNamespace(super.namespace).list();
-        }
+    public List<Deployment> getList(DeploymentResource.Params params) {
+        DeploymentList deploymentList = Optional.of(client.apps().deployments()).map(
+                i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
+            .map(
+                i -> CollectionUtils.isEmpty(params.labels()) ? i.withLabels(params.labels()).list()
+                    : i.list()).orElseThrow(KubernetesResourceNotFoundException::new);
         if (deploymentList == null || CollectionUtils.isEmpty(deploymentList.getItems())) {
             return Collections.emptyList();
         }
@@ -85,44 +85,37 @@ class DefaultDeploymentResource extends
     }
 
     @Override
-    public Deployment getOne(String name) throws KubernetesException {
-        return this.supplier(name).get();
-    }
-
-    /**
-     * get k8s deployment,if null will throw KubernetesResourceNotFoundException
-     *
-     * @param name deployment name
-     * @return Supplier
-     */
-    private Supplier<Deployment> supplier(String name) {
-        return supplierWrapper(this.resource(name));
-    }
-
-    private Supplier<Deployment> supplierWrapper(RollableScalableResource<Deployment> resource) {
-        return () -> Optional.ofNullable(resource.get())
-            .orElseThrow(KubernetesResourceNotFoundException::new);
+    public Deployment getOne(DeploymentResource.Params params) {
+        return this.resource(params);
     }
 
     /**
      * 根据name从K8s集群获取deployment
      *
-     * @param name deployment name
      * @return resource of fabric8
      */
-    private RollableScalableResource<Deployment> resource(String name) {
-        Assert.hasText(name, "query deployment must had an name");
-        return super.client.apps().deployments().inNamespace(super.namespace).withName(name);
+    private Deployment resource(DeploymentResource.Params params) {
+        return get(resourceOpt(params));
+    }
+
+    private RollableScalableResource<Deployment> resourceOpt(DeploymentResource.Params params) {
+        Assert.hasText(params.name(), "query deployment must had an name");
+        return Optional.of(client.apps().deployments()).map(
+                i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
+            .map(i -> i.withName(params.name()))
+            .orElseThrow(KubernetesResourceNotFoundException::new);
     }
 
     @Override
-    public boolean replace(String name, String yaml) throws KubernetesException {
-        return this.resource(name).replace(super.yaml.loadAs(yaml, Deployment.class)) != null;
+    public boolean replace(DeploymentResource.Params params) {
+        Assert.hasText(params.yaml(), "replace must had yaml config");
+        return this.resourceOpt(params).replace(this.yaml.loadAs(params.yaml(), Deployment.class))
+            != null;
     }
 
     @Override
-    public DeployStatus getStatus(String name) throws KubernetesException {
-        final DeploymentStatus status = this.supplier(name).get().getStatus();
+    public DeployStatus getStatus(DeploymentResource.Params params) {
+        final DeploymentStatus status = this.resource(params).getStatus();
         // 副本数
         Integer replicas = status.getReplicas();
         // 可用副本数

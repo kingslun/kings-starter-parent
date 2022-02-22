@@ -7,7 +7,7 @@ package io.kings.framework.devops.kubernetes;
  * @date 2021/8/3 2:08 下午
  * @since v2.0
  */
-public interface NetworkResource extends KubernetesResource<NetworkResource> {
+public interface NetworkResource extends KubernetesResource {
 
     ServiceResource svc();
 

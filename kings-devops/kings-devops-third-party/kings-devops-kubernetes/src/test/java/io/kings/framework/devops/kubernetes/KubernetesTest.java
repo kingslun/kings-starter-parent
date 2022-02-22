@@ -5,7 +5,10 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,15 +28,21 @@ public class KubernetesTest {
 
     private final String namespace = "default";
     private final String name = "demo";
+    private final Map<String, String> labels = Collections.singletonMap("app", name);
+    private final PodResource.Params podParams = new PodResource.Params().namespace(namespace)
+        .name(name).labels(labels);
+    private final DeploymentResource.Params deploymentParams = new DeploymentResource.Params().namespace(
+        namespace).name(name).label("app", name);
     @Autowired
     private KubernetesApiFactory kubernetesApiFactory;
     private PodResource podResource;
     private DeploymentResource deploymentResource;
     private NetworkResource networkResource;
 
+    //==============service case==============
     @Test
     public void serviceStatus() {
-        Object status = this.networkResource.svc().withNamespace(namespace).status(name);
+        Object status = this.networkResource.svc().status(namespace, name);
         Assertions.assertThat(status).isNotNull();
         System.out.println(status);
     }
@@ -44,92 +53,89 @@ public class KubernetesTest {
         Assertions.assertThat(kubernetesApi).isNotNull();
         this.deploymentResource = kubernetesApi.deploymentResource();
         this.podResource = kubernetesApi.podResource();
-        networkResource = kubernetesApi.networkResource();
+        this.networkResource = kubernetesApi.networkResource();
     }
 
-    public void podDelete(String name) throws KubernetesException {
-        boolean del = this.podResource.withNamespace(this.namespace).delete(name);
+    //==============pod case==============
+    public void podDelete(String name) {
+        boolean del = this.podResource.delete(podParams.name(name));
         Assertions.assertThat(del).isTrue();
     }
 
-    public void podLog(String name) throws KubernetesException {
-        String log = this.podResource.withNamespace(this.namespace).fetchLog(name, null);
-        Assertions.assertThat(log).isNotBlank();
-        System.out.printf("#############################Pod:%s#############################", name);
+    public void podLog(String name) {
+        String log = this.podResource.fetchLog(podParams.name(name));
+        System.out.printf("####################【Pod:%s log-start】####################", name);
         System.out.println();
-        System.out.println(log);
-        System.out.println("###############################end##############################");
+        System.out.print(log);
+        System.out.println("####################【log-end】####################");
     }
 
     @Test
-    public void podResourceCurd() throws KubernetesException {
-        List<Pod> pods = this.podResource.withNamespace(this.namespace).findByLabel("app=" + name);
+    public void podResourceCurd() {
+        List<Pod> pods = this.podResource.findByLabel(podParams);
         Assertions.assertThat(pods).isNotEmpty();
-        System.out.print("###############################begin##############################");
+        System.out.println("###############【pod-query-start】###############");
         pods.forEach(System.out::println);
-        System.out.print("###############################end##############################");
-        Pod pod = pods.get(0);
-        podLog(pod.getMetadata().getName());
-        podDelete(pod.getMetadata().getName());
+        System.out.println("###############【pod-query-end】###############");
+        pods.forEach(i -> {
+            if (Objects.equals("Running", i.getStatus().getPhase())) {
+                podLog(i.getMetadata().getName());
+                podDelete(i.getMetadata().getName());
+            }
+        });
     }
 
+    //==============deployment case==============
     @Test
-    public void deploymentGetList() throws KubernetesException {
-        List<Deployment> deployments =
-            this.deploymentResource.withNamespace(this.namespace).getList("app", name);
+    public void deploymentGetList() {
+        List<Deployment> deployments = this.deploymentResource.getList(deploymentParams);
         Assertions.assertThat(deployments).isNotEmpty();
         deployments.forEach(System.out::println);
     }
 
     @Test
-    public void deploymentGetOne() throws KubernetesException {
-        Deployment deployment = this.deploymentResource.withNamespace(this.namespace)
-            .getOne(this.name);
+    public void deploymentGetOne() {
+        Deployment deployment = this.deploymentResource.getOne(deploymentParams);
         Assertions.assertThat(deployment).isNotNull();
         System.out.println(deployment);
     }
 
     @Test
-    public void deploymentRestart() throws KubernetesException {
-        boolean restart = this.deploymentResource.withNamespace(this.namespace).restart(this.name);
+    public void deploymentRestart() {
+        boolean restart = this.deploymentResource.restart(deploymentParams);
         Assertions.assertThat(restart).isTrue();
     }
 
     @Test
-    public void deploymentRollback() throws KubernetesException {
-        String image = "redis:latest";
-        boolean rollback = this.deploymentResource.withNamespace(this.namespace)
-            .rollback(this.name, image);
+    public void deploymentRollback() {
+        String image = "kingslun/demo:latest";
+        boolean rollback = this.deploymentResource.rollback(deploymentParams.image(image));
         Assertions.assertThat(rollback).isTrue();
     }
 
     @Test
-    public void deploymentConfigYaml() throws KubernetesException {
-        String configYaml = this.deploymentResource.withNamespace(this.namespace)
-            .getConfigYaml(this.name);
+    public void deploymentConfigYaml() {
+        String configYaml = this.deploymentResource.getConfigYaml(deploymentParams);
         Assertions.assertThat(configYaml).isNotBlank();
         System.out.println(configYaml);
     }
 
     @Test
-    public void deploymentScale() throws KubernetesException {
-        boolean scale = this.deploymentResource.withNamespace(this.namespace).scale(this.name, 1);
+    public void deploymentScale() {
+        boolean scale = this.deploymentResource.scale(deploymentParams.replicas(1));
         Assertions.assertThat(scale).isTrue();
     }
 
     @Test
-    public void deploymentReplace() throws KubernetesException {
-        String config = this.deploymentResource.withNamespace(this.namespace)
-            .getConfigYaml(this.name);
-        boolean replace = this.deploymentResource.withNamespace(this.namespace)
-            .replace(this.name, config);
+    public void deploymentReplace() {
+        String config = this.deploymentResource.getConfigYaml(deploymentParams);
+        boolean replace = this.deploymentResource.replace(deploymentParams.yaml(config));
         Assertions.assertThat(replace).isTrue();
     }
 
     @Test
     public void deploymentStatus() throws KubernetesException {
-        DeployStatus status = this.deploymentResource.withNamespace(this.namespace)
-            .getStatus(this.name);
+        DeployStatus status = this.deploymentResource.getStatus(deploymentParams);
         Assertions.assertThat(status).isNotNull();
         System.out.println(status.getDesc());
     }
@@ -139,16 +145,14 @@ public class KubernetesTest {
         //mock delete for all case
         DeploymentResource bak = this.deploymentResource;
         this.deploymentResource = Mockito.mock(DeploymentResource.class);
-        Mockito.doReturn(this.deploymentResource).when(this.deploymentResource)
-            .withNamespace(this.namespace);
-        Mockito.doReturn(true).when(this.deploymentResource).delete(this.name);
-        boolean delete = this.deploymentResource.withNamespace(this.namespace).delete(this.name);
+        Mockito.doReturn(true).when(deploymentResource).delete(deploymentParams);
+        boolean delete = this.deploymentResource.delete(deploymentParams);
         Assertions.assertThat(delete).isTrue();
         this.deploymentResource = bak;
     }
 
     @Test(expected = KubernetesResourceNotFoundException.class)
     public void kubernetesResourceNotFound() {
-        this.deploymentResource.withNamespace("this.namespace").restart("this.name");
+        this.deploymentResource.restart(deploymentParams.name("notfound"));
     }
 }

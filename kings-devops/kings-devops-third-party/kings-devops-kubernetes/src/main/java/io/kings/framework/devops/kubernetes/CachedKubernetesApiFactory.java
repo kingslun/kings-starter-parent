@@ -1,7 +1,5 @@
 package io.kings.framework.devops.kubernetes;
 
-import static io.kings.framework.devops.kubernetes.KubernetesResource.NAMESPACE_METHOD;
-
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
@@ -15,10 +13,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,35 +56,20 @@ public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            String className = method.getDeclaringClass().getSimpleName();
-            String methodName = method.getName();
-            log.debug("[{}#{}] begin to invoke with:{}", className, methodName,
-                Arrays.toString(args));
             try {
-                Object result = method.invoke(delegate, args);
-                if (Objects.equals(NAMESPACE_METHOD, methodName)) {
-                    //兼容NamespaceAware的级联操作
-                    return proxy;
-                } else {
-                    return result;
-                }
+                return method.invoke(delegate, args);
             } catch (InvocationTargetException exception) {
                 Throwable target = exception.getTargetException();
-                KubernetesException outer;
+                KubernetesException outer = new KubernetesException(target);
                 if (target instanceof KubernetesException) {
                     outer = (KubernetesException) target;
                 } else if (target instanceof KubernetesClientException) {
                     KubernetesClientException k8ser = (KubernetesClientException) target;
                     if (k8ser.getCode() == 404) {
                         outer = new KubernetesResourceNotFoundException();
-                    } else {
-                        outer = new KubernetesException(target);
                     }
-                } else {
-                    outer = new KubernetesException(target);
                 }
-                log.error("[{}#{}] invoked failure cause:{}", className, methodName,
-                    outer.getMessage(), outer);
+                log.error("invoked failure cause:{}", outer.getMessage(), outer);
                 throw outer;
             }
         }

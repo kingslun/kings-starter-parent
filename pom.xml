@@ -20,6 +20,7 @@
     <module>kings-devops</module>
     <module>kings-framework</module>
     <module>kings-dependencies</module>
+    <module>kings-wechat</module>
   </modules>
   <!--default dependency management-->
   <dependencies>

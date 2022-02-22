@@ -1,8 +1,12 @@
 package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.Pod;
-import io.kings.framework.devops.kubernetes.exception.KubernetesException;
+import java.io.InputStream;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+import org.springframework.lang.Nullable;
 
 /**
  * pod资源相关api
@@ -11,30 +15,43 @@ import java.util.List;
  * @date 2021/8/3 4:12 下午
  * @since v2.0
  */
-public interface PodResource extends KubernetesResource<PodResource> {
+public interface PodResource extends KubernetesResource {
 
     /**
      * 根据name删除pod
      *
-     * @param name pod名称
+     * @param params 参数
      * @return true/false
      */
-    boolean delete(String name) throws KubernetesException;
+    boolean delete(Params params);
 
     /**
      * 根据标签查询pods
      *
-     * @param label 标签名
+     * @param params 参数
      * @return list of pod
      * @see Pod
      */
-    List<Pod> findByLabel(String label) throws KubernetesException;
+    List<Pod> findByLabel(Params params);
 
     /**
      * 拉取日志
      *
-     * @param podName pod名称
+     * @param params 参数
      * @return content of log
      */
-    String fetchLog(String podName, String container) throws KubernetesException;
+    String fetchLog(Params params);
+
+    void shell(Params params);
+
+    @Getter
+    @Setter
+    @Accessors(fluent = true)
+    class Params extends KubernetesResource.Params<Params> {
+
+        @Nullable
+        String container;
+        @Nullable
+        transient InputStream in;
+    }
 }

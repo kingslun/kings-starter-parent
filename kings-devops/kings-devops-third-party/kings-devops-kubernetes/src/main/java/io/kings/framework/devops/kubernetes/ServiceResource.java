@@ -7,9 +7,9 @@ package io.kings.framework.devops.kubernetes;
  * @date 2022/2/16 10:04 AM
  * @since v2.3
  */
-public interface ServiceResource extends KubernetesResource<ServiceResource>{
+public interface ServiceResource extends KubernetesResource{
 
-    void createService();
+    void createService(String namespace);
 
     /**
      * svc状态检查
@@ -17,5 +17,5 @@ public interface ServiceResource extends KubernetesResource<ServiceResource>{
      * @param name svc name
      * @return status
      */
-    Object status(String name);
+    Object status(String namespace,String name);
 }
