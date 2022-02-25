@@ -208,9 +208,6 @@ public abstract class AbstractFabric8PodsWatcher implements Fabric8PodsWatcher {
 
         private final K8sPodListener listener;
         private final ExecutorService executorService;
-        /**
-         * <a href="http://jira.aihuishou.com/browse/ZEUS-43">处理监听通道关闭的异常场景</a>
-         */
         private final Callable<Boolean> retryHook;
         private final Retryable retryable;
 

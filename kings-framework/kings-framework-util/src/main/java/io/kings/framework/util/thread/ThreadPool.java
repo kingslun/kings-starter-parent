@@ -1,4 +1,4 @@
-package io.kings.framework.component.zookeeper.thread;
+package io.kings.framework.util.thread;
 
 import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
@@ -16,8 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @see Executors
  * @see ExecutorService
  **/
-public final
-class KingsThreadPool {
+public final class ThreadPool {
 
     /**
      * 默认核心工作线程数 读取硬件线程数
@@ -45,7 +44,7 @@ class KingsThreadPool {
         KEEP_ALIVE_TIME_TIMEUNIT = TimeUnit.MILLISECONDS;
     }
 
-    private KingsThreadPool() {
+    private ThreadPool() {
         throw new AssertionError("Can't be initialized Error");
     }
 
@@ -60,7 +59,7 @@ class KingsThreadPool {
         final int poolSize = Runtime.getRuntime().availableProcessors();
         return new ThreadPoolExecutor(poolSize, poolSize,
             0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(),
-            KingsThreadFactory.defaultThreadFactory(threadName),
+            ThreadFactory.defaultThreadFactory(threadName),
             new ThreadPoolExecutor.AbortPolicy());
     }
 
@@ -94,7 +93,7 @@ class KingsThreadPool {
         //Common Thread Pool
         return new ThreadPoolExecutor(corePoolSize, maximumPoolSize,
             keepAliveTime, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(workQueueSize),
-            KingsThreadFactory.defaultThreadFactory(threadName),
+            ThreadFactory.defaultThreadFactory(threadName),
             new ThreadPoolExecutor.AbortPolicy());
     }
 
@@ -111,7 +110,7 @@ class KingsThreadPool {
         return new ThreadPoolExecutor(CORE_POOL_SIZE, CORE_POOL_SIZE + 1,
             KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
             new LinkedBlockingQueue<>(workQueueSize),
-            KingsThreadFactory.defaultThreadFactory(threadName),
+            ThreadFactory.defaultThreadFactory(threadName),
             new ThreadPoolExecutor.AbortPolicy());
     }
 
@@ -155,7 +154,7 @@ class KingsThreadPool {
             BigDecimal.valueOf(CORE_POOL_SIZE / 0.15).intValue(),
             KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
             new LinkedBlockingQueue<>(workQueueSize),
-            KingsThreadFactory.defaultThreadFactory(threadName),
+            ThreadFactory.defaultThreadFactory(threadName),
             new ThreadPoolExecutor.AbortPolicy());
     }
 
@@ -184,7 +183,7 @@ class KingsThreadPool {
         return new ThreadPoolExecutor(CORE_POOL_SIZE, CORE_POOL_SIZE * 2,
             KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
             new LinkedBlockingQueue<>(workQueueSize),
-            KingsThreadFactory.defaultThreadFactory(threadName),
+            ThreadFactory.defaultThreadFactory(threadName),
             new ThreadPoolExecutor.AbortPolicy());
     }
 }

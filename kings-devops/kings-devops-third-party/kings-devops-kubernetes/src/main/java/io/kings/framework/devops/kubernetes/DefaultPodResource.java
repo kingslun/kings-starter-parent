@@ -41,9 +41,9 @@ class DefaultPodResource extends AbstractKubernetesResource<KubernetesClient> im
     @Override
     public List<Pod> findByLabel(PodResource.Params params) {
         Assert.notEmpty(params.labels(), "Pod#findByLabel must with labelSelector");
-        return Optional.of(client.pods())
-            .map(i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace())
-                : i).map(i -> i.withLabels(params.labels()).list().getItems())
+        return Optional.of(client.pods()).map(
+                i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
+            .map(i -> i.withLabels(params.labels()).list().getItems())
             .orElseThrow(KubernetesResourceNotFoundException::new);
     }
 
@@ -55,7 +55,11 @@ class DefaultPodResource extends AbstractKubernetesResource<KubernetesClient> im
     }
 
     @Override
-    public void shell(PodResource.Params params) {
-        throw new UnsupportedOperationException();
+    public void console(PodResource.Params params) {
+        Optional.of(this.pod(params))
+            .map(i -> StringUtils.hasText(params.container) ? i.inContainer(params.container) : i)
+            .orElseThrow(KubernetesResourceNotFoundException::new).readingInput(params.socketIn)
+            .writingOutput(params.socketOut).writingError(params.socketOut)
+            .usingListener(new WsListener()).exec();
     }
 }

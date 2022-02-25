@@ -21,7 +21,6 @@ class EmailDesensitize extends AbstractLogDesensitize implements DesensitizeApi 
 
     /**
      * 邮箱策略格式为前三个字符到@符号间会被脱敏<font>可能需要注意的是@前本身只有三个字符的脱敏会毫无效果</font>
-     * <br>lun.wang@aihuishou.com ==> lun*****@aihuishou.com
      */
     @Override
     public String doDesensitize(SecurityLogAppender ctx) {

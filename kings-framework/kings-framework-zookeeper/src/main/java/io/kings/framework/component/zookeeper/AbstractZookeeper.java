@@ -1,7 +1,7 @@
 package io.kings.framework.component.zookeeper;
 
 import io.kings.framework.component.zookeeper.exception.ZookeeperException;
-import io.kings.framework.component.zookeeper.thread.KingsThreadPool;
+import io.kings.framework.util.thread.ThreadPool;
 import io.kings.framework.data.serializer.Serializer;
 import java.io.Serializable;
 import java.util.concurrent.Executor;
@@ -88,7 +88,7 @@ abstract class AbstractZookeeper<V> implements Zookeeper, ZookeeperWriter<String
      */
     @Override
     public ExecutorService threadPool() {
-        return this.executorService == null ? KingsThreadPool.availableThreadPool(
+        return this.executorService == null ? ThreadPool.availableThreadPool(
             "OctopusZookeeperThread") : this.executorService;
     }
 

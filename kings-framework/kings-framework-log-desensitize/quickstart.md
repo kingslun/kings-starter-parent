@@ -62,8 +62,8 @@ Java
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <dependency>
-  <groupId>com.aihuishou.audit</groupId>
-  <artifactId>ahs-audit-desensitize</artifactId>
+  <groupId>io.kings</groupId>
+  <artifactId>kings-framework-log-desensitize</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```

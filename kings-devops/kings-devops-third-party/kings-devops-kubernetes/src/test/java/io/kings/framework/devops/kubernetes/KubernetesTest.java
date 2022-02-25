@@ -16,11 +16,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@EntityScan("io.kings.devops.backend.model")
 @EnableAutoConfiguration
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KubernetesTest.class)
@@ -62,6 +60,10 @@ public class KubernetesTest {
         Assertions.assertThat(del).isTrue();
     }
 
+    public void podExec(String name) {
+        this.podResource.console(podParams.name(name));
+    }
+
     public void podLog(String name) {
         String log = this.podResource.fetchLog(podParams.name(name));
         System.out.printf("####################【Pod:%s log-start】####################", name);
@@ -80,6 +82,7 @@ public class KubernetesTest {
         pods.forEach(i -> {
             if (Objects.equals("Running", i.getStatus().getPhase())) {
                 podLog(i.getMetadata().getName());
+                podExec(i.getMetadata().getName());
                 podDelete(i.getMetadata().getName());
             }
         });

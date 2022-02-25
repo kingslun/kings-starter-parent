@@ -1,7 +1,6 @@
-package io.kings.framework.component.zookeeper.thread;
+package io.kings.framework.util.thread;
 
 import java.util.Objects;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -13,7 +12,7 @@ import org.springframework.util.StringUtils;
  * @author : lun.wang
  * @date : 2020/04/10 11:07:03
  **/
-public final class KingsThreadFactory implements ThreadFactory {
+public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
 
     /**
      * 线程池编号 -所有工厂类公用此变量 累加
@@ -60,7 +59,7 @@ public final class KingsThreadFactory implements ThreadFactory {
      * @param threadNumberIndex 线程编号起始值 默认1
      * @param separators        线程名称中分隔符 默认'-'
      */
-    private KingsThreadFactory(String poolName, boolean showPoolNumber, int poolNumberIndex,
+    private ThreadFactory(String poolName, boolean showPoolNumber, int poolNumberIndex,
         String threadName, boolean showThreadNumber, int threadNumberIndex,
         char separators) {
         Assert.hasText(threadName, "ThreadFactory must have a thread name");
@@ -88,8 +87,8 @@ public final class KingsThreadFactory implements ThreadFactory {
      *
      * @param threadName 线程名称
      */
-    public static ThreadFactory defaultThreadFactory(String threadName) {
-        return new KingsThreadFactory(null, false, 0, threadName, true, 1, '-');
+    public static java.util.concurrent.ThreadFactory defaultThreadFactory(String threadName) {
+        return new ThreadFactory(null, false, 0, threadName, true, 1, '-');
     }
 
     /**
@@ -97,8 +96,8 @@ public final class KingsThreadFactory implements ThreadFactory {
      *
      * @param threadName 线程名称
      */
-    public static ThreadFactory namedThreadFactory(String threadName) {
-        return new KingsThreadFactory("pool", true, 0, threadName, true, 1, '-');
+    public static java.util.concurrent.ThreadFactory namedThreadFactory(String threadName) {
+        return new ThreadFactory("pool", true, 0, threadName, true, 1, '-');
     }
 
     /**
@@ -107,9 +106,9 @@ public final class KingsThreadFactory implements ThreadFactory {
      * @param threadName        线程名称
      * @param threadNumberIndex 线程编号开始下标
      */
-    public static ThreadFactory namedThreadFactoryWithIndex(String threadName,
+    public static java.util.concurrent.ThreadFactory namedThreadFactoryWithIndex(String threadName,
         int threadNumberIndex) {
-        return new KingsThreadFactory("pool", true, 0, threadName, true, threadNumberIndex, '-');
+        return new ThreadFactory("pool", true, 0, threadName, true, threadNumberIndex, '-');
     }
 
     /**
@@ -118,9 +117,9 @@ public final class KingsThreadFactory implements ThreadFactory {
      * @param poolName   线程池名称
      * @param threadName 线程名称
      */
-    public static ThreadFactory namedPoolThreadFactoryWithoutNumber(String poolName,
+    public static java.util.concurrent.ThreadFactory namedPoolThreadFactoryWithoutNumber(String poolName,
         String threadName) {
-        return new KingsThreadFactory(poolName, false, 0, threadName, false, 1, '-');
+        return new ThreadFactory(poolName, false, 0, threadName, false, 1, '-');
     }
 
     /**
@@ -129,8 +128,8 @@ public final class KingsThreadFactory implements ThreadFactory {
      * @param poolName   线程池名称
      * @param threadName 线程名称
      */
-    public static ThreadFactory namedPoolThreadFactory(String poolName, String threadName) {
-        return new KingsThreadFactory(poolName, true, 0, threadName, true, 1, '-');
+    public static java.util.concurrent.ThreadFactory namedPoolThreadFactory(String poolName, String threadName) {
+        return new ThreadFactory(poolName, true, 0, threadName, true, 1, '-');
     }
 
     /**
@@ -139,9 +138,9 @@ public final class KingsThreadFactory implements ThreadFactory {
      * @param poolName   线程池名称
      * @param threadName 线程名称
      */
-    public static ThreadFactory namedPoolThreadFactoryWithSeparator(String poolName,
+    public static java.util.concurrent.ThreadFactory namedPoolThreadFactoryWithSeparator(String poolName,
         String threadName, char separators) {
-        return new KingsThreadFactory(poolName, true, 0, threadName, true, 1, separators);
+        return new ThreadFactory(poolName, true, 0, threadName, true, 1, separators);
     }
 
     /**

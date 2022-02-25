@@ -6,6 +6,8 @@ import io.kings.devops.backend.api.KubernetesConfigApi;
 import io.kings.devops.backend.dao.DockerHarborDao;
 import io.kings.devops.backend.dao.EnvironmentDao;
 import io.kings.devops.backend.dao.KubernetesDao;
+import io.kings.devops.backend.model.DockerHarborDo;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -14,6 +16,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date 2022/2/15 5:40 PM
  * @since v2.3
  */
+@EntityScan(basePackageClasses = DockerHarborDo.class)
 @EnableJpaRepositories(basePackageClasses = DockerHarborDao.class)
 class MetadataConfigAutoConfiguration {
 

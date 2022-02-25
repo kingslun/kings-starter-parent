@@ -1,11 +1,15 @@
 package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.dsl.ExecListener;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 
 /**
@@ -42,7 +46,7 @@ public interface PodResource extends KubernetesResource {
      */
     String fetchLog(Params params);
 
-    void shell(Params params);
+    void console(Params params);
 
     @Getter
     @Setter
@@ -52,6 +56,42 @@ public interface PodResource extends KubernetesResource {
         @Nullable
         String container;
         @Nullable
-        transient InputStream in;
+        transient OutputStream socketOut;
+        @Nullable
+        transient InputStream socketIn;
+    }
+
+    interface Pipeline {
+
+        void onMessage(String message) throws IOException;
+    }
+
+    @Slf4j
+    class WsListener implements ExecListener {
+
+        public void onError(Throwable e) {
+            //nothing do with e
+            log.warn("WebSocket occur error", e);
+        }
+
+        public void onClose() throws IOException {
+            log.warn("WebSocket channel starts to close!");
+        }
+
+        @Override
+        public final void onClose(int code, String reason) {
+            try {
+                log.warn("WebSocket channel closed with:[{code:{},reason:{}}]", code, reason);
+                this.onClose();
+            } catch (IOException e) {
+                this.onError(e);
+            }
+        }
+
+        @Override
+        public final void onFailure(Throwable t, Response response) {
+            log.warn("WebSocket channel failure body:[{}]", response, t);
+            this.onError(t);
+        }
     }
 }

@@ -51,7 +51,7 @@ public interface KubernetesResource {
     @Accessors(fluent = true)
     class Params<S extends Params<S>> implements Serializable {
 
-        @Nullable
+        @NonNull
         private String namespace;
         @NonNull
         private String name;

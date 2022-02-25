@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/metadata
+    username: root
+    password: password
+
+logging.level.io.kings.framework.devops.openapi: debug
+

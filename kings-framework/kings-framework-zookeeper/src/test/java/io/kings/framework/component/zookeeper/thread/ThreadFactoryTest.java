@@ -1,39 +1,40 @@
 package io.kings.framework.component.zookeeper.thread;
 
+import io.kings.framework.util.thread.ThreadFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-public class KingsThreadFactoryTest {
+public class ThreadFactoryTest {
 
     @Test
     public void namedThreadFactory() {
-        Assertions.assertThat(KingsThreadFactory.namedThreadFactory("thread-name")).isNotNull();
+        Assertions.assertThat(ThreadFactory.namedThreadFactory("thread-name")).isNotNull();
     }
 
     @Test
     public void namedThreadFactoryWithIndex() {
-        Assertions.assertThat(KingsThreadFactory.namedThreadFactoryWithIndex("thread-name", 1))
+        Assertions.assertThat(ThreadFactory.namedThreadFactoryWithIndex("thread-name", 1))
             .isNotNull();
     }
 
     @Test
     public void namedPoolThreadFactoryWithoutNumber() {
         Assertions.assertThat(
-                KingsThreadFactory.namedPoolThreadFactoryWithoutNumber("pool-name", "thread-name"))
+                ThreadFactory.namedPoolThreadFactoryWithoutNumber("pool-name", "thread-name"))
             .isNotNull();
     }
 
     @Test
     public void namedPoolThreadFactory() {
         Assertions.assertThat(
-                KingsThreadFactory.namedPoolThreadFactory("pool-name", "thread-name"))
+                ThreadFactory.namedPoolThreadFactory("pool-name", "thread-name"))
             .isNotNull();
     }
 
     @Test
     public void namedPoolThreadFactoryWithSeparator() {
         Assertions.assertThat(
-                KingsThreadFactory.namedPoolThreadFactoryWithSeparator("pool-name", "thread-name", '/'))
+                ThreadFactory.namedPoolThreadFactoryWithSeparator("pool-name", "thread-name", '/'))
             .isNotNull();
     }
 }

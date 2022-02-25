@@ -5,8 +5,6 @@ import io.kings.framework.component.zookeeper.Zookeeper4DistributedFactory;
 import io.kings.framework.component.zookeeper.ZookeeperConnectionStateListener;
 import io.kings.framework.component.zookeeper.exception.DistributedElectionException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperException;
-import io.kings.framework.component.zookeeper.thread.KingsThreadFactory;
-import io.kings.framework.component.zookeeper.thread.KingsThreadPool;
 import io.kings.framework.data.serializer.SerializationAutoConfiguration;
 import io.kings.framework.data.serializer.Serializer;
 import io.kings.framework.election.leader.AbstractDistributedElection;
@@ -15,10 +13,11 @@ import io.kings.framework.election.leader.DistributedElectionAutoConfiguration;
 import io.kings.framework.election.leader.DistributedElectionProperties;
 import io.kings.framework.election.leader.DistributedElectionRegistry;
 import io.kings.framework.election.leader.condition.ConditionOnZookeeperElector;
+import io.kings.framework.util.thread.ThreadFactory;
+import io.kings.framework.util.thread.ThreadPool;
 import java.io.Closeable;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadFactory;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -125,12 +124,12 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
             .namespace(this.properties.getNamespace());
         ZookeeperProperties.Threads thread = this.properties.getThreads();
         //thread factory
-        final ThreadFactory threadFactory =
-            KingsThreadFactory.defaultThreadFactory(thread.getName());
+        final java.util.concurrent.ThreadFactory threadFactory =
+            ThreadFactory.defaultThreadFactory(thread.getName());
         clientBuilder.threadFactory(threadFactory);
         //thread pool
         //apply this thread pool
-        this.threadPool = KingsThreadPool.threadPool(thread.getName(), thread.getCorePoolSize(),
+        this.threadPool = ThreadPool.threadPool(thread.getName(), thread.getCorePoolSize(),
             thread.getMaximumPoolSize(), thread.getKeepAliveTime(),
             thread.getWorkQueueSize());
         //build client

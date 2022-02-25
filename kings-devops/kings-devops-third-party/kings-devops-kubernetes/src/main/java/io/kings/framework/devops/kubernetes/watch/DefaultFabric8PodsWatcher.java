@@ -8,7 +8,6 @@ import org.springframework.util.StringUtils;
 
 /**
  * 基于Fabric8框架实现的对k8s集群下指定namespace节点下所有pod实例状态监控管理的注册中心 能基于pod生命周期内各个阶段进行快速响应 feature:对pod宕机进行检测
- * 发送钉钉通知 See <a href="http://code.aihuishou.com/fusion/ahs-nova/-/issues/4">shutdown listing</a>
  * for a details of the feature
  *
  * @see K8sPodListener 通过对pod各阶段的状态变更抽离的监听接口 是对各阶段响应后的业务逻辑进行抽离和封装

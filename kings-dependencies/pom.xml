@@ -18,6 +18,7 @@
     <kubernetes.client.version>5.12.1</kubernetes.client.version>
     <data.kryo.version>4.0.2</data.kryo.version>
     <data.protostuff.version>1.7.2</data.protostuff.version>
+    <io.swagger.version>2.1.12</io.swagger.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -153,6 +154,11 @@
         <version>${spring.cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${io.swagger.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
