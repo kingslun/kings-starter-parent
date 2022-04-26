@@ -23,7 +23,6 @@ public class WebSocketConfig implements BeanLifecycle {
     @Override
     public void complete() {
         assert kubernetesApiFactory != null;
-        KubernetesConsoleWebSocketServer.setKubernetesApiFactory(kubernetesApiFactory);
     }
 
     @Bean
