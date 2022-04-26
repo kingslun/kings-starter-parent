@@ -11,7 +11,6 @@ import lombok.ToString;
  *
  * @author lun.wang
  * @date 2020/4/23 3:37 下午
- * @email lun.wang@zatech.com
  * @since v2.7.2
  */
 @Getter

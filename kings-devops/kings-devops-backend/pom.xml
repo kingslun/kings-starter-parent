@@ -23,5 +23,24 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-openfeign</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.offbytwo.jenkins</groupId>
+      <artifactId>jenkins-client</artifactId>
+      <version>0.3.8</version>
+    </dependency>
+    <!-- 第三方依赖-->
+    <dependency>
+      <groupId>org.gitlab4j</groupId>
+      <artifactId>gitlab4j-api</artifactId>
+      <version>5.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
   </dependencies>
 </project>

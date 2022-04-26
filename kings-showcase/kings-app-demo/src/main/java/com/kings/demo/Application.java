@@ -1,5 +1,6 @@
 package com.kings.demo;
 
+import javax.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @RestController
@@ -24,12 +25,12 @@ class Application implements InitializingBean, DisposableBean {
 
     @Override
     public void destroy() {
-        log.debug("bye bye~");
+        log.debug("下机下机");
     }
 
     @Override
     public void afterPropertiesSet() {
-        log.debug("hello app~");
+        log.debug("你好");
     }
 
     @Getter
@@ -46,21 +47,29 @@ class Application implements InitializingBean, DisposableBean {
         private Person husband;
     }
 
-    @GetMapping("hello")
-    public Mono<String> hello() {
-        return Mono.just("hello webflux");
+    @GetMapping("out")
+    public String out() {
+        return "v2";
+    }
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @GetMapping("in")
+    public String call() {
+        return restTemplate.getForObject("http://app.kings-ns.svc.cluster.local:8080/out", String.class);
     }
 
     @GetMapping("health")
-    public Mono<String> health() {
-        return Mono.just("UP");
+    public String health() {
+        return "UP";
     }
 
     @GetMapping("index")
-    public Mono<Person> index() {
+    public Person index() {
         Person lun = new Person("王伦", 26, "15021261772", "kingslun@163.com", "上海市普陀区曹杨新村", null);
         Person you = new Person("吴优", 3, "15971505417", "wuyou@xinlang.com", "上海市普陀区曹杨二村", lun);
         log.info("Response:{}", you);
-        return Mono.just(you);
+        return you;
     }
 }

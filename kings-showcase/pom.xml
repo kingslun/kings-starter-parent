@@ -16,6 +16,7 @@
     <module>kings-base</module>
     <module>kings-spring-security</module>
     <module>kings-framework-test</module>
+    <module>kings-golang</module>
   </modules>
   <dependencyManagement>
     <dependencies>

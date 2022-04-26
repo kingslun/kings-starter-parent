@@ -19,7 +19,6 @@
 ```java
 /**
 *以下配置文件参考此对象的注释 对每个属性的做又做出了详细描述 开发态可直接在idea本地配置文件中被提示告知
-* @see com.zatech.octopus.component.distributed.zookeeper.config.OctopusZookeeperProperties
 */
 ```
 
@@ -44,15 +43,9 @@ logging.level.local.tets=DEBUG
 /**
  *用户关注的东西 -直接在你使用的地方依赖 此对象 
  目前key为zookeeper的节点路径（path）value为zookeeper节点存储的数据值 当前版本实现都为String类型
- * @see com.zatech.octopus.component.distributed.zookeeper.ZookeeperComplex
  */
 package local.tets;
 
-import com.zatech.octopus.component.distributed.zookeeper.NodeMode;
-import com.zatech.octopus.component.distributed.zookeeper.ZookeeperComplex;
-import com.zatech.octopus.component.distributed.zookeeper.ZookeeperPathAndChildrenWatcher;
-import com.zatech.octopus.component.distributed.zookeeper.ZookeeperPathChildrenWatcher;
-import com.zatech.octopus.component.distributed.zookeeper.exception.OctopusZookeeperException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

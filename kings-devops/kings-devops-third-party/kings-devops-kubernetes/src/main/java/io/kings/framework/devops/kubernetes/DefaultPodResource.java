@@ -56,6 +56,8 @@ class DefaultPodResource extends AbstractKubernetesResource<KubernetesClient> im
 
     @Override
     public void console(PodResource.Params params) {
+        Assert.notNull(params.socketIn, "WebSocket must had a in channel");
+        Assert.notNull(params.socketOut, "WebSocket must had a out channel");
         Optional.of(this.pod(params))
             .map(i -> StringUtils.hasText(params.container) ? i.inContainer(params.container) : i)
             .orElseThrow(KubernetesResourceNotFoundException::new).readingInput(params.socketIn)

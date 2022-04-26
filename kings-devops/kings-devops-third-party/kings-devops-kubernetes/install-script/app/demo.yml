@@ -1,55 +1,141 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo
-  labels:
-    app: demo
+  name: app-v1
+  namespace: kings-ns
 spec:
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 10
-      maxUnavailable: 10
   replicas: 1
-  template:
-    metadata:
-      name: demo
-      labels:
-        app: demo
-    spec:
-      containers:
-        - name: demo
-          image: kingslun/demo:latest
-          imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              memory: 128Mi
-              cpu: 100m
-          lifecycle:
-            postStart:
-              exec:
-                command:
-                  - sh
-            preStop:
-              exec:
-                command:
-                  - "/bin/bash"
-                  - "-c"
-                  - "curl 10.181.52.33:8080/index"
-      restartPolicy: Always
   selector:
     matchLabels:
-      app: demo
+      app: app
+      version: v1
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: app
+        version: v1
+    spec:
+      containers:
+        - name: app-v1
+          #demo1
+          image: app:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /health
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /health
 
 ---
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: demo
+  name: app-v2
+  namespace: kings-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+      version: v2
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      labels:
+        app: app
+        version: v2
+    spec:
+      containers:
+        - name: app-v2
+          #demo1
+          image: app:v2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /health
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /health
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: app
+  namespace: kings-ns
 spec:
   selector:
-    app: demo
+    app: app
   ports:
     - port: 8080
-      nodePort: 30888
-  type: NodePort
+      protocol: TCP
+      targetPort: 8080
+      name: http
+---
+kind: DestinationRule
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: app
+  namespace: kings-ns
+spec:
+  host: app
+  subsets:
+    - name: v1
+      labels:
+        app: app
+        version: v1
+    - name: v2
+      labels:
+        app: app
+        version: v2
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: app
+  namespace: kings-ns
+spec:
+  hosts:
+    - app
+  http:
+    - route:
+        - destination:
+            host: app
+            subset: v1
+          weight: 100
+        - destination:
+            host: app
+            subset: v2
+          weight: 0
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app
+  namespace: kings-ns
+  annotations:
+    kubernetes.io/ingress.class: istio
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: app
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
