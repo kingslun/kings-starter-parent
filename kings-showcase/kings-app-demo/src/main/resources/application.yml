@@ -1,12 +1,15 @@
 logging:
-  level.com.kings.framework: trace
+  level.com.kings.demo: trace
 spring:
   application:
     name: kings-app
-  redis:
-    database: 30379
-    host: localhost
-  datasource:
-    url: jdbc:mysql://localhost:30306/local
-    username: root
-    password: password
+  datasource.url: jdbc:mysql://localhost:30006/kings?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  datasource.username: root
+  datasource.password: kings
+  datasource.driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # MyBatis-Plus 配置
+  mybatis-plus:
+    mapper-locations: classpath:/mapper/*.xml
+    type-aliases-package: com.kings.demo
+

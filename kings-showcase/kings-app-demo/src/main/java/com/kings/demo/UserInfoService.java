@@ -1,7 +1,6 @@
 package com.kings.demo;
 
 import com.kings.demo.repostory.UserInfo;
-import com.kings.demo.repostory.UserInfoRepo;
 import java.math.BigInteger;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -14,13 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInfoService {
 
-  private final UserInfoRepo userInfoRepo;
-
-  public UserInfoService(UserInfoRepo userInfoRepo) {
-    this.userInfoRepo = userInfoRepo;
-  }
-
   public Optional<UserInfo> getById(BigInteger id) {
-    return userInfoRepo.findById(id);
+    return null;
   }
 }
