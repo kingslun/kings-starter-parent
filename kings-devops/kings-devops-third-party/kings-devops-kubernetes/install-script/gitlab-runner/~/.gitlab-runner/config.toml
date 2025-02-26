@@ -1,0 +1,41 @@
+concurrent = 1
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+[[runners]]
+  name = "kings-runner"
+  url = "http://code.aihuishou.com/"
+  token = "n76v_nbJzxv1DK_4j_cT"
+  executor = "shell"
+  builds_dir = "/data/gitlab-runner"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+
+[[runners]]
+  name = "kings-runner"
+  url = "http://code.aihuishou.com/"
+  token = "Mx2AsnXpsGMXUWSQXpBw"
+  executor = "shell"
+  builds_dir = "/data/gitlab-runner"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+
+[[runners]]
+  name = "kings-runner"
+  url = "http://code.aihuishou.com/"
+  token = "xs5WqosnVj9ayHBFnBb-"
+  executor = "shell"
+  builds_dir = "/data/gitlab-runner"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
