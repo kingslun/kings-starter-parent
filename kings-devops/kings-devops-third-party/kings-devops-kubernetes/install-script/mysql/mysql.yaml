@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: kings
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  serviceName: mysql
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: mysql-config
+          hostPath:
+            path: /Users/kings/data/mysql/my.cnf
+      containers:
+        - name: mysql
+          image: mysql:latest
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+#            - name: mysql-config
+#              mountPath: /etc/mysql/my.cnf
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: kings
+            - name: MYSQL_USER
+              value: king
+            - name: MYSQL_PASSWORD
+              value: kings
+          ports:
+            - containerPort: 3306
+              name: mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kings
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  ports:
+    - port: 3306
+      nodePort: 30006
+  type: NodePort
+  selector:
+    app: mysql
