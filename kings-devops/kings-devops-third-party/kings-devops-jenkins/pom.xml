@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <artifactId>kings-devops-jenkins</artifactId>
-  <parent>
-    <groupId>io.kings</groupId>
-    <artifactId>kings-devops-third-party</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.offbytwo.jenkins/jenkins-client -->
-    <dependency>
-      <groupId>com.offbytwo.jenkins</groupId>
-      <artifactId>jenkins-client</artifactId>
-      <version>0.3.8</version>
-    </dependency>
-  </dependencies>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>kings-devops-jenkins</artifactId>
+    <parent>
+        <groupId>io.kings</groupId>
+        <artifactId>kings-devops-third-party</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.offbytwo.jenkins/jenkins-client -->
+        <dependency>
+            <groupId>com.offbytwo.jenkins</groupId>
+            <artifactId>jenkins-client</artifactId>
+            <version>0.3.8</version>
+        </dependency>
+    </dependencies>
 </project>

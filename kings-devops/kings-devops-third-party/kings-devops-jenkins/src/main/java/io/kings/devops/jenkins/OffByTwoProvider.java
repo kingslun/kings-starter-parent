@@ -1,9 +1,10 @@
 package io.kings.devops.jenkins;
 
 import com.offbytwo.jenkins.JenkinsServer;
+import lombok.AllArgsConstructor;
+
 import java.net.URI;
 import java.net.URISyntaxException;
-import lombok.AllArgsConstructor;
 
 /**
  * off by two Jenkins客户端实现

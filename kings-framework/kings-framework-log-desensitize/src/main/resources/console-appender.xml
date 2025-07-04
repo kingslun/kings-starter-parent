@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <included>
-  <appender name="console-appender" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="io.kings.framework.log.desensitize.PatternLayoutEncoder">
-      <desensitize>${LOG_DESENSITIZE}</desensitize>
-      <depth>${LOG_DESENSITIZE_DEPTH}</depth>
-      <maxLength>${LOG_DESENSITIZE_MAXLENGTH}</maxLength>
-      <matchType>${LOG_DESENSITIZE_MATCH_TYPE}</matchType>
-      <regular>${LOG_DESENSITIZE_MATCH_REGULAR}</regular>
-      <regularEndWith>${LOG_DESENSITIZE_MATCH_REGULAR_END_WITH}</regularEndWith>
-      <pattern>${LOG_PATTERN_MULTICOLOR}</pattern>
-    </encoder>
-  </appender>
+    <appender name="console-appender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="io.kings.framework.log.desensitize.PatternLayoutEncoder">
+            <desensitize>${LOG_DESENSITIZE}</desensitize>
+            <depth>${LOG_DESENSITIZE_DEPTH}</depth>
+            <maxLength>${LOG_DESENSITIZE_MAXLENGTH}</maxLength>
+            <matchType>${LOG_DESENSITIZE_MATCH_TYPE}</matchType>
+            <regular>${LOG_DESENSITIZE_MATCH_REGULAR}</regular>
+            <regularEndWith>${LOG_DESENSITIZE_MATCH_REGULAR_END_WITH}</regularEndWith>
+            <pattern>${LOG_PATTERN_MULTICOLOR}</pattern>
+        </encoder>
+    </appender>
 </included>

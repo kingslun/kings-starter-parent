@@ -1,8 +1,8 @@
 package io.kings.framework.data.serializer;
 
-import static io.kings.framework.data.serializer.Serializer.SERIALIZE_ENABLE_PREFIX;
-
 import io.kings.framework.core.condition.AbstractPropertyCondition;
+
+import static io.kings.framework.data.serializer.Serializer.SERIALIZE_ENABLE_PREFIX;
 
 /**
  * 序列化装载条件

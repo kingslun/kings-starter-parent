@@ -23,9 +23,11 @@ import io.kings.devops.backend.ci.auto.openapi.vo.TaskType;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo.DeleteState;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanRepository;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -46,8 +48,8 @@ import org.springframework.util.StringUtils;
 abstract class AbstractJenkinsTask4SonarScan {
 
     protected AbstractJenkinsTask4SonarScan(@NonNull JenkinsTaskSonarScanRepository repository,
-        ConfigurationManager configurationManager, DelayTaskCacheManager delayTaskCacheManager,
-        GitLabWebhookService gitLabWebhookService) {
+                                            ConfigurationManager configurationManager, DelayTaskCacheManager delayTaskCacheManager,
+                                            GitLabWebhookService gitLabWebhookService) {
         this.repository = repository;
         this.configurationManager = configurationManager;
         this.delayTaskCacheManager = delayTaskCacheManager;
@@ -67,7 +69,7 @@ abstract class AbstractJenkinsTask4SonarScan {
     static {
         try {
             InputStream stream = AbstractJenkinsTask4SonarScan.class.getResourceAsStream(
-                "/jenkins-task-sonar-scan-template.xml");
+                    "/jenkins-task-sonar-scan-template.xml");
             if (stream == null) {
                 throw new JenkinsException(JENKINS_TASK_TEMPLATE_NOTFOUND);
             }
@@ -84,7 +86,7 @@ abstract class AbstractJenkinsTask4SonarScan {
     private static final String JENKINS_TIMEZONE = "TZ=Asia/Shanghai\n";
 
     public final CreateSonarScanTaskResponseVo createStaticScanTask(
-        CreateSonarScanTaskRequestVo requestVo) {
+            CreateSonarScanTaskRequestVo requestVo) {
         try {
             ExecuteContext context = this.preCreateSonarScanTask(requestVo);
             this.doCreateSonarScanTask(context);
@@ -107,8 +109,8 @@ abstract class AbstractJenkinsTask4SonarScan {
             cached.future.cancel(true);
             delayTaskCacheManager.remove(projectKey);
             log.info(
-                "It is no longer necessary to execute the original delayed task {} when creating a auto executable task.now canceled",
-                cached.information());
+                    "It is no longer necessary to execute the original delayed task {} when creating a auto executable task.now canceled",
+                    cached.information());
         }
     }
 
@@ -157,20 +159,20 @@ abstract class AbstractJenkinsTask4SonarScan {
 
     //1、参数验证  2、配置Jenkins 3、存储任务
     protected ExecuteContext preCreateSonarScanTask(CreateSonarScanTaskRequestVo requestVo)
-        throws IOException {
+            throws IOException {
         //filling default config
         if (!StringUtils.hasText(requestVo.getRootPomPath())) {
             requestVo.setRootPomPath(ROOT_POM_PATH);
         }
 
         final String projectKey = projectKeyGenerator.projectKey(requestVo.getEnv(),
-            requestVo.getAppName(), requestVo.getBranch());
+                requestVo.getAppName(), requestVo.getBranch());
         final JenkinsTaskSonarScanDo before = repository.findByProjectKey(projectKey);
         final JenkinsTaskSonarScanDo now = rebuildDo(requestVo, before);
         now.setProjectKey(projectKey);
         final TaskType taskType = requestVo.getTaskType();
         final JenkinsServer jenkinsServer = this.configurationManager.jenkinsServer(
-            requestVo.getEnv());
+                requestVo.getEnv());
         //context
         ExecuteContext context = DefaultExecuteContext.from(requestVo);
         //manual valid startTime
@@ -183,20 +185,20 @@ abstract class AbstractJenkinsTask4SonarScan {
         }
         //gitlab valid event
         String projectPath =
-            before == null ? now.getGitlabProjectPath() : before.getGitlabProjectPath();
+                before == null ? now.getGitlabProjectPath() : before.getGitlabProjectPath();
         if (TaskType.GITLAB_EVENT == taskType) {
             this.validGitlabEvent(requestVo.getWebhook());
             boolean push = BooleanUtils.isTrue(requestVo.getWebhook().getEnablePushEvents());
             boolean mr = BooleanUtils.isTrue(requestVo.getWebhook().getEnableMergeRequestEvents());
             boolean ssl = BooleanUtils.isTrue(requestVo.getWebhook().getEnableSslVerification());
             context.setWebhook(new WebhookObject().enablePushEvents(push)
-                //push the associated branch
-                .pushEventsBranchFilter(requestVo.getBranch()).enableMergeRequestEvents(mr)
-                .secretToken(requestVo.getWebhook().getSecretToken()).enableSslVerification(ssl)
-                .projectPath(projectPath));
+                    //push the associated branch
+                    .pushEventsBranchFilter(requestVo.getBranch()).enableMergeRequestEvents(mr)
+                    .secretToken(requestVo.getWebhook().getSecretToken()).enableSslVerification(ssl)
+                    .projectPath(projectPath));
         } else {
             context.setWebhook(new WebhookObject().projectPath(projectPath)
-                .pushEventsBranchFilter(requestVo.getBranch()));
+                    .pushEventsBranchFilter(requestVo.getBranch()));
         }
         Element root = JENKINS_TASK_MAVEN_PROJECT_TEMPLATE.getRootElement();
         //filling jenkins job description
@@ -210,9 +212,9 @@ abstract class AbstractJenkinsTask4SonarScan {
         String variablesCmd = goals.getText().trim();
         SonarQube sonarQube = configurationManager.sonarQube(requestVo.getEnv());
         String cmd = variablesCmd.replaceFirst(VARIABLE_REGEXP, requestVo.getRootPomPath())
-            .replaceFirst(VARIABLE_REGEXP, sonarQube.host())
-            .replaceFirst(VARIABLE_REGEXP, sonarQube.login())
-            .replaceFirst(VARIABLE_REGEXP, projectKey).replaceFirst(VARIABLE_REGEXP, projectKey);
+                .replaceFirst(VARIABLE_REGEXP, sonarQube.host())
+                .replaceFirst(VARIABLE_REGEXP, sonarQube.login())
+                .replaceFirst(VARIABLE_REGEXP, projectKey).replaceFirst(VARIABLE_REGEXP, projectKey);
         goals.setText(cmd);
 
         DefaultElement triggers = new DefaultElement("triggers");
@@ -222,11 +224,11 @@ abstract class AbstractJenkinsTask4SonarScan {
             Element scm = root.element("scm");
             Git git = configurationManager.git(requestVo.getAppName());
             Element userRemoteConfig = scm.element("userRemoteConfigs")
-                .element("hudson.plugins.git.UserRemoteConfig");
+                    .element("hudson.plugins.git.UserRemoteConfig");
             userRemoteConfig.element("url").setText(git.url());
             userRemoteConfig.element("credentialsId").setText(git.credentialsId());
             scm.element("branches").element("hudson.plugins.git.BranchSpec").element("name")
-                .setText(requestVo.getBranch());
+                    .setText(requestVo.getBranch());
             //filling cron
             DefaultElement timerTrigger = new DefaultElement("hudson.triggers.TimerTrigger");
             DefaultElement spec = new DefaultElement("spec");
@@ -273,7 +275,7 @@ abstract class AbstractJenkinsTask4SonarScan {
     }
 
     private JenkinsTaskSonarScanDo updateDo(JenkinsTaskSonarScanDo before,
-        JenkinsTaskSonarScanDo now) {
+                                            JenkinsTaskSonarScanDo now) {
         before.setDescription(now.getDescription());
         before.setCron(now.getCron());
         before.setRootPomPath(now.getRootPomPath());
@@ -286,7 +288,7 @@ abstract class AbstractJenkinsTask4SonarScan {
     }
 
     private JenkinsTaskSonarScanDo rebuildDo(CreateSonarScanTaskRequestVo requestVo,
-        JenkinsTaskSonarScanDo old) {
+                                             JenkinsTaskSonarScanDo old) {
         JenkinsTaskSonarScanDo taskDo = new JenkinsTaskSonarScanDo();
         taskDo.setDescription(requestVo.getTaskDescription());
         taskDo.setAppName(requestVo.getAppName());
@@ -297,7 +299,7 @@ abstract class AbstractJenkinsTask4SonarScan {
         taskDo.setCron(requestVo.getCron());
         //trigger time
         taskDo.setStartTime(
-            requestVo.getStartTime() == null ? new Date() : requestVo.getStartTime());
+                requestVo.getStartTime() == null ? new Date() : requestVo.getStartTime());
         taskDo.setIsDelete(DeleteState.NO.getState());
         if (old == null) {
             //filling sonar info

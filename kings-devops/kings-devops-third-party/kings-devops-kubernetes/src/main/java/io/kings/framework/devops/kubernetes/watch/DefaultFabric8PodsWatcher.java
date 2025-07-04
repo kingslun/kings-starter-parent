@@ -2,9 +2,10 @@ package io.kings.framework.devops.kubernetes.watch;
 
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.Watch;
-import java.util.concurrent.ExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * 基于Fabric8框架实现的对k8s集群下指定namespace节点下所有pod实例状态监控管理的注册中心 能基于pod生命周期内各个阶段进行快速响应 feature:对pod宕机进行检测
@@ -20,7 +21,7 @@ public class DefaultFabric8PodsWatcher extends AbstractFabric8PodsWatcher {
     }
 
     public DefaultFabric8PodsWatcher(KubernetesClient client, K8sPodListener listener,
-        ExecutorService service) {
+                                     ExecutorService service) {
         super(client, listener, service);
     }
 

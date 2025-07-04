@@ -2,8 +2,10 @@ package io.kings.devops.backend.ci.auto.jenkins;
 
 import io.kings.devops.backend.ci.auto.gitlab.GitLabWebhookService;
 import io.kings.devops.backend.ci.auto.openapi.vo.TaskType;
+
 import java.util.EnumMap;
 import java.util.Objects;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ class SonarScanTaskExecutorFactory implements InitializingBean {
     private final GitLabWebhookService gitLabWebHookService;
 
     SonarScanTaskExecutorFactory(JenkinsTaskTrigger jenkinsTaskTrigger,
-        DelayTaskCacheManager delayTaskCacheManager, GitLabWebhookService gitLabWebHookService) {
+                                 DelayTaskCacheManager delayTaskCacheManager, GitLabWebhookService gitLabWebHookService) {
         this.jenkinsTaskTrigger = jenkinsTaskTrigger;
         this.delayTaskCacheManager = delayTaskCacheManager;
         this.gitLabWebHookService = gitLabWebHookService;
@@ -33,9 +35,9 @@ class SonarScanTaskExecutorFactory implements InitializingBean {
     @Override
     public void afterPropertiesSet() {
         executors.put(TaskType.GITLAB_EVENT,
-            new GitLabEventSonarScanTaskExecutor(gitLabWebHookService));
+                new GitLabEventSonarScanTaskExecutor(gitLabWebHookService));
         executors.put(TaskType.MANUAL,
-            new ManualSonarScanTaskExecutor(jenkinsTaskTrigger, delayTaskCacheManager));
+                new ManualSonarScanTaskExecutor(jenkinsTaskTrigger, delayTaskCacheManager));
         executors.put(TaskType.SCHEDULE, new ScheduleSonarScanTaskExecutor());
     }
 

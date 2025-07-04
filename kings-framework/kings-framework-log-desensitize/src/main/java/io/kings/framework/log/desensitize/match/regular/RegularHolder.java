@@ -1,10 +1,11 @@
 package io.kings.framework.log.desensitize.match.regular;
 
 import io.kings.framework.log.desensitize.DesensitizeException;
-import java.util.Collections;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * logback脱敏规则

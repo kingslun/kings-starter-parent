@@ -5,10 +5,12 @@ import static io.kings.devops.backend.ci.auto.Response.Status.GITLAB_WEBHOOK_DEL
 import static io.kings.devops.backend.ci.auto.Response.Status.GITLAB_WEBHOOK_PATCH_FAILURE;
 
 import io.kings.devops.backend.ci.auto.BooleanUtils;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab4j.api.GitLabApiException;
 import org.gitlab4j.api.ProjectApi;
@@ -65,7 +67,7 @@ class GitLabWebhookServiceImpl implements GitLabWebhookService {
                 //绑定过分支说明设置了push事件则需要与当前分支做匹配
                 //若分支相同则说明是关注的hook
                 WebhookObject hook0 = matchHook(hook, projectPath,
-                    webhookObject.pushEventsBranchFilter());
+                        webhookObject.pushEventsBranchFilter());
                 if (hook0 != null) {
                     if (cacheIfAbsent) {
                         this.hooksMap.put(cachedKey, hook0);
@@ -97,8 +99,8 @@ class GitLabWebhookServiceImpl implements GitLabWebhookService {
     private WebhookObject matchHook(ProjectHook hook, String projectPath, String branch) {
         String branch0 = hook.getPushEventsBranchFilter();
         return BooleanUtils.isTrue(hook.getPushEvents()) && StringUtils.hasText(branch0)
-            && !Objects.equals(branch0, branch) ? null
-            : new WebhookObject().projectPath(projectPath).hookId(hook.getId())
+                && !Objects.equals(branch0, branch) ? null
+                : new WebhookObject().projectPath(projectPath).hookId(hook.getId())
                 .projectId(hook.getProjectId()).secretToken(hook.getToken())
                 .enableSslVerification(hook.getEnableSslVerification())
                 .enablePushEvents(hook.getPushEvents())
@@ -145,10 +147,10 @@ class GitLabWebhookServiceImpl implements GitLabWebhookService {
                 }
             } else {
                 ProjectHook projectHook = projectApi.addHook(request.projectPath(), zeusWebhook,
-                    projectHook(request), request.enableSslVerification(), request.secretToken());
+                        projectHook(request), request.enableSslVerification(), request.secretToken());
                 //add
                 final WebhookObject hook = request.hookId(projectHook.getId())
-                    .projectId(projectHook.getProjectId());
+                        .projectId(projectHook.getProjectId());
                 hooksMap.put(cachedKey, hook);
                 log.info("added gitlab webhook:{}", hook);
             }

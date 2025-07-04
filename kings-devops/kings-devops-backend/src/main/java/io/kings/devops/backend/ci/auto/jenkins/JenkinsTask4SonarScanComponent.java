@@ -11,7 +11,9 @@ import io.kings.devops.backend.ci.auto.gitlab.WebhookObject;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo.DeleteState;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanRepository;
+
 import java.io.IOException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -29,11 +31,11 @@ public class JenkinsTask4SonarScanComponent extends AbstractJenkinsTask4SonarSca
     private final SonarScanTaskExecutorFactory sonarScanTaskExecutorFactory;
 
     JenkinsTask4SonarScanComponent(JenkinsTaskSonarScanRepository sonarScanTaskComponent,
-        ConfigurationManager configurationManager,
-        SonarScanTaskExecutorFactory sonarScanTaskExecutorFactory,
-        DelayTaskCacheManager delayTaskCacheManager, GitLabWebhookService gitLabWebhookService) {
+                                   ConfigurationManager configurationManager,
+                                   SonarScanTaskExecutorFactory sonarScanTaskExecutorFactory,
+                                   DelayTaskCacheManager delayTaskCacheManager, GitLabWebhookService gitLabWebhookService) {
         super(sonarScanTaskComponent, configurationManager, delayTaskCacheManager,
-            gitLabWebhookService);
+                gitLabWebhookService);
         this.sonarScanTaskExecutorFactory = sonarScanTaskExecutorFactory;
     }
 
@@ -66,7 +68,7 @@ public class JenkinsTask4SonarScanComponent extends AbstractJenkinsTask4SonarSca
         cancelDelayTaskIfPresent(projectKey);
         //remove webhook
         clearGitlabWebhookIfPresent(new WebhookObject().projectPath(task.getGitlabProjectPath())
-            .pushEventsBranchFilter(task.getBranch()));
+                .pushEventsBranchFilter(task.getBranch()));
     }
 
     @Override
@@ -74,7 +76,7 @@ public class JenkinsTask4SonarScanComponent extends AbstractJenkinsTask4SonarSca
         JenkinsTaskSonarScanDo task = queryAndValid(projectKey);
         try {
             JobWithDetails job = configurationManager.jenkinsServer(task.getEnv())
-                .getJob(projectKey);
+                    .getJob(projectKey);
             if (job == null) {
                 throw new JenkinsException(Status.JENKINS_TASK_NOTFOUND);
             }

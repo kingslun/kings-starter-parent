@@ -8,14 +8,11 @@ import io.fabric8.kubernetes.client.dsl.RollableScalableResource;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * deployment资源操作
@@ -25,7 +22,7 @@ import org.springframework.util.StringUtils;
  * @since v2.3
  */
 class DefaultDeploymentResource extends
-    AbstractKubernetesResource<KubernetesClient> implements DeploymentResource {
+        AbstractKubernetesResource<KubernetesClient> implements DeploymentResource {
 
     DefaultDeploymentResource(KubernetesClient client) {
         super(client);
@@ -50,7 +47,7 @@ class DefaultDeploymentResource extends
         RollableScalableResource<Deployment> resource = this.resourceOpt(params);
         final Deployment deployment = get(resource);
         final Map<String, String> labels = deployment.getSpec().getTemplate().getMetadata()
-            .getLabels();
+                .getLabels();
         labels.put("updatedTimestamp", String.valueOf(System.currentTimeMillis()));
         return resource.patch(deployment) != null;
     }
@@ -62,7 +59,7 @@ class DefaultDeploymentResource extends
         final Deployment deployment = get(resourceOpt);
 //          /spec/template/spec/containers/0/image
         deployment.getSpec().getTemplate().getSpec().getContainers().get(0)
-            .setImage(params.image());
+                .setImage(params.image());
         return resourceOpt.patch(deployment) != null;
     }
 
@@ -74,10 +71,10 @@ class DefaultDeploymentResource extends
     @Override
     public List<Deployment> getList(DeploymentResource.Params params) {
         DeploymentList deploymentList = Optional.of(client.apps().deployments()).map(
-                i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
-            .map(
-                i -> CollectionUtils.isEmpty(params.labels()) ? i.withLabels(params.labels()).list()
-                    : i.list()).orElseThrow(KubernetesResourceNotFoundException::new);
+                        i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
+                .map(
+                        i -> CollectionUtils.isEmpty(params.labels()) ? i.withLabels(params.labels()).list()
+                                : i.list()).orElseThrow(KubernetesResourceNotFoundException::new);
         if (deploymentList == null || CollectionUtils.isEmpty(deploymentList.getItems())) {
             return Collections.emptyList();
         }
@@ -101,16 +98,16 @@ class DefaultDeploymentResource extends
     private RollableScalableResource<Deployment> resourceOpt(DeploymentResource.Params params) {
         Assert.hasText(params.name(), "query deployment must had an name");
         return Optional.of(client.apps().deployments()).map(
-                i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
-            .map(i -> i.withName(params.name()))
-            .orElseThrow(KubernetesResourceNotFoundException::new);
+                        i -> StringUtils.hasText(params.namespace()) ? i.inNamespace(params.namespace()) : i)
+                .map(i -> i.withName(params.name()))
+                .orElseThrow(KubernetesResourceNotFoundException::new);
     }
 
     @Override
     public boolean replace(DeploymentResource.Params params) {
         Assert.hasText(params.yaml(), "replace must had yaml config");
         return this.resourceOpt(params).replace(this.yaml.loadAs(params.yaml(), Deployment.class))
-            != null;
+                != null;
     }
 
     @Override
@@ -123,7 +120,7 @@ class DefaultDeploymentResource extends
         // 已经准备好的副本数
         Integer readyReplicas = status.getReadyReplicas();
         if (Objects.equals(replicas, availableReplicas) && Objects.equals(availableReplicas,
-            readyReplicas)) {
+                readyReplicas)) {
             return DeployStatus.SUCCESS;
         } else {
             return DeployStatus.ONGOING;

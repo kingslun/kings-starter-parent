@@ -1,10 +1,11 @@
 package io.kings.framework.util.thread;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>创建标准的线程工厂 octopus标准</p>
@@ -60,8 +61,8 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
      * @param separators        线程名称中分隔符 默认'-'
      */
     private ThreadFactory(String poolName, boolean showPoolNumber, int poolNumberIndex,
-        String threadName, boolean showThreadNumber, int threadNumberIndex,
-        char separators) {
+                          String threadName, boolean showThreadNumber, int threadNumberIndex,
+                          char separators) {
         Assert.hasText(threadName, "ThreadFactory must have a thread name");
         threadNumber = new AtomicInteger(threadNumberIndex > 0 ? threadNumberIndex : 1);
         this.showThreadNumber = showThreadNumber;
@@ -73,8 +74,8 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
             prefix.append(poolName);
             if (showPoolNumber) {
                 prefix.append(this.separators)
-                    .append(POOL_NUMBER.getAndIncrement() + poolNumberIndex >= 0 ?
-                        poolNumberIndex : 0);
+                        .append(POOL_NUMBER.getAndIncrement() + poolNumberIndex >= 0 ?
+                                poolNumberIndex : 0);
             }
             prefix.append(this.separators);
         }
@@ -107,7 +108,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
      * @param threadNumberIndex 线程编号开始下标
      */
     public static java.util.concurrent.ThreadFactory namedThreadFactoryWithIndex(String threadName,
-        int threadNumberIndex) {
+                                                                                 int threadNumberIndex) {
         return new ThreadFactory("pool", true, 0, threadName, true, threadNumberIndex, '-');
     }
 
@@ -118,7 +119,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
      * @param threadName 线程名称
      */
     public static java.util.concurrent.ThreadFactory namedPoolThreadFactoryWithoutNumber(String poolName,
-        String threadName) {
+                                                                                         String threadName) {
         return new ThreadFactory(poolName, false, 0, threadName, false, 1, '-');
     }
 
@@ -139,7 +140,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
      * @param threadName 线程名称
      */
     public static java.util.concurrent.ThreadFactory namedPoolThreadFactoryWithSeparator(String poolName,
-        String threadName, char separators) {
+                                                                                         String threadName, char separators) {
         return new ThreadFactory(poolName, true, 0, threadName, true, 1, separators);
     }
 
@@ -154,9 +155,9 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory {
     public Thread newThread(@NonNull Runnable r) {
         Objects.requireNonNull(r);
         String threadName =
-            this.showThreadNumber ?
-                this.namePrefix + this.separators + this.threadNumber.getAndIncrement() :
-                this.namePrefix;
+                this.showThreadNumber ?
+                        this.namePrefix + this.separators + this.threadNumber.getAndIncrement() :
+                        this.namePrefix;
         Thread t = new Thread(this.group, r, threadName, 0);
         if (t.isDaemon()) {
             t.setDaemon(false);

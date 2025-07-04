@@ -1,10 +1,11 @@
 package com.kings.base.juc;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 class MapTest {
 
@@ -55,9 +56,9 @@ class MapTest {
         @Override
         public String toString() {
             return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                '}';
+                    "name='" + name + '\'' +
+                    ", age=" + age +
+                    '}';
         }
     }
 }

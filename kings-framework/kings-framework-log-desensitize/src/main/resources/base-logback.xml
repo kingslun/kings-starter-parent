@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--定义公共配置-->
 <included>
-  <!--日志编码-->
-  <property name="CHARSET" value="utf-8"/>
-  <!-- 设置变量LOG_PATH，用于指定名为FILE的appender的目的文件存放的目录 -->
-  <property name="LOG_PATH" value="/data/log"/>
-  <!--彩色控制台输出格式-->
-  <property name="LOG_PATTERN_MULTICOLOR"
-    value="%yellow(%d{YYYY-MM-dd HH:mm:ss.SSS}) %magenta([%thread]) %cyan(%level) [%green(%X{userId})] : %highlight(%msg%n)"/>
-  <!--普通日志输出格式-->
-  <property name="LOG_PATTERN"
-    value="%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %level [%X{userId}] : %msg%n"/>
-  <!-- 用于指定logger上下文名称，默认为default -->
-  <contextName>${APP_NAME}</contextName>
-  <!--  脱敏配置入口-->
-  <conversionRule conversionWord="msg"
-    converterClass="io.kings.framework.log.desensitize.LogSensitiveConverter"/>
-  <!-- ************************常用的Appender************************************** -->
-  <include resource="console-appender.xml"/>
-  <include resource="desensitize-appender.xml"/>
-  <logger name="desensitize-logger" level="debug" additivity="false">
-    <appender-ref ref="console-appender"/>
-    <appender-ref ref="desensitize-appender"/>
-  </logger>
+    <!--日志编码-->
+    <property name="CHARSET" value="utf-8"/>
+    <!-- 设置变量LOG_PATH，用于指定名为FILE的appender的目的文件存放的目录 -->
+    <property name="LOG_PATH" value="/data/log"/>
+    <!--彩色控制台输出格式-->
+    <property name="LOG_PATTERN_MULTICOLOR"
+              value="%yellow(%d{YYYY-MM-dd HH:mm:ss.SSS}) %magenta([%thread]) %cyan(%level) [%green(%X{userId})] : %highlight(%msg%n)"/>
+    <!--普通日志输出格式-->
+    <property name="LOG_PATTERN"
+              value="%d{YYYY-MM-dd HH:mm:ss.SSS} [%thread] %level [%X{userId}] : %msg%n"/>
+    <!-- 用于指定logger上下文名称，默认为default -->
+    <contextName>${APP_NAME}</contextName>
+    <!--  脱敏配置入口-->
+    <conversionRule conversionWord="msg"
+                    converterClass="io.kings.framework.log.desensitize.LogSensitiveConverter"/>
+    <!-- ************************常用的Appender************************************** -->
+    <include resource="console-appender.xml"/>
+    <include resource="desensitize-appender.xml"/>
+    <logger name="desensitize-logger" level="debug" additivity="false">
+        <appender-ref ref="console-appender"/>
+        <appender-ref ref="desensitize-appender"/>
+    </logger>
 </included>

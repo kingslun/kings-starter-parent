@@ -1,11 +1,12 @@
 package io.kings.framework.devops.kubernetes.model;
 
-import java.time.OffsetDateTime;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * kubernetes deployment描述对象

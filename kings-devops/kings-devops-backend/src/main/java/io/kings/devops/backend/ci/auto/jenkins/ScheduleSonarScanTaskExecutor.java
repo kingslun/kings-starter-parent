@@ -17,6 +17,6 @@ class ScheduleSonarScanTaskExecutor implements SonarScanTaskExecutor {
     public void execute(ExecuteContext context) {
         //log
         log.info("Create a scheduled scan task with context:{}, cron express:[{}]", context,
-            context.cron());
+                context.cron());
     }
 }

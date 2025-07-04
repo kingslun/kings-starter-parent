@@ -28,5 +28,5 @@ public interface SonarApi {
      */
     @GetMapping("/api/measures/component")
     MetricResponseDto metrics(@RequestParam("componentKey") String projectKey,
-        @RequestParam("metricKeys") String metricKeys);
+                              @RequestParam("metricKeys") String metricKeys);
 }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -30,7 +31,7 @@ public class MetricDictionary {
     static {
         try {
             InputStream stream = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("sonar-metrics-dictionary-zh.properties");
+                    .getResourceAsStream("sonar-metrics-dictionary-zh.properties");
             Properties properties = new Properties();
             properties.load(stream);
             properties.forEach((k, v) -> METRICS_MAP.put(String.valueOf(k), String.valueOf(v)));

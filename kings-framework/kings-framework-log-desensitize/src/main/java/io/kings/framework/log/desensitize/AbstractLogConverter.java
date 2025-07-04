@@ -1,14 +1,6 @@
 package io.kings.framework.log.desensitize;
 
 
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_DEPTH;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_MATCH_REGULAR;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_MATCH_REGULAR_END_WITH;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_MATCH_TYPE;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_MAXLENGTH;
-import static io.kings.framework.log.desensitize.PatternLayoutEncoder.LOG_DESENSITIZE_USE_STRING_INTERN;
-
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.DynamicConverter;
 import io.kings.framework.log.desensitize.match.LogMatcher;
@@ -17,8 +9,11 @@ import io.kings.framework.log.desensitize.match.regexp.RegexpMatcher;
 import io.kings.framework.log.desensitize.match.regular.Regular;
 import io.kings.framework.log.desensitize.match.regular.RegularHolder;
 import io.kings.framework.log.desensitize.strategy.Strategy;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import static io.kings.framework.log.desensitize.PatternLayoutEncoder.*;
 
 /**
  * 抽象日志转换器
@@ -49,11 +44,11 @@ abstract class AbstractLogConverter extends DynamicConverter<ILoggingEvent> {
     public void start() {
         this.desensitize = Boolean.parseBoolean(System.getProperty(LOG_DESENSITIZE, "true"));
         this.useIntern = Boolean.parseBoolean(
-            System.getProperty(LOG_DESENSITIZE_USE_STRING_INTERN, "false"));
+                System.getProperty(LOG_DESENSITIZE_USE_STRING_INTERN, "false"));
         this.depth = Integer.parseInt(System.getProperty(LOG_DESENSITIZE_DEPTH, "128"));
         this.maxLength = Integer.parseInt(System.getProperty(LOG_DESENSITIZE_MAXLENGTH, "1024"));
         MatchType matchType = MatchType.of(
-            System.getProperty(LOG_DESENSITIZE_MATCH_TYPE, "KEYWORD"));
+                System.getProperty(LOG_DESENSITIZE_MATCH_TYPE, "KEYWORD"));
         this.logMatcher = this.logMatcher(matchType);
         //regular
         String regular = System.getProperty(LOG_DESENSITIZE_MATCH_REGULAR);
@@ -69,7 +64,7 @@ abstract class AbstractLogConverter extends DynamicConverter<ILoggingEvent> {
                 }
                 Strategy strategy = Strategy.of(seconds[0]);
                 regulars.put(strategy.getKeyword(),
-                    new Regular(strategy, seconds[1].split(THIRD_LEVEL_SEPARATOR), endWith));
+                        new Regular(strategy, seconds[1].split(THIRD_LEVEL_SEPARATOR), endWith));
             }
         } else {
             for (String keyword : Strategy.keywords()) {

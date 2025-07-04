@@ -1,9 +1,11 @@
 package io.kings.devops.backend.ci.auto.openapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -92,7 +94,7 @@ public class WebhookRequestDto implements Serializable {
         @Override
         public String toString() {
             return "MergeMediaData{sourceBranch='" + sourceBranch + "', targetBranch='"
-                + targetBranch + "', state=" + state + '}';
+                    + targetBranch + "', state=" + state + '}';
         }
     }
 
@@ -105,7 +107,7 @@ public class WebhookRequestDto implements Serializable {
         static MergeState of(String state) {
             if (StringUtils.hasText(state)) {
                 return Arrays.stream(MergeState.values())
-                    .filter(i -> Objects.equals(i.state, state)).findFirst().orElse(OTHER);
+                        .filter(i -> Objects.equals(i.state, state)).findFirst().orElse(OTHER);
             }
             return null;
         }
@@ -123,7 +125,7 @@ public class WebhookRequestDto implements Serializable {
         static Kind of(String kind) {
             if (StringUtils.hasText(kind)) {
                 return Arrays.stream(Kind.values()).filter(i -> Objects.equals(i.eventKind, kind))
-                    .findFirst().orElse(OTHER);
+                        .findFirst().orElse(OTHER);
             }
             return null;
         }
@@ -132,7 +134,7 @@ public class WebhookRequestDto implements Serializable {
     @Override
     public String toString() {
         return "GitlabWebhookRequest{" + "kind=" + kind + ", project=" + project + ", branch='"
-            + branch + "', totalCommitsCount=" + totalCommitsCount + ", mergeMediaData="
-            + objectAttributes + '}';
+                + branch + "', totalCommitsCount=" + totalCommitsCount + ", mergeMediaData="
+                + objectAttributes + '}';
     }
 }

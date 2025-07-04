@@ -2,6 +2,7 @@ package io.kings.devops.backend.ci.auto.gitlab;
 
 import java.io.Serializable;
 import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -42,27 +43,27 @@ public class WebhookObject implements Serializable {
         }
         WebhookObject that = (WebhookObject) o;
         return Objects.equals(hookId, that.hookId) && Objects.equals(projectId, that.projectId)
-            && Objects.equals(projectPath, that.projectPath)
-            && enableSslVerification == that.enableSslVerification
-            && enablePushEvents == that.enablePushEvents
-            && enableMergeRequestEvents == that.enableMergeRequestEvents && Objects.equals(
-            secretToken, that.secretToken) && Objects.equals(pushEventsBranchFilter,
-            that.pushEventsBranchFilter);
+                && Objects.equals(projectPath, that.projectPath)
+                && enableSslVerification == that.enableSslVerification
+                && enablePushEvents == that.enablePushEvents
+                && enableMergeRequestEvents == that.enableMergeRequestEvents && Objects.equals(
+                secretToken, that.secretToken) && Objects.equals(pushEventsBranchFilter,
+                that.pushEventsBranchFilter);
     }
 
     @Override
     public String toString() {
         return "WebhookObject{" + "projectPath='" + projectPath + "', secretToken='" + secretToken
-            + "', enableSslVerification=" + enableSslVerification + ", enablePushEvents="
-            + enablePushEvents + ", pushEventsBranchFilter='" + pushEventsBranchFilter
-            + "', enableMergeRequestEvents=" + enableMergeRequestEvents + ", hookId=" + hookId
-            + ", projectId=" + projectId + '}';
+                + "', enableSslVerification=" + enableSslVerification + ", enablePushEvents="
+                + enablePushEvents + ", pushEventsBranchFilter='" + pushEventsBranchFilter
+                + "', enableMergeRequestEvents=" + enableMergeRequestEvents + ", hookId=" + hookId
+                + ", projectId=" + projectId + '}';
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(projectPath, secretToken, enableSslVerification, enablePushEvents,
-            pushEventsBranchFilter, enableMergeRequestEvents, hookId, projectId);
+                pushEventsBranchFilter, enableMergeRequestEvents, hookId, projectId);
     }
 
     //================================feature events================================

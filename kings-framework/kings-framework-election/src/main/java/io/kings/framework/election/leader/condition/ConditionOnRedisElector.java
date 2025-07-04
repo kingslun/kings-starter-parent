@@ -1,14 +1,11 @@
 package io.kings.framework.election.leader.condition;
 
-import static io.kings.framework.election.leader.DistributedElectionProperties.ELECTION_TYPE_PREFIX;
-
 import io.kings.framework.core.condition.AbstractPropertyCondition;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.*;
+
+import static io.kings.framework.election.leader.DistributedElectionProperties.ELECTION_TYPE_PREFIX;
 
 /**
  * redis选举器
@@ -29,7 +26,7 @@ public @interface ConditionOnRedisElector {
         @Override
         public boolean match() {
             return super.expectation(ELECTION_TYPE_PREFIX, "redis") || super.expectation(
-                ELECTION_TYPE_PREFIX, "REDIS");
+                    ELECTION_TYPE_PREFIX, "REDIS");
         }
 
         @Override
@@ -40,8 +37,8 @@ public @interface ConditionOnRedisElector {
         @Override
         public String onMismatch() {
             return String.format(
-                "RedisElector Condition Failure,Maybe because the configuration:%s is missing or not redis",
-                ELECTION_TYPE_PREFIX);
+                    "RedisElector Condition Failure,Maybe because the configuration:%s is missing or not redis",
+                    ELECTION_TYPE_PREFIX);
         }
     }
 }

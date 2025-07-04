@@ -5,14 +5,15 @@ import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.election.leader.DistributedElection;
 import io.kings.framework.election.leader.DistributedElectionProperties;
 import io.kings.framework.election.leader.DistributedElectionRegistry;
-import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * 默认zookeeper-leader选举实现
@@ -23,8 +24,8 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 class ZookeeperDistributedElectionRegistry extends
-    DistributedElectionRegistry.AbstractDistributedElectionRegistry
-    implements Zookeeper, DistributedElectionRegistry {
+        DistributedElectionRegistry.AbstractDistributedElectionRegistry
+        implements Zookeeper, DistributedElectionRegistry {
 
     /**
      * 内部线程池获取 可以暴露出去给外部使用
@@ -56,7 +57,7 @@ class ZookeeperDistributedElectionRegistry extends
             this.leaderLatch.start();
             //add listener
             super.elections()
-                .forEach(e -> this.leaderLatch.addListener(new DistributedElectionFacade(e)));
+                    .forEach(e -> this.leaderLatch.addListener(new DistributedElectionFacade(e)));
         } catch (Exception e) {
             throw new ZookeeperException(e);
         }
@@ -65,8 +66,8 @@ class ZookeeperDistributedElectionRegistry extends
     private final LeaderLatch leaderLatch;
 
     ZookeeperDistributedElectionRegistry(CuratorFramework client,
-        DistributedElectionProperties.Zookeeper zookeeper)
-        throws DistributedElectionException {
+                                         DistributedElectionProperties.Zookeeper zookeeper)
+            throws DistributedElectionException {
         try {
             Assert.notNull(client, "zookeeper client is null");
             Assert.hasText(zookeeper.getPath(), "election path for zookeeper client is empty");

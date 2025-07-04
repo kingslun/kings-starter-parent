@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gitlab
+  namespace: middleware
+  labels:
+    app: gitlab
+spec:
+  serviceName: gitlab
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+        - name: gitlab
+          image: gitlab/gitlab-ce:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "4Gi"
+              cpu: "2000m"
+            limits:
+              memory: "5Gi"
+              cpu: "4000m"
+          ports:
+            - containerPort: 80   # GitLab Web 服务端口
+            - containerPort: 443  # HTTPS 服务端口
+            - containerPort: 22   # SSH 服务端口
+          volumeMounts:
+            - mountPath: /etc/gitlab
+              name: config
+            - mountPath: /var/log/gitlab
+              name: logs
+            - mountPath: /var/opt/gitlab
+              name: data
+            - name: sockets
+              mountPath: /var/opt/gitlab/gitlab-rails/sockets
+      volumes:
+        - name: sockets
+          hostPath:
+            path: /Users/kings/data/gitlab/gitlab-rails/sockets
+            type: DirectoryOrCreate
+        - name: config
+          hostPath:
+            path: /Users/kings/data/gitlab/config
+        - name: logs
+          hostPath:
+            path: /Users/kings/data/gitlab/logs
+        - name: data
+          hostPath:
+            path: /Users/kings/data/gitlab/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-svc
+  namespace: middleware
+spec:
+  selector:
+    app: gitlab
+  ports:
+    - protocol: TCP
+      name: http80
+      port: 80   # 映射 HTTP 服务
+      targetPort: 80
+      nodePort: 30080
+    - protocol: TCP
+      name: http443
+      port: 443  # 映射 HTTPS 服务
+      targetPort: 443
+      nodePort: 30443
+    - protocol: TCP
+      name: http22
+      port: 22   # 映射 SSH 服务
+      targetPort: 22
+      nodePort: 30022
+  type: NodePort  # 或 LoadBalancer，具体取决于环境

@@ -2,10 +2,11 @@ package io.kings.framework.devops.kubernetes;
 
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * deployment资源api

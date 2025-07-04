@@ -5,10 +5,6 @@ import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
 import io.kings.framework.devops.kubernetes.model.enums.DeployStatus;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +15,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 @EnableAutoConfiguration
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KubernetesTest.class)
@@ -28,9 +29,9 @@ public class KubernetesTest {
     private final String name = "demo";
     private final Map<String, String> labels = Collections.singletonMap("app", name);
     private final PodResource.Params podParams = new PodResource.Params().namespace(namespace)
-        .name(name).labels(labels);
+            .name(name).labels(labels);
     private final DeploymentResource.Params deploymentParams = new DeploymentResource.Params().namespace(
-        namespace).name(name).label("app", name);
+            namespace).name(name).label("app", name);
     @Autowired
     private KubernetesApiFactory kubernetesApiFactory;
     private PodResource podResource;

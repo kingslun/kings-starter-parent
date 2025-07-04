@@ -27,8 +27,8 @@ public enum RetryType {
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new RetryUntilElapsed(
-                retry.getRetryCount() * retry.getSleepMsBetweenRetries(),
-                retry.getSleepMsBetweenRetries());
+                    retry.getRetryCount() * retry.getSleepMsBetweenRetries(),
+                    retry.getSleepMsBetweenRetries());
         }
     },
 
@@ -40,7 +40,7 @@ public enum RetryType {
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new RetryNTimes(retry.getRetryCount(),
-                retry.getSleepMsBetweenRetries());
+                    retry.getSleepMsBetweenRetries());
         }
     },
 
@@ -66,8 +66,8 @@ public enum RetryType {
         public RetryPolicy policy(ZookeeperProperties.Retry retry) {
             Assert.notNull(retry, ERROR_MSG);
             return new ExponentialBackoffRetry(
-                retry.getSleepMsBetweenRetries(),
-                retry.getRetryCount());
+                    retry.getSleepMsBetweenRetries(),
+                    retry.getRetryCount());
         }
     };
 

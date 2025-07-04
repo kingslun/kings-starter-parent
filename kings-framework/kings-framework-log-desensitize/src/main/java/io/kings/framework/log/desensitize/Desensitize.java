@@ -1,11 +1,8 @@
 package io.kings.framework.log.desensitize;
 
 import io.kings.framework.log.desensitize.strategy.Strategy;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+
+import java.lang.annotation.*;
 
 /**
  * 日志脱敏定义注解

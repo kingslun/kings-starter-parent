@@ -1,10 +1,11 @@
 package io.kings.framework.log.desensitize;
 
-import java.util.concurrent.TimeUnit;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分别对日志进行脱敏和不脱敏情况交叉耗时测试
@@ -62,7 +63,7 @@ public class DesensitizeTest {
             take += statistics(this.desensitizeLogger, this.printLogCount);
         }
         System.out.printf("脱敏统计:[%s次连续打印%s个日志平均耗时：%s毫秒]%n", this.count, this.printLogCount,
-            (double) take / this.count);
+                (double) take / this.count);
         //异步日志可能还未开始写日志,进程就已经结束、(在验证微量log脱敏时debug自动终止无log,被这个问题坑了很惨)
         TimeUnit.MILLISECONDS.sleep(100);
         Assertions.assertThat(take > 0).isTrue();
@@ -75,7 +76,7 @@ public class DesensitizeTest {
             take += statistics(this.notDesensitizeLogger, this.printLogCount);
         }
         System.out.printf("不脱敏统计:[%s次连续打印%s个日志平均耗时：%s毫秒]%n", this.count, this.printLogCount,
-            (double) take / this.count);
+                (double) take / this.count);
         //异步日志可能还未开始写日志,进程就已经结束、(在验证微量log脱敏时debug自动终止无log,被这个问题坑了很惨)
         TimeUnit.MILLISECONDS.sleep(100);
         Assertions.assertThat(take > 0).isTrue();

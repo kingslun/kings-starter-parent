@@ -2,6 +2,7 @@ package io.kings.devops.backend.ci.auto;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;

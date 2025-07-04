@@ -11,7 +11,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
  */
 
 class DefaultNetworkResource extends
-    AbstractKubernetesResource<KubernetesClient> implements NetworkResource {
+        AbstractKubernetesResource<KubernetesClient> implements NetworkResource {
 
     DefaultNetworkResource(KubernetesClient client) {
         super(client);
@@ -23,7 +23,7 @@ class DefaultNetworkResource extends
     }
 
     static class DefaultServiceResource extends
-        AbstractKubernetesResource<KubernetesClient> implements ServiceResource {
+            AbstractKubernetesResource<KubernetesClient> implements ServiceResource {
 
         DefaultServiceResource(KubernetesClient client) {
             super(client);
@@ -35,7 +35,7 @@ class DefaultNetworkResource extends
         }
 
         @Override
-        public Object status(String namespace,String name) {
+        public Object status(String namespace, String name) {
             return get(client.services().inNamespace(namespace).withName(name)).getStatus();
         }
     }

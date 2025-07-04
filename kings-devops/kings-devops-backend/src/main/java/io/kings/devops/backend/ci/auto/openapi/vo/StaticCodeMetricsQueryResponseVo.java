@@ -2,6 +2,7 @@ package io.kings.devops.backend.ci.auto.openapi.vo;
 
 import java.io.Serializable;
 import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

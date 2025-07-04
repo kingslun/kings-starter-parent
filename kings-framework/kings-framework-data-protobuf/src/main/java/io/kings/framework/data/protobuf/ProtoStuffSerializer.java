@@ -5,6 +5,7 @@ import io.kings.framework.data.serializer.Serializer;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.runtime.RuntimeSchema;
+
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -42,14 +43,12 @@ public class ProtoStuffSerializer implements Serializer {
         }
         try {
             final RuntimeSchema<E> runtimeSchema = (RuntimeSchema<E>) RuntimeSchema.createFrom(
-                serializable.getClass());
+                    serializable.getClass());
             schemaThreadLocal.set(runtimeSchema);
             return ProtostuffIOUtil
-                .toByteArray(serializable, runtimeSchema,
-                    LinkedBuffer.allocate(DEFAULT_BUFFER_SIZE));
+                    .toByteArray(serializable, runtimeSchema, LinkedBuffer.allocate(DEFAULT_BUFFER_SIZE));
         } catch (Exception e) {
-            throw new SerializeException("proto stuff serialized failed,cause:" + e.getMessage(),
-                e);
+            throw new SerializeException("proto stuff serialized failed,cause:" + e.getMessage(), e);
         }
     }
 
@@ -72,8 +71,7 @@ public class ProtoStuffSerializer implements Serializer {
             ProtostuffIOUtil.mergeFrom(bytes, serial, runtimeSchema);
             return serial;
         } catch (Exception e) {
-            throw new SerializeException("proto stuff deserialize failed,cause:" + e.getMessage(),
-                e);
+            throw new SerializeException("proto stuff deserialize failed,cause:" + e.getMessage(), e);
         } finally {
             schemaThreadLocal.remove();
         }

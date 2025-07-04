@@ -8,6 +8,7 @@ import io.kings.framework.log.desensitize.match.MatchResult;
 import io.kings.framework.log.desensitize.match.Segment;
 import io.kings.framework.log.desensitize.match.regular.Regular;
 import io.kings.framework.log.desensitize.strategy.Strategy;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -51,7 +52,7 @@ final class KeywordMatchResult extends AbstractMatchResult implements MatchResul
             Segment segment = new DefaultSegment(super.context, beginIndex, regular.getEndWith());
             //read value of this keyword
             super.pairs[super.pairCount++] = new CursorMatchPair(regular.getStrategy(),
-                segment.beginIndex(), segment.endIndex());
+                    segment.beginIndex(), segment.endIndex());
             //read next
             this.cursor = segment.endIndex();
         }
@@ -93,8 +94,8 @@ final class KeywordMatchResult extends AbstractMatchResult implements MatchResul
                 offset0 = end;
                 //replace pair to appender
                 this.facade.append(super.security(strategy,
-                    useIntern ? source.substring(start, end).intern()
-                        : source.substring(start, end), useIntern));
+                        useIntern ? source.substring(start, end).intern()
+                                : source.substring(start, end), useIntern));
             }
             //tail
             if (offset0 <= super.context.currentValLen()) {
@@ -111,8 +112,8 @@ final class KeywordMatchResult extends AbstractMatchResult implements MatchResul
     @Override
     public String toString() {
         return "MatchResult{" + "message='" + this.facade.source() + "', result='" + (
-            this.facade.readable() ? this.facade.after() : "[not resolved]")
-            + "', timeTakenToReady='" + Optional.ofNullable(super.timeTakenToReady)
-            .map(Duration::toMillis).orElse(null) + "'}";
+                this.facade.readable() ? this.facade.after() : "[not resolved]")
+                + "', timeTakenToReady='" + Optional.ofNullable(super.timeTakenToReady)
+                .map(Duration::toMillis).orElse(null) + "'}";
     }
 }

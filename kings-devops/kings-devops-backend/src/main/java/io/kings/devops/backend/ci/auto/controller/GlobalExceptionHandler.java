@@ -12,8 +12,10 @@ import io.kings.devops.backend.ci.auto.Response.Status;
 import io.kings.devops.backend.ci.auto.gitlab.GitlabException;
 import io.kings.devops.backend.ci.auto.jenkins.JenkinsException;
 import io.kings.devops.backend.ci.auto.sonarqube.SonarqubeException;
+
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab4j.api.GitLabApiException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

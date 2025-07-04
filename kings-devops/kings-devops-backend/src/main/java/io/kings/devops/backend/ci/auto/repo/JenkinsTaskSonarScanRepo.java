@@ -2,6 +2,7 @@ package io.kings.devops.backend.ci.auto.repo;
 
 import java.math.BigInteger;
 import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +16,7 @@ import org.springframework.data.repository.CrudRepository;
  * @since v2.5
  */
 interface JenkinsTaskSonarScanRepo extends CrudRepository<JenkinsTaskSonarScanDo, BigInteger>,
-    JpaSpecificationExecutor<JenkinsTaskSonarScanDo> {
+        JpaSpecificationExecutor<JenkinsTaskSonarScanDo> {
 
     @Query("from JenkinsTaskSonarScanDo where projectKey=:#{#projectKey}")
     JenkinsTaskSonarScanDo findByProjectKey(String projectKey);
@@ -23,7 +24,7 @@ interface JenkinsTaskSonarScanRepo extends CrudRepository<JenkinsTaskSonarScanDo
     //根据gitlab项目和分支查询任务信息
     @Query("from JenkinsTaskSonarScanDo where gitlabProjectPath=:#{#gitlabProjectPath} and branch=:#{#branch} and isDelete='0'")
     JenkinsTaskSonarScanDo findByGitlabProjectPathAndBranch(String gitlabProjectPath,
-        String branch);
+                                                            String branch);
 
     @Modifying
     @Transactional

@@ -38,7 +38,7 @@ public class Response<T> {
          * 手工任务开始时间不合法 或许是因为小于当前时间
          */
         JENKINS_PARAMS_INVALID_START_TIME(400011,
-            "The start time must be greater than the current time!"),
+                "The start time must be greater than the current time!"),
         /**
          * 定时任务必须包含cron表达式
          */
@@ -47,7 +47,7 @@ public class Response<T> {
          * jenkins参数异常 没有git事件
          */
         JENKINS_PARAMS_INVALID_GIT_EVENT(400013,
-            "GitLab event must contain an event may be 'push'!"),
+                "GitLab event must contain an event may be 'push'!"),
         /**
          * Jenkins实时任务执行失败
          */
@@ -79,15 +79,15 @@ public class Response<T> {
          * add webhook错误
          */
         GITLAB_WEBHOOK_CHECK_FAILURE(50001,
-            "check contains gitlab webhook error"), GITLAB_WEBHOOK_PATCH_FAILURE(50002,
-            "patch gitlab webhook error"), GITLAB_WEBHOOK_DELETE_FAILURE(50003,
-            "delete gitlab webhook error"), GITLAB_WEBHOOK_RESOURCE_NOTFOUND(50004,
-            "gitlab webhook resource notfound"),
+                "check contains gitlab webhook error"), GITLAB_WEBHOOK_PATCH_FAILURE(50002,
+                "patch gitlab webhook error"), GITLAB_WEBHOOK_DELETE_FAILURE(50003,
+                "delete gitlab webhook error"), GITLAB_WEBHOOK_RESOURCE_NOTFOUND(50004,
+                "gitlab webhook resource notfound"),
         /**
          * 敬请期待
          */
         UNSUPPORTED(60001, "Unsupported operation,may be coming!"), SONARQUBE_API_CALL_FAIL(70001,
-            "Failed to call sonar api");
+                "Failed to call sonar api");
         private final Integer code;
         private final String msg;
     }

@@ -58,7 +58,7 @@ public interface MatchResult extends StopWatch {
         @Override
         public String toString() {
             return String.format("Pair{keyword='%s',beginIndex='%s',endIndex='%s'}",
-                this.strategy.getKeyword(), this.beginIndex, this.endIndex);
+                    this.strategy.getKeyword(), this.beginIndex, this.endIndex);
         }
     }
 }

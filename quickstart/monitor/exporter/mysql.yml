@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: monitor
+  name: mysql-exporter
+data:
+  .my.cnf: |
+    [client]
+    user=root
+    password=kings
+    host=mysql.component.svc.cluster.local
+    port=3306
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-exporter
+  namespace: monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-exporter
+  template:
+    metadata:
+      labels:
+        app: mysql-exporter
+    spec:
+      containers:
+        - name: mysql-exporter
+          image: prom/mysqld-exporter:latest
+          ports:
+            - containerPort: 9104
+          args:
+            - '--config.my-cnf=/etc/mysql-exporter/.my.cnf'
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/mysql-exporter
+              readOnly: true
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mysql-exporter
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: monitor
+  name: mysql-exporter
+spec:
+  ports:
+    - name: http
+      port: 9104
+      targetPort: 9104
+  selector:
+    app: mysql-exporter

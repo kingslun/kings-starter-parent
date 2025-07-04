@@ -1,26 +1,23 @@
 package io.kings.framework.devops.kubernetes;
 
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.*;
 import io.kings.devops.backend.api.KubernetesConfigProvider;
 import io.kings.devops.backend.api.KubernetesDto;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
 import io.kings.framework.devops.kubernetes.exception.KubernetesResourceNotFoundException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 默认采用fabric8的K8s实现
@@ -31,7 +28,7 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
-    BeanClassLoaderAware {
+        BeanClassLoaderAware {
 
     private final KubernetesConfigProvider configProvider;
 
@@ -85,21 +82,21 @@ public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
         public PodResource podResource() {
             PodResource podResource = new DefaultPodResource(this.client);
             return (PodResource) Proxy.newProxyInstance(classLoader, new Class[]{PodResource.class},
-                new KubernetesProxy<>(podResource));
+                    new KubernetesProxy<>(podResource));
         }
 
         @Override
         public DeploymentResource deploymentResource() {
             DeploymentResource deploymentResource = new DefaultDeploymentResource(this.client);
             return (DeploymentResource) Proxy.newProxyInstance(this.classLoader,
-                new Class[]{DeploymentResource.class}, new KubernetesProxy<>(deploymentResource));
+                    new Class[]{DeploymentResource.class}, new KubernetesProxy<>(deploymentResource));
         }
 
         @Override
         public NetworkResource networkResource() {
             NetworkResource networkResource = new DefaultNetworkResource(this.client);
             return (NetworkResource) Proxy.newProxyInstance(this.classLoader,
-                new Class[]{NetworkResource.class}, new KubernetesProxy<>(networkResource));
+                    new Class[]{NetworkResource.class}, new KubernetesProxy<>(networkResource));
         }
 
         @Override
@@ -120,7 +117,7 @@ public final class CachedKubernetesApiFactory implements KubernetesApiFactory,
             Assert.notNull(code, "kubernetes must had a env code");
             KubernetesDto dto = this.configProvider.getByEnvCode(code);
             Config config = new ConfigBuilder().withMasterUrl(dto.getAccessUrl())
-                .withOauthToken(dto.getAccessToken()).withTrustCerts(true).build();
+                    .withOauthToken(dto.getAccessToken()).withTrustCerts(true).build();
             return new DefaultKubernetesApi(new DefaultKubernetesClient(config), this.classLoader);
         });
     }

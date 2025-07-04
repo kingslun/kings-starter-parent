@@ -1,8 +1,10 @@
 package io.kings.devops.backend.ci.auto.sonarqube.openapi.dto;
 
 import io.kings.devops.backend.ci.auto.sonarqube.MetricDictionary;
+
 import java.io.Serializable;
 import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 

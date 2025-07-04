@@ -1,11 +1,12 @@
 package io.kings.framework.component.zookeeper;
 
-import java.io.Serializable;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 异步事件 remove some filed

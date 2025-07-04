@@ -2,9 +2,10 @@ package io.kings.devops.jenkins.api;
 
 import io.kings.devops.jenkins.JenkinsException;
 import io.kings.devops.jenkins.OffByTwoProvider;
-import java.io.IOException;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
+
+import java.io.IOException;
 
 /**
  * Jenkins实现

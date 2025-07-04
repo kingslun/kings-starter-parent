@@ -1,11 +1,7 @@
 package io.kings.framework.util.thread;
 
 import java.math.BigDecimal;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * <p>线程池创建</p>
@@ -58,9 +54,9 @@ public final class ThreadPool {
         //Common Thread Pool
         final int poolSize = Runtime.getRuntime().availableProcessors();
         return new ThreadPoolExecutor(poolSize, poolSize,
-            0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(),
-            ThreadFactory.defaultThreadFactory(threadName),
-            new ThreadPoolExecutor.AbortPolicy());
+                0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(),
+                ThreadFactory.defaultThreadFactory(threadName),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -72,7 +68,7 @@ public final class ThreadPool {
      * @return ExecutorService
      */
     public static ExecutorService threadPool(String threadName, int corePoolSize,
-        int maximumPoolSize) {
+                                             int maximumPoolSize) {
         //Common Thread Pool
         return threadPool(threadName, corePoolSize, maximumPoolSize, 0L, 1024);
     }
@@ -88,13 +84,13 @@ public final class ThreadPool {
      * @return ExecutorService
      */
     public static ExecutorService threadPool(String threadName, int corePoolSize,
-        int maximumPoolSize, long keepAliveTime,
-        int workQueueSize) {
+                                             int maximumPoolSize, long keepAliveTime,
+                                             int workQueueSize) {
         //Common Thread Pool
         return new ThreadPoolExecutor(corePoolSize, maximumPoolSize,
-            keepAliveTime, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(workQueueSize),
-            ThreadFactory.defaultThreadFactory(threadName),
-            new ThreadPoolExecutor.AbortPolicy());
+                keepAliveTime, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(workQueueSize),
+                ThreadFactory.defaultThreadFactory(threadName),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -105,13 +101,13 @@ public final class ThreadPool {
      * @return ExecutorService
      */
     public static ExecutorService cpuDenselyPoolWithWorkQueueSize(String threadName,
-        int workQueueSize) {
+                                                                  int workQueueSize) {
         //cpu densely Thread Pool
         return new ThreadPoolExecutor(CORE_POOL_SIZE, CORE_POOL_SIZE + 1,
-            KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
-            new LinkedBlockingQueue<>(workQueueSize),
-            ThreadFactory.defaultThreadFactory(threadName),
-            new ThreadPoolExecutor.AbortPolicy());
+                KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
+                new LinkedBlockingQueue<>(workQueueSize),
+                ThreadFactory.defaultThreadFactory(threadName),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -148,14 +144,14 @@ public final class ThreadPool {
      * @return ExecutorService
      */
     public static ExecutorService blockingIoDenselyPoolWithWorkQueueSize(String threadName,
-        int workQueueSize) {
+                                                                         int workQueueSize) {
         //blocking io densely Thread Pool
         return new ThreadPoolExecutor(CORE_POOL_SIZE,
-            BigDecimal.valueOf(CORE_POOL_SIZE / 0.15).intValue(),
-            KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
-            new LinkedBlockingQueue<>(workQueueSize),
-            ThreadFactory.defaultThreadFactory(threadName),
-            new ThreadPoolExecutor.AbortPolicy());
+                BigDecimal.valueOf(CORE_POOL_SIZE / 0.15).intValue(),
+                KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
+                new LinkedBlockingQueue<>(workQueueSize),
+                ThreadFactory.defaultThreadFactory(threadName),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 
     /**
@@ -181,9 +177,9 @@ public final class ThreadPool {
     public static ExecutorService nonblockingIoDenselyPool(String threadName, int workQueueSize) {
         //nonblocking io densely Thread Pool
         return new ThreadPoolExecutor(CORE_POOL_SIZE, CORE_POOL_SIZE * 2,
-            KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
-            new LinkedBlockingQueue<>(workQueueSize),
-            ThreadFactory.defaultThreadFactory(threadName),
-            new ThreadPoolExecutor.AbortPolicy());
+                KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_TIMEUNIT,
+                new LinkedBlockingQueue<>(workQueueSize),
+                ThreadFactory.defaultThreadFactory(threadName),
+                new ThreadPoolExecutor.AbortPolicy());
     }
 }

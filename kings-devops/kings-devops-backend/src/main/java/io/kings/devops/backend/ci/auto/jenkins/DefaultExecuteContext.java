@@ -6,8 +6,10 @@ import io.kings.devops.backend.ci.auto.ProjectKeyGenerator.ProjectKey;
 import io.kings.devops.backend.ci.auto.gitlab.WebhookObject;
 import io.kings.devops.backend.ci.auto.openapi.vo.CreateSonarScanTaskRequestVo;
 import io.kings.devops.backend.ci.auto.openapi.vo.TaskType;
+
 import java.util.Date;
 import java.util.Objects;
+
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -88,7 +90,7 @@ class DefaultExecuteContext extends ProjectKey implements ExecuteContext {
     @Override
     public String toString() {
         return "[TaskContext:{project_name:" + super.toString() + ",startTime:"
-            + DateTimeFormatter.DEFAULT.format(startTime) + "}]";
+                + DateTimeFormatter.DEFAULT.format(startTime) + "}]";
     }
 
     @Override

@@ -5,7 +5,9 @@ import io.kings.devops.backend.ci.auto.jenkins.JenkinsTask4SonarScanComponent;
 import io.kings.devops.backend.ci.auto.openapi.JenkinsTaskApi;
 import io.kings.devops.backend.ci.auto.openapi.vo.CreateSonarScanTaskRequestVo;
 import io.kings.devops.backend.ci.auto.openapi.vo.CreateSonarScanTaskResponseVo;
+
 import javax.validation.Valid;
+
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +26,7 @@ public class JenkinsTaskController implements JenkinsTaskApi {
 
     @Override
     public Response<CreateSonarScanTaskResponseVo> createStaticScanTask(
-        @Valid CreateSonarScanTaskRequestVo requestVo) {
+            @Valid CreateSonarScanTaskRequestVo requestVo) {
         return Response.success(sonarScanComponent.createStaticScanTask(requestVo));
     }
 

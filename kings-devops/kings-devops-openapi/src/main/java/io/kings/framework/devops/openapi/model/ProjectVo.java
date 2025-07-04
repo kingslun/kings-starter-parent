@@ -3,11 +3,12 @@ package io.kings.framework.devops.openapi.model;
 import io.kings.framework.core.Enumerable;
 import io.kings.framework.devops.openapi.exception.JenkinsProjectException;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serializable;
-import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * @author lun.wang
@@ -46,7 +47,7 @@ public class ProjectVo implements Serializable {
          */
         static Type of(int code) throws JenkinsProjectException {
             return Arrays.stream(Type.values()).filter(i -> i.code == code).findFirst()
-                .orElseThrow(JenkinsProjectTypeNotFoundException::new);
+                    .orElseThrow(JenkinsProjectTypeNotFoundException::new);
         }
 
         Type(int code, String desc) {

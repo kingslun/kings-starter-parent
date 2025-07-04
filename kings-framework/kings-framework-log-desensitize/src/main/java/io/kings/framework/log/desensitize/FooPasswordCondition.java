@@ -1,7 +1,8 @@
 package io.kings.framework.log.desensitize;
 
-import java.util.Objects;
 import lombok.AllArgsConstructor;
+
+import java.util.Objects;
 
 /**
  * 简单密码脱敏
