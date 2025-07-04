@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import io.kings.framework.core.bean.BeanLifecycle;
 import io.kings.framework.data.exception.SerializeException;
 import io.kings.framework.data.serializer.Serializer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
@@ -55,7 +56,7 @@ public class KryoSerializer implements Serializer, BeanLifecycle {
         kryo.setReferences(false);
         kryo.register(clazz);
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            Output output = new Output(bos)) {
+             Output output = new Output(bos)) {
             kryo.writeClassAndObject(output, serializable);
             output.flush();
             return bos.toByteArray();

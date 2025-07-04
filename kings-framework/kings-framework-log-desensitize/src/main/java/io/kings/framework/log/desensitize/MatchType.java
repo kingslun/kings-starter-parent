@@ -22,6 +22,6 @@ public enum MatchType {
 
     static MatchType of(String word) {
         return Arrays.stream(MatchType.values()).filter(i -> i.name().equalsIgnoreCase(word))
-            .findFirst().orElseThrow(NoSuchMatchType::new);
+                .findFirst().orElseThrow(NoSuchMatchType::new);
     }
 }

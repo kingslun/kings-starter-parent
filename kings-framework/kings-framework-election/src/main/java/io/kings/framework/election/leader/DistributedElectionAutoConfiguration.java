@@ -1,7 +1,6 @@
 package io.kings.framework.election.leader;
 
 import io.kings.framework.election.leader.condition.ConditionOnRedisElector;
-import java.nio.charset.StandardCharsets;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +10,8 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.util.StringUtils;
 
+import java.nio.charset.StandardCharsets;
+
 @EnableConfigurationProperties(DistributedElectionProperties.class)
 public class DistributedElectionAutoConfiguration {
 
@@ -19,8 +20,8 @@ public class DistributedElectionAutoConfiguration {
     @ConditionOnRedisElector
     @ConditionalOnMissingBean
     DistributedElectionRegistry distributedElectionRegistry(
-        RedisTemplate<String, String> redisTemplate,
-        DistributedElectionProperties properties) {
+            RedisTemplate<String, String> redisTemplate,
+            DistributedElectionProperties properties) {
         redisTemplate.setDefaultSerializer(new RedisKVSerializer());
         return new RedisDistributedElectionRegistry(redisTemplate, properties.getRedis());
     }
@@ -35,7 +36,7 @@ public class DistributedElectionAutoConfiguration {
         @Override
         public String deserialize(byte[] bytes) throws SerializationException {
             return bytes == null || bytes.length < 1 ? null
-                : new String(bytes, StandardCharsets.UTF_8);
+                    : new String(bytes, StandardCharsets.UTF_8);
         }
     }
 }

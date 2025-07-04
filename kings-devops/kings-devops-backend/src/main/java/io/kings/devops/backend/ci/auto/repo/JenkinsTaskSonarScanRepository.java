@@ -1,9 +1,11 @@
 package io.kings.devops.backend.ci.auto.repo;
 
 import io.kings.devops.backend.ci.auto.openapi.vo.StaticCodeMetricsQueryRequestVo;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.criteria.Predicate;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +29,7 @@ public class JenkinsTaskSonarScanRepository {
     }
 
     public JenkinsTaskSonarScanDo findByGitlabProjectPathAndBranch(String projectPath,
-        String branch) {
+                                                                   String branch) {
         return sonarScanTaskRepo.findByGitlabProjectPathAndBranch(projectPath, branch);
     }
 

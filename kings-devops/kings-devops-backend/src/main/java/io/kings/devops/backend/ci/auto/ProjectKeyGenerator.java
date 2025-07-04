@@ -27,7 +27,7 @@ public interface ProjectKeyGenerator {
     String projectKey(String env, String appName, String branch);
 
     ProjectKeyGenerator DEFAULT = (env, appName, branch) -> new ProjectKey(env, appName,
-        branch).toString();
+            branch).toString();
 
     @Getter
     @AllArgsConstructor
@@ -45,7 +45,7 @@ public interface ProjectKeyGenerator {
         @Override
         public String toString() {
             return (StringUtils.hasText(env) ? env + PROJECT_DELIMITER : "") + appName.replace("-",
-                PROJECT_DELIMITER) + PROJECT_DELIMITER + branch;
+                    PROJECT_DELIMITER) + PROJECT_DELIMITER + branch;
         }
     }
 }

@@ -23,9 +23,9 @@ public abstract class AbstractBeanCondition extends SpringBootCondition implemen
 
     @Override
     public final ConditionOutcome getMatchOutcome(
-        ConditionContext ctx, AnnotatedTypeMetadata metadata) {
+            ConditionContext ctx, AnnotatedTypeMetadata metadata) {
         this.environment = ctx.getEnvironment();
         return this.match() ? ConditionOutcome.match(this.onMatched())
-            : ConditionOutcome.noMatch(onMismatch());
+                : ConditionOutcome.noMatch(onMismatch());
     }
 }

@@ -7,6 +7,7 @@ import io.kings.framework.log.desensitize.ObjectUtils;
 import io.kings.framework.log.desensitize.match.regular.Regular;
 import io.kings.framework.log.desensitize.match.regular.RegularHolder;
 import io.kings.framework.log.desensitize.strategy.Strategy;
+
 import java.time.Duration;
 import java.util.function.BiConsumer;
 

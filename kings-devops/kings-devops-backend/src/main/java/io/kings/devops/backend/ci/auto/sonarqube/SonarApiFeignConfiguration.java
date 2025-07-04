@@ -5,7 +5,9 @@ import feign.Response;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.codec.ErrorDecoder;
 import io.kings.devops.backend.ci.auto.Response.Status;
+
 import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +43,7 @@ public class SonarApiFeignConfiguration {
         public Exception decode(String s, Response response) {
             if (response.status() == 404) {
                 throw new SonarqubeException(Status.SONARQUBE_API_CALL_FAIL,
-                    "resource notfound, params:" + response.request().requestTemplate().queries());
+                        "resource notfound, params:" + response.request().requestTemplate().queries());
             }
             return decoder.decode(s, response);
         }

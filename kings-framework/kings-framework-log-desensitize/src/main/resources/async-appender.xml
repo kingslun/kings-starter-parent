@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <included>
-  <appender name="async-appender" class="ch.qos.logback.classic.AsyncAppender">
-    <discardingThreshold>0</discardingThreshold>
-    <queueSize>100</queueSize>
-    <neverBlock>true</neverBlock>
-    <appender-ref ref="console-appender"/>
-    <appender-ref ref="sensitive-appender"/>
-  </appender>
+    <appender name="async-appender" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>100</queueSize>
+        <neverBlock>true</neverBlock>
+        <appender-ref ref="console-appender"/>
+        <appender-ref ref="sensitive-appender"/>
+    </appender>
 </included>

@@ -1,10 +1,11 @@
 package io.kings.framework.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
 /**
  * 时间格式化工具类

@@ -1,6 +1,7 @@
 package io.kings.devops.backend.ci.auto.openapi.dto;
 
 import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

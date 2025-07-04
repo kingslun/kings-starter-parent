@@ -5,10 +5,12 @@ import static io.kings.devops.backend.ci.auto.DateTimeFormatter.DATE_PATTERN;
 import static io.kings.devops.backend.ci.auto.DateTimeFormatter.TIMEZONE;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,7 +84,7 @@ public class JenkinsTaskSonarScanDo implements Serializable {
 
         public static DeleteState of(String state) {
             return Arrays.stream(DeleteState.values()).filter(i -> Objects.equals(i.state, state))
-                .findFirst().orElseThrow(NoSuchElementException::new);
+                    .findFirst().orElseThrow(NoSuchElementException::new);
         }
     }
 }

@@ -1,5 +1,5 @@
 // 初始化终端
-import { Terminal } from 'xterm'
+import {Terminal} from 'xterm'
 import 'xterm/dist/xterm.css'
 
 let term = new Terminal()

@@ -1,9 +1,10 @@
 package io.kings.framework.core.condition;
 
-import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.Objects;
 
 /**
  * 根据配置装配
@@ -14,8 +15,8 @@ import org.springframework.util.StringUtils;
  */
 @Slf4j
 public abstract class AbstractPropertyCondition
-    extends AbstractBeanCondition
-    implements PropertyCondition {
+        extends AbstractBeanCondition
+        implements PropertyCondition {
 
     /**
      * 配置了 key
@@ -49,7 +50,7 @@ public abstract class AbstractPropertyCondition
         Assert.hasText(expect, "Condition expectedly must have an expect val");
         String val = this.environment.getProperty(key);
         return StringUtils.hasText(val) && ignoreCase ? val.equalsIgnoreCase(expect)
-            : Objects.equals(val, expect);
+                : Objects.equals(val, expect);
     }
 
     //prevent override

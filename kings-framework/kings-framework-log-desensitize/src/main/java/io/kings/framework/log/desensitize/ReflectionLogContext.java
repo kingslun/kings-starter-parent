@@ -1,7 +1,8 @@
 package io.kings.framework.log.desensitize;
 
-import java.lang.reflect.Field;
 import lombok.AllArgsConstructor;
+
+import java.lang.reflect.Field;
 
 /**
  * 反射处理日志上下文对象

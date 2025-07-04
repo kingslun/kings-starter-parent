@@ -3,8 +3,8 @@ package io.kings.framework.devops.kubernetes.config;
 import io.kings.devops.backend.api.KubernetesConfigProvider;
 import io.kings.framework.core.bean.BeanLifecycle;
 import io.kings.framework.core.exception.BeanLifecycleException;
-import io.kings.framework.devops.kubernetes.KubernetesApiFactory;
 import io.kings.framework.devops.kubernetes.CachedKubernetesApiFactory;
+import io.kings.framework.devops.kubernetes.KubernetesApiFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 

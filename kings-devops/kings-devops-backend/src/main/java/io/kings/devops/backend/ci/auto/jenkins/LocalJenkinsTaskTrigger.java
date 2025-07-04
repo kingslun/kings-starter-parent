@@ -6,11 +6,13 @@ import com.offbytwo.jenkins.model.JobWithDetails;
 import io.kings.devops.backend.ci.auto.ThreadUtils;
 import io.kings.devops.backend.ci.auto.config.ConfigurationManager;
 import io.kings.devops.backend.ci.auto.config.Git;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -25,7 +27,7 @@ class LocalJenkinsTaskTrigger implements JenkinsTaskTrigger {
 
     private final ConfigurationManager configurationManager;
     private final ScheduledExecutorService schedulePool = ThreadUtils.schedulePool(
-        Runtime.getRuntime().availableProcessors() / 2, "JenkinsTaskTrigger");
+            Runtime.getRuntime().availableProcessors() / 2, "JenkinsTaskTrigger");
 
     @Override
     public void trigger(@NonNull TriggerContext context) {
@@ -37,7 +39,7 @@ class LocalJenkinsTaskTrigger implements JenkinsTaskTrigger {
             job.build(buildParams(context));
             if (StringUtils.hasText(context.getTriggerDescribe())) {
                 this.submit(jenkinsServer, context.getJobName(), buildNo,
-                    context.getTriggerDescribe());
+                        context.getTriggerDescribe());
             }
             log.debug("Jenkins task triggered by:{}", context);
         } catch (Exception e) {

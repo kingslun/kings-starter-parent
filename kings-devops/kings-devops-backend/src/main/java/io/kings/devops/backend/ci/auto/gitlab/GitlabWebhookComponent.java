@@ -9,7 +9,9 @@ import io.kings.devops.backend.ci.auto.openapi.dto.WebhookResponseDto;
 import io.kings.devops.backend.ci.auto.openapi.dto.WebhookResponseDto.State;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanRepository;
+
 import java.util.function.BinaryOperator;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,7 +32,7 @@ public class GitlabWebhookComponent {
     private final JenkinsTaskSonarScanRepository sonarScanTaskComponent;
     private final JenkinsTaskTrigger jenkinsTaskTrigger;
     private final BinaryOperator<String> describe = (event, user) -> String.format(
-        "This task is triggered by the GitLab user %s %s", user, event);
+            "This task is triggered by the GitLab user %s %s", user, event);
 
     private void validParams(WebhookRequestDto requestDto) throws ValidException {
         if (requestDto.getProject() == null) {
@@ -72,7 +74,7 @@ public class GitlabWebhookComponent {
                     //triggered jenkins by merge events & Now filtered out events like Open, Approval, Close...
                     if (MergeState.MERGED != requestDto.getObjectAttributes().getState()) {
                         return WebhookResponseDto.of(true,
-                            State.HOOK_FILTERED_BY_UNENFORCED_MERGE_STATES);
+                                State.HOOK_FILTERED_BY_UNENFORCED_MERGE_STATES);
                     }
                     branch = requestDto.getObjectAttributes().getTargetBranch();
                     user = requestDto.getUser().getUsername();
@@ -91,15 +93,15 @@ public class GitlabWebhookComponent {
                 throw new ValidException(State.HOOK_WITHOUT_USER);
             }
             JenkinsTaskSonarScanDo taskDo = sonarScanTaskComponent.findByGitlabProjectPathAndBranch(
-                gitlabProjectPath, branch);
+                    gitlabProjectPath, branch);
             if (taskDo == null) {
                 return WebhookResponseDto.of(false, State.HOOK_TRIGGERED_WITHOUT_TASK_DATA);
             }
             //triggered jenkins by events
             jenkinsTaskTrigger.trigger(
-                new TriggerContext(taskDo.getEnv(), taskDo.getAppName(), taskDo.getProjectKey(),
-                    branch).withGit(taskDo.getGitlabUrl(), taskDo.getGitlabJenkinsCredentialsId())
-                    .withTriggerDescribe(describe.apply(requestDto.getKind().getPrint(), user)));
+                    new TriggerContext(taskDo.getEnv(), taskDo.getAppName(), taskDo.getProjectKey(),
+                            branch).withGit(taskDo.getGitlabUrl(), taskDo.getGitlabJenkinsCredentialsId())
+                            .withTriggerDescribe(describe.apply(requestDto.getKind().getPrint(), user)));
             log.info("Gitlab webhook triggered success. origin:{}", taskDo);
             return WebhookResponseDto.of(true, State.HOOK_TRIGGERED_JENKINS_TASK_SUCCESS);
         } catch (ValidException e) {

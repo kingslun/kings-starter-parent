@@ -2,13 +2,14 @@ package io.kings.framework.core.proxy;
 
 import io.kings.framework.core.exception.ProxyException;
 import io.kings.framework.util.ClassUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.Assert;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 
 /**
  * 日志代理
@@ -35,15 +36,15 @@ public class LogProxyFacade<D> implements InvocationHandler {
             Object result = method.invoke(this.delegate, args);
             if (log.isDebugEnabled()) {
                 log.debug("\nOperate success@{}#{} called by:{},result:{}", className, methodName,
-                    Arrays.toString(args), result);
+                        Arrays.toString(args), result);
             }
             return result;
         } catch (Exception e) {
             Throwable cause = e instanceof InvocationTargetException ?
-                ((InvocationTargetException) e).getTargetException() : e;
+                    ((InvocationTargetException) e).getTargetException() : e;
             if (log.isErrorEnabled()) {
                 log.error("\nOperate failure@{}#{} called by:{}", className, methodName,
-                    Arrays.toString(args), cause);
+                        Arrays.toString(args), cause);
             }
             throw new DelegatorExecutionException("Proxy failure", cause);
         }
@@ -57,7 +58,7 @@ public class LogProxyFacade<D> implements InvocationHandler {
             throw new DelegatorNotImplementAnyInterfaceException("There are no proxy classes");
         }
         return (D) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), supers,
-            new LogProxyFacade<>(delegate));
+                new LogProxyFacade<>(delegate));
     }
 
     static class DelegatorExecutionException extends ProxyException {

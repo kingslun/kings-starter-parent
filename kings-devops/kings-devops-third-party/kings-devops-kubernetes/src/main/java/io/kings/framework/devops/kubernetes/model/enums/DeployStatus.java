@@ -2,9 +2,10 @@ package io.kings.framework.devops.kubernetes.model.enums;
 
 import io.kings.framework.core.Enumerable;
 import io.kings.framework.devops.kubernetes.exception.KubernetesException;
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * 部署状态 1 进行中 3 失败 4 成功
@@ -22,7 +23,7 @@ public enum DeployStatus implements Enumerable<Integer, String> {
 
     public static DeployStatus of(int code) {
         return Arrays.stream(DeployStatus.values()).filter(i -> i.getCode() == code).findFirst()
-            .orElseThrow(KubernetesDeploymentStatusNotFoundException::new);
+                .orElseThrow(KubernetesDeploymentStatusNotFoundException::new);
     }
 
     static class KubernetesDeploymentStatusNotFoundException extends KubernetesException {

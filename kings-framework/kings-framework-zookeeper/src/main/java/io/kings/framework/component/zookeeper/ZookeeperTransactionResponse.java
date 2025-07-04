@@ -1,10 +1,11 @@
 package io.kings.framework.component.zookeeper;
 
-import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * 事物操作结果对象

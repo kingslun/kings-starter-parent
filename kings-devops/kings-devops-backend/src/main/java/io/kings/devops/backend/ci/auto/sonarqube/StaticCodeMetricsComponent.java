@@ -7,8 +7,10 @@ import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanDo;
 import io.kings.devops.backend.ci.auto.repo.JenkinsTaskSonarScanRepository;
 import io.kings.devops.backend.ci.auto.sonarqube.openapi.dto.MetricKeyResponseDto;
 import io.kings.devops.backend.ci.auto.sonarqube.openapi.dto.MetricResponseDto;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -37,8 +39,8 @@ public class StaticCodeMetricsComponent {
         if (page.hasContent()) {
             List<ProjectMetric> projectMetrics = new ArrayList<>(requestVo.getPageSize());
             page.getContent().forEach(i -> projectMetrics.add(projectMetric(
-                sonarApiFeignClient.metrics(i.getProjectKey(), requestVo.getInterestedMetrics()),
-                i)));
+                    sonarApiFeignClient.metrics(i.getProjectKey(), requestVo.getInterestedMetrics()),
+                    i)));
             responseVo.setProjectMetrics(projectMetrics);
         }
         return responseVo;
@@ -59,7 +61,7 @@ public class StaticCodeMetricsComponent {
             List<MetricResponseDto.Metric> metrics = component.getMetrics();
             if (!CollectionUtils.isEmpty(metrics)) {
                 List<StaticCodeMetricsQueryResponseVo.Metric> responseMetrics = new ArrayList<>(
-                    metrics.size());
+                        metrics.size());
                 metrics.forEach(i -> {
                     StaticCodeMetricsQueryResponseVo.Metric responseMetric = new StaticCodeMetricsQueryResponseVo.Metric();
                     String key = i.getKey();

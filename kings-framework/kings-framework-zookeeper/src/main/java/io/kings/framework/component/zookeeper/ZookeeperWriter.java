@@ -46,7 +46,7 @@ public interface ZookeeperWriter<K, V> {
      * @throws ZookeeperException failed
      */
     default ZookeeperWriter<K, V> create(K k, V v, Serializer serializer)
-        throws ZookeeperException {
+            throws ZookeeperException {
         return create(k, v, NodeMode.PERSISTENT, serializer);
     }
 
@@ -74,7 +74,7 @@ public interface ZookeeperWriter<K, V> {
      * @see NodeMode
      */
     default ZookeeperWriter<K, V> create(K k, V v, NodeMode mode, Serializer serializer)
-        throws ZookeeperException {
+            throws ZookeeperException {
         return create(k, v, mode, true, serializer);
     }
 
@@ -91,7 +91,7 @@ public interface ZookeeperWriter<K, V> {
      * @see NodeMode
      */
     ZookeeperWriter<K, V> create(K k, V v, NodeMode mode, boolean recurse, Serializer serializer)
-        throws ZookeeperException;
+            throws ZookeeperException;
 
     /*=================================delete operation===================================*/
 
@@ -159,7 +159,7 @@ public interface ZookeeperWriter<K, V> {
      * @throws ZookeeperException failed
      */
     default ZookeeperWriter<K, V> update(K k, V v, Serializer serializer)
-        throws ZookeeperException {
+            throws ZookeeperException {
         return this.update(k, v, null, serializer);
     }
 
@@ -187,7 +187,7 @@ public interface ZookeeperWriter<K, V> {
      * @throws ZookeeperException failed
      */
     ZookeeperWriter<K, V> update(K k, V v, Integer version, Serializer serializer)
-        throws ZookeeperException;
+            throws ZookeeperException;
 
     /**
      * 注意：该方法返回一个Stat实例，用于检查ZNode是否不存在的操作. 可以调用额外的方法(监控或者后台处理)并在最后调用forPath()指定要操作的ZNode

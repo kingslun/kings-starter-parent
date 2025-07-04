@@ -12,8 +12,8 @@ import java.io.Serializable;
  * @since v2.7.4
  */
 public interface KingsZookeeper
-    extends ZookeeperWriter<String, Serializable>, ZookeeperReader<String, Serializable>
-    , ZookeeperComplex<String, Serializable> {
+        extends ZookeeperWriter<String, Serializable>, ZookeeperReader<String, Serializable>
+        , ZookeeperComplex<String, Serializable> {
 
     /**
      * 添加连接状态监听器

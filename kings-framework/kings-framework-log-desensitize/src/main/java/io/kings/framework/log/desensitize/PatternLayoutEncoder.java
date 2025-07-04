@@ -3,8 +3,9 @@ package io.kings.framework.log.desensitize;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.PatternLayoutEncoderBase;
-import java.util.Objects;
 import lombok.Setter;
+
+import java.util.Objects;
 
 /**
  * logback日志格式编译器
@@ -70,7 +71,7 @@ public class PatternLayoutEncoder extends PatternLayoutEncoderBase<ILoggingEvent
             System.setProperty(LOG_DESENSITIZE_MATCH_REGULAR, this.regular);
         }
         if (effectivelyConfigured(this.regularEndWith,
-            LOG_DESENSITIZE_MATCH_REGULAR_END_WITH_UNDEFINED)) {
+                LOG_DESENSITIZE_MATCH_REGULAR_END_WITH_UNDEFINED)) {
             System.setProperty(LOG_DESENSITIZE_MATCH_REGULAR_END_WITH, this.regularEndWith);
         }
         if (effectivelyConfigured(this.desensitize, LOG_DESENSITIZE_UNDEFINED)) {
@@ -78,7 +79,7 @@ public class PatternLayoutEncoder extends PatternLayoutEncoderBase<ILoggingEvent
             System.setProperty(LOG_DESENSITIZE, this.desensitize);
         }
         if (effectivelyConfigured(this.useIntern,
-            LOG_DESENSITIZE_USE_STRING_INTERN_UNDEFINED)) {
+                LOG_DESENSITIZE_USE_STRING_INTERN_UNDEFINED)) {
             this.checkBoolean(this.useIntern);
             System.setProperty(LOG_DESENSITIZE_USE_STRING_INTERN, this.useIntern);
         }
@@ -98,26 +99,26 @@ public class PatternLayoutEncoder extends PatternLayoutEncoderBase<ILoggingEvent
     private void checkBoolean(String bool) {
         if (!("true".equalsIgnoreCase(bool) || "false".equalsIgnoreCase(bool))) {
             throw new io.kings.framework.log.desensitize.DesensitizeException(
-                "Invalid boolean configuration");
+                    "Invalid boolean configuration");
         }
     }
 
     private void checkInteger(String number) {
         if (io.kings.framework.log.desensitize.ObjectUtils.isEmpty(number)) {
             throw new io.kings.framework.log.desensitize.DesensitizeException(
-                "Empty number configuration");
+                    "Empty number configuration");
         }
         try {
             Integer.parseInt(number);
         } catch (NumberFormatException e) {
             throw new io.kings.framework.log.desensitize.DesensitizeException(
-                "Invalid boolean configuration:" + number);
+                    "Invalid boolean configuration:" + number);
         }
     }
 
     //check configured property is effectively
     private boolean effectivelyConfigured(String key, String invalidly) {
         return !io.kings.framework.log.desensitize.ObjectUtils.isEmpty(key) && !Objects.equals(
-            invalidly, key);
+                invalidly, key);
     }
 }

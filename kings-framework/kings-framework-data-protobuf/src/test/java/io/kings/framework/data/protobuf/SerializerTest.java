@@ -2,8 +2,6 @@ package io.kings.framework.data.protobuf;
 
 import io.kings.framework.data.exception.SerializeException;
 import io.kings.framework.data.serializer.Serializer;
-import java.io.Serializable;
-import java.math.BigDecimal;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -66,10 +67,10 @@ public class SerializerTest {
         @Override
         public int hashCode() {
             BigDecimal bigDecimal = BigDecimal.valueOf(this.version)
-                .add(BigDecimal.valueOf(this.price))
-                .add(BigDecimal.valueOf(this.title.hashCode()))
-                .add(BigDecimal.valueOf(this.sold ? 1 : 0))
-                .add(BigDecimal.valueOf(this.delivery.hashCode()));
+                    .add(BigDecimal.valueOf(this.price))
+                    .add(BigDecimal.valueOf(this.title.hashCode()))
+                    .add(BigDecimal.valueOf(this.sold ? 1 : 0))
+                    .add(BigDecimal.valueOf(this.delivery.hashCode()));
             return bigDecimal.intValue();
         }
 
@@ -97,10 +98,10 @@ public class SerializerTest {
             @Override
             public int hashCode() {
                 BigDecimal bigDecimal = BigDecimal.valueOf(this.fromAddress.hashCode())
-                    .add(BigDecimal.valueOf(this.sendersPhone.hashCode()))
-                    .add(BigDecimal.valueOf(this.deliveryPrice))
-                    .add(BigDecimal.valueOf(this.toAddress.hashCode()))
-                    .add(BigDecimal.valueOf(this.receiverPhone.hashCode()));
+                        .add(BigDecimal.valueOf(this.sendersPhone.hashCode()))
+                        .add(BigDecimal.valueOf(this.deliveryPrice))
+                        .add(BigDecimal.valueOf(this.toAddress.hashCode()))
+                        .add(BigDecimal.valueOf(this.receiverPhone.hashCode()));
                 return bigDecimal.intValue();
             }
 
@@ -173,7 +174,7 @@ public class SerializerTest {
         log.debug(property + " serialized passed,data length:" + data.length);
         Order that = serializer.deserialize(data);
         log.debug(
-            property + " deserialize passed, cut: " + (System.currentTimeMillis() - start) + "/ms");
+                property + " deserialize passed, cut: " + (System.currentTimeMillis() - start) + "/ms");
         assert that.equals(order) : property + " deserialize not equals, a defect may occur ";
         log.debug("==========>>>before:\t" + order);
         log.debug("==========>>>after:\t" + that);

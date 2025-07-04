@@ -29,7 +29,7 @@ public class StaticCodeMetricsController implements StaticCodeMetricsApi {
 
     @Override
     public Response<StaticCodeMetricsQueryResponseVo> metrics(
-        StaticCodeMetricsQueryRequestVo requestVo) {
+            StaticCodeMetricsQueryRequestVo requestVo) {
         return Response.success(staticCodeMetricsComponent.metrics(requestVo));
     }
 }

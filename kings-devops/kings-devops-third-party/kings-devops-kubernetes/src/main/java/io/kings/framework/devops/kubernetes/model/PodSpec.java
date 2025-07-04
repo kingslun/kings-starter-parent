@@ -1,10 +1,11 @@
 package io.kings.framework.devops.kubernetes.model;
 
-import java.util.List;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * pod描述对象

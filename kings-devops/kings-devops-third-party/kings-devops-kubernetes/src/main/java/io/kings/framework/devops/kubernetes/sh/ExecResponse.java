@@ -1,9 +1,10 @@
 package io.kings.framework.devops.kubernetes.sh;
 
-import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 /**
  * shell执行结果
@@ -17,28 +18,28 @@ import lombok.ToString;
 @ToString
 public class ExecResponse implements Serializable {
 
-  /**
-   * 已提交 成功与否不关注
-   */
-  private boolean submitted;
+    /**
+     * 已提交 成功与否不关注
+     */
+    private boolean submitted;
 
-  /**
-   * sh 正常结果集
-   */
-  private String successMsg;
+    /**
+     * sh 正常结果集
+     */
+    private String successMsg;
 
-  /**
-   * sh 异常结果集
-   */
-  private String failureMsg;
+    /**
+     * sh 异常结果集
+     */
+    private String failureMsg;
 
-  /**
-   * 验证 正常结果集
-   */
-  private String validSuccessMsg;
+    /**
+     * 验证 正常结果集
+     */
+    private String validSuccessMsg;
 
-  /**
-   * 验证 异常结果集
-   */
-  private String validFailureMsg;
+    /**
+     * 验证 异常结果集
+     */
+    private String validFailureMsg;
 }

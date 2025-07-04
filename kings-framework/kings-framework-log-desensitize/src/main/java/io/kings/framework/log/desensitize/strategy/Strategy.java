@@ -2,9 +2,10 @@ package io.kings.framework.log.desensitize.strategy;
 
 import io.kings.framework.log.desensitize.DesensitizeApi;
 import io.kings.framework.log.desensitize.DesensitizeException;
-import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 /**
  * @author lun.wang
@@ -20,7 +21,7 @@ public enum Strategy {
             return PASSWORD0;
         }
     }, MOBILE_PHONE("mobile_phone",
-        "(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}") {
+            "(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\\d{8}") {
         @Override
         public DesensitizeApi sensitive() {
             return MOBILE_PHONE0;
@@ -41,7 +42,7 @@ public enum Strategy {
             return BANK_CARD0;
         }
     }, ID_CARD("id_card",
-        "[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]") {
+            "[1-9]\\d{5}(18|19|20|(3\\d))\\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]") {
         @Override
         public DesensitizeApi sensitive() {
             return ID_CARD0;
@@ -75,8 +76,8 @@ public enum Strategy {
     public static Strategy of(String keyword) {
         if (keyword != null && !keyword.isEmpty()) {
             return Arrays.stream(Strategy.values())
-                .filter(strategy -> keyword.equalsIgnoreCase(strategy.keyword)).findFirst()
-                .orElseThrow(NoSuchSensitiveStrategyException::new);
+                    .filter(strategy -> keyword.equalsIgnoreCase(strategy.keyword)).findFirst()
+                    .orElseThrow(NoSuchSensitiveStrategyException::new);
         }
         throw new NoSuchSensitiveStrategyException(keyword);
     }

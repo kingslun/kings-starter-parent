@@ -1,9 +1,9 @@
 package io.kings.framework.log.desensitize.strategy;
 
-import static io.kings.framework.log.desensitize.StringAppenderFacade.CHAR_AT;
-
 import io.kings.framework.log.desensitize.DesensitizeApi;
 import io.kings.framework.log.desensitize.DesensitizeContext;
+
+import static io.kings.framework.log.desensitize.StringAppenderFacade.CHAR_AT;
 
 /**
  * 邮箱策略

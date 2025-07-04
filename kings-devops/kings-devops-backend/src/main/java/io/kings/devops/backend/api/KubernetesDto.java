@@ -1,7 +1,9 @@
 package io.kings.devops.backend.api;
 
 import io.kings.devops.backend.model.KubernetesDo;
+
 import java.io.Serializable;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +38,7 @@ public class KubernetesDto implements Serializable {
     @Override
     public String toString() {
         return "Kubernetes{accessUrl='" + this.accessUrl + "', accessToken='"
-            + this.tokenDesensitization() + "',description='" + this.description + "'}";
+                + this.tokenDesensitization() + "',description='" + this.description + "'}";
     }
 
     private String tokenDesensitization() {
@@ -44,8 +46,8 @@ public class KubernetesDto implements Serializable {
             int len = this.accessToken.length();
             if (len > 10) {
                 return "" + at(0) + at(1) + at(2) + at(3) + at(4)
-                    + "***" + at(len - 5) + at(len - 4) + at(len - 3)
-                    + at(len - 2) + at(len - 1);
+                        + "***" + at(len - 5) + at(len - 4) + at(len - 3)
+                        + at(len - 2) + at(len - 1);
             }
         }
         return this.accessToken;

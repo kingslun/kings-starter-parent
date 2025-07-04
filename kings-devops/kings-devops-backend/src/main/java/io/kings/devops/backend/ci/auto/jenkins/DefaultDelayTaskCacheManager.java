@@ -2,6 +2,7 @@ package io.kings.devops.backend.ci.auto.jenkins;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Component;
 
 /**

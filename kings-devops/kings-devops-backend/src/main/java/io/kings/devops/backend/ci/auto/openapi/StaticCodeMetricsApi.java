@@ -4,7 +4,9 @@ import io.kings.devops.backend.ci.auto.Response;
 import io.kings.devops.backend.ci.auto.openapi.vo.StaticCodeMetricsQueryRequestVo;
 import io.kings.devops.backend.ci.auto.openapi.vo.StaticCodeMetricsQueryResponseVo;
 import io.kings.devops.backend.ci.auto.sonarqube.openapi.dto.MetricKeyResponseDto;
+
 import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,5 +25,5 @@ public interface StaticCodeMetricsApi {
 
     @GetMapping("/metrics/list")
     Response<StaticCodeMetricsQueryResponseVo> metrics(
-        @Valid StaticCodeMetricsQueryRequestVo requestVo);
+            @Valid StaticCodeMetricsQueryRequestVo requestVo);
 }

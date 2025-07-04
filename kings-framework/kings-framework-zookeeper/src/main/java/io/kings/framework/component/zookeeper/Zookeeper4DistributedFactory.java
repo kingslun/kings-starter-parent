@@ -6,9 +6,10 @@ import io.kings.framework.core.proxy.LogProxyFacade;
 import io.kings.framework.data.serializer.Serializer;
 import io.kings.framework.election.leader.DistributedElectionProperties;
 import io.kings.framework.election.leader.DistributedElectionRegistry;
-import java.util.concurrent.ExecutorService;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.state.ConnectionStateListener;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * the zookeeper factory
@@ -33,9 +34,9 @@ public class Zookeeper4DistributedFactory {
      * @see ZookeeperProvider
      */
     public static KingsZookeeper octopusZookeeper(
-        CuratorFramework curatorFramework, ExecutorService threadPool, Serializer serializer) {
+            CuratorFramework curatorFramework, ExecutorService threadPool, Serializer serializer) {
         return LogProxyFacade.proxy(
-            new ZookeeperProvider(curatorFramework, threadPool, serializer));
+                new ZookeeperProvider(curatorFramework, threadPool, serializer));
     }
 
     /**
@@ -47,8 +48,8 @@ public class Zookeeper4DistributedFactory {
      * @throws DistributedElectionException failed to elect
      */
     public static DistributedElectionRegistry createZookeeper4DistributedElector(
-        CuratorFramework client, DistributedElectionProperties.Zookeeper zookeeper)
-        throws DistributedElectionException {
+            CuratorFramework client, DistributedElectionProperties.Zookeeper zookeeper)
+            throws DistributedElectionException {
         return new ZookeeperDistributedElectionRegistry(client, zookeeper);
     }
 
@@ -62,8 +63,8 @@ public class Zookeeper4DistributedFactory {
      */
     public static ConnectionStateListener
     connectionStateListener(ExecutorService threadPool,
-        ZookeeperConnectionStateListener connectionStateListener,
-        Serializer serializer) {
+                            ZookeeperConnectionStateListener connectionStateListener,
+                            Serializer serializer) {
         return new ZookeeperConnectionStateMonitor(threadPool, connectionStateListener, serializer);
     }
 }

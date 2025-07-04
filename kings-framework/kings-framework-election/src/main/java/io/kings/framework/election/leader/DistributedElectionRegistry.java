@@ -1,11 +1,12 @@
 package io.kings.framework.election.leader;
 
 import io.kings.framework.core.bean.BeanLifecycle;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.NonNull;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.NonNull;
 
 public interface DistributedElectionRegistry extends BeanLifecycle {
 
@@ -26,7 +27,7 @@ public interface DistributedElectionRegistry extends BeanLifecycle {
          */
         protected void onRegister(DistributedElection leaderElection) {
             log.debug("doing something after DistributedElection:{} registered",
-                leaderElection.getBeanName());
+                    leaderElection.getBeanName());
         }
 
         @Override
@@ -37,7 +38,7 @@ public interface DistributedElectionRegistry extends BeanLifecycle {
             elections.put(leaderElection.getBeanName(), leaderElection);
             if (log.isDebugEnabled()) {
                 log.debug("Registered named ['{}'] DistributedElection success...",
-                    leaderElection.getBeanName());
+                        leaderElection.getBeanName());
             }
             this.onRegister(leaderElection);
         }

@@ -5,24 +5,21 @@ import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperTransactionException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperWatcherException;
 import io.kings.framework.data.serializer.Serializer;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.api.CreateBuilder;
+import org.apache.curator.framework.api.DeleteBuilder;
+import org.apache.curator.framework.api.SetDataBuilder;
+import org.apache.curator.framework.recipes.cache.*;
+import org.apache.curator.utils.CloseableUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.api.CreateBuilder;
-import org.apache.curator.framework.api.DeleteBuilder;
-import org.apache.curator.framework.api.SetDataBuilder;
-import org.apache.curator.framework.recipes.cache.ChildData;
-import org.apache.curator.framework.recipes.cache.NodeCache;
-import org.apache.curator.framework.recipes.cache.PathChildrenCache;
-import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
-import org.apache.curator.framework.recipes.cache.TreeCache;
-import org.apache.curator.utils.CloseableUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 /**
  * <p>zookeeper实现 包含分布式一致性和选举能力</p>
@@ -50,8 +47,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
         if (listener != null) {
             //default listener
             this.curatorFramework.getConnectionStateListenable()
-                .addListener(Zookeeper4DistributedFactory.connectionStateListener(this.threadPool(),
-                    listener, this.serializer), this.threadPool());
+                    .addListener(Zookeeper4DistributedFactory.connectionStateListener(this.threadPool(),
+                            listener, this.serializer), this.threadPool());
         }
     }
 
@@ -70,12 +67,12 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      * @param executorService  thread pool
      */
     ZookeeperProvider(CuratorFramework curatorFramework, ExecutorService executorService,
-        Serializer serializer) {
+                      Serializer serializer) {
         super(curatorFramework, executorService);
         Assert.notNull(serializer, "[ZookeeperSerializer] is null");
         this.serializer = serializer;
         this.transaction = new ZookeeperTransactionProvider(curatorFramework, executorService,
-            serializer);
+                serializer);
         this.async = new ZookeeperAsyncProvider(curatorFramework, executorService, serializer);
     }
 
@@ -96,7 +93,7 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 return null;
             }
             return this.deserialize(serializer == null ? this.serializer : serializer,
-                curatorFramework.getData().forPath(path0(s)));
+                    curatorFramework.getData().forPath(path0(s)));
         } catch (Exception e) {
             throw new ZookeeperException(e);
         }
@@ -115,7 +112,7 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                    String.format("No Path been Created for children by:%s", s));
+                        String.format("No Path been Created for children by:%s", s));
             }
             final List<String> paths = curatorFramework.getChildren().forPath(path0(s));
             if (CollectionUtils.isEmpty(paths)) {
@@ -138,8 +135,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public Collection<ZookeeperTransactionResponse> inTransaction(
-        Consumer<ZookeeperTransaction<String, Serializable>> action)
-        throws ZookeeperTransactionException {
+            Consumer<ZookeeperTransaction<String, Serializable>> action)
+            throws ZookeeperTransactionException {
         //先开启事物
         try (final ZookeeperTransaction<String, Serializable> zookeeperTransaction = this.transaction) {
             action.accept(zookeeperTransaction);
@@ -158,11 +155,11 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public KingsZookeeper inAsync(Consumer<ZookeeperAsync<String, Serializable>> action,
-        ZookeeperAsyncCallback<String, Serializable> callback,
-        ZookeeperAsyncErrorListener listener)
-        throws ZookeeperAsyncException {
+                                  ZookeeperAsyncCallback<String, Serializable> callback,
+                                  ZookeeperAsyncErrorListener listener)
+            throws ZookeeperAsyncException {
         try (final ZookeeperAsync<String, Serializable> asyncOperator = this.async.openAsync(
-            callback, listener)) {
+                callback, listener)) {
             action.accept(asyncOperator);
             return this;
         } catch (Exception e) {
@@ -187,9 +184,9 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public KingsZookeeper registerPathWatcher(final String path,
-        final ZookeeperPathWatcher<String,
-            Serializable> pathListener, Serializer serializer)
-        throws ZookeeperWatcherException {
+                                              final ZookeeperPathWatcher<String,
+                                                      Serializable> pathListener, Serializer serializer)
+            throws ZookeeperWatcherException {
         NodeCache nodeCache = null;
         try {
             if (!this.contains(path)) {
@@ -202,8 +199,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 if (node.getCurrentData() != null) {
                     final ChildData currentData = node.getCurrentData();
                     pathListener.nodeChanged(currentData.getPath(),
-                        this.deserialize(serializer == null ? this.serializer : serializer,
-                            currentData.getData()));
+                            this.deserialize(serializer == null ? this.serializer : serializer,
+                                    currentData.getData()));
                 } else {
                     //避免不调用和空指针
                     pathListener.nodeChanged("", null);
@@ -228,19 +225,19 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public KingsZookeeper registerPathChildrenWatcher(
-        final String path,
-        final ZookeeperPathChildrenWatcher<String, Serializable> listener
-        , Serializer serializer)
-        throws ZookeeperWatcherException {
+            final String path,
+            final ZookeeperPathChildrenWatcher<String, Serializable> listener
+            , Serializer serializer)
+            throws ZookeeperWatcherException {
         PathChildrenCache childrenCache = null;
         try {
             Assert.notNull(listener,
-                "listener not be null to register the watcher for path children ");
+                    "listener not be null to register the watcher for path children ");
             if (!this.contains(path)) {
                 throw new ZookeeperException(NO_PATH);
             }
             childrenCache = new PathChildrenCache(this.curatorFramework, path0(path), true, false,
-                executorService);
+                    executorService);
             childrenCache.getListenable().addListener((c, e) -> {
                 if (e == null || e.getType() == null || e.getData() == null) {
                     return;
@@ -249,8 +246,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 final ChildData data = e.getData();
                 final String p = data.getPath();
                 final Serializable d =
-                    this.deserialize(serializer == null ? this.serializer : serializer,
-                        data.getData());
+                        this.deserialize(serializer == null ? this.serializer : serializer,
+                                data.getData());
                 switch (type) {
                     case CHILD_ADDED:
                         //添加了子节点
@@ -279,8 +276,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                     case CONNECTION_RECONNECTED:
                         //重新启动ZK curator client is different so will new one
                         listener.connectReconnect(
-                            new ZookeeperProvider(c, this.threadPool(),
-                                serializer == null ? this.serializer : serializer), p, d);
+                                new ZookeeperProvider(c, this.threadPool(),
+                                        serializer == null ? this.serializer : serializer), p, d);
                         break;
                     default:
                         break;
@@ -317,10 +314,10 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public KingsZookeeper registerPathAndChildrenWatcher(
-        String path, boolean cacheData, boolean createParentPath,
-        int maxDepthWatcher, ExecutorService threadPool,
-        ZookeeperPathAndChildrenWatcher<String, Serializable> listener, Serializer serializer)
-        throws ZookeeperWatcherException {
+            String path, boolean cacheData, boolean createParentPath,
+            int maxDepthWatcher, ExecutorService threadPool,
+            ZookeeperPathAndChildrenWatcher<String, Serializable> listener, Serializer serializer)
+            throws ZookeeperWatcherException {
         TreeCache treeCache = null;
         try {
             Assert.isTrue(maxDepthWatcher > 0, "maxDepthWatcher mast great by 0 for watcher");
@@ -341,7 +338,7 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 final ChildData data = event.getData();
                 final String p = data.getPath();
                 Serializable d = this.deserialize(serializer == null ? this.serializer : serializer,
-                    data.getData());
+                        data.getData());
                 switch (event.getType()) {
                     case NODE_ADDED:
                         listener.pathAdd(this, p, d);
@@ -357,8 +354,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                         break;
                     case CONNECTION_RECONNECTED:
                         listener.connectReconnect(
-                            new ZookeeperProvider(client, this.threadPool(),
-                                serializer == null ? this.serializer : serializer), p, d);
+                                new ZookeeperProvider(client, this.threadPool(),
+                                        serializer == null ? this.serializer : serializer), p, d);
                         break;
                     case CONNECTION_LOST:
                         listener.connectLost(this, p, d);
@@ -390,8 +387,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public ZookeeperWriter<String, Serializable> create(
-        String s, Serializable s2, NodeMode mode, boolean recurse, Serializer serializer)
-        throws ZookeeperException {
+            String s, Serializable s2, NodeMode mode, boolean recurse, Serializer serializer)
+            throws ZookeeperException {
         try {
             Assert.notNull(mode, "NodeMode must not be null");
             if (!this.contains(path0(s))) {
@@ -399,8 +396,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 //create mode
                 super.withMode(builder, mode);
                 return super.create(builder, recurse, s, s2,
-                    Optional.ofNullable(serializer).orElse(this.serializer),
-                    this);
+                        Optional.ofNullable(serializer).orElse(this.serializer),
+                        this);
             } else {
                 throw new ZookeeperException(String.format("Node exists for %s", s));
             }
@@ -418,11 +415,11 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteWithVersion(String s, int version)
-        throws ZookeeperException {
+            throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                    String.format("No Path been Created for deleteWithVersion by:%s", s));
+                        String.format("No Path been Created for deleteWithVersion by:%s", s));
             }
             curatorFramework.delete().withVersion(version).forPath(path0(s));
             return this;
@@ -439,11 +436,11 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public ZookeeperWriter<String, Serializable> deleteForce(String s)
-        throws ZookeeperException {
+            throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                    String.format("No Path been Created for deleteForce by:%s", s));
+                        String.format("No Path been Created for deleteForce by:%s", s));
             }
             curatorFramework.delete().guaranteed().forPath(path0(s));
             return this;
@@ -461,11 +458,11 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public ZookeeperWriter<String, Serializable> delete(String s, boolean recurse)
-        throws ZookeeperException {
+            throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                    String.format("No Path been Created for delete by:%s", s));
+                        String.format("No Path been Created for delete by:%s", s));
             }
             final DeleteBuilder delete = curatorFramework.delete();
             if (recurse) {
@@ -488,12 +485,12 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
      */
     @Override
     public ZookeeperWriter<String, Serializable> update(String s, Serializable s2, Integer version,
-        Serializer serializer)
-        throws ZookeeperException {
+                                                        Serializer serializer)
+            throws ZookeeperException {
         try {
             if (!this.contains(s)) {
                 throw new ZookeeperException(
-                    String.format("No Path been Created for update by:%s", s));
+                        String.format("No Path been Created for update by:%s", s));
             }
             Assert.notNull(s2, "data must not be empty");
             final SetDataBuilder setDataBuilder = curatorFramework.setData();
@@ -501,8 +498,8 @@ class ZookeeperProvider extends AbstractZookeeper<Serializable> implements Kings
                 setDataBuilder.withVersion(version);
             }
             setDataBuilder
-                .forPath(path0(s),
-                    serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
+                    .forPath(path0(s),
+                            serializer == null ? this.serializer.serialize(s2) : serializer.serialize(s2));
             return this;
         } catch (Exception e) {
             throw new ZookeeperException(e);

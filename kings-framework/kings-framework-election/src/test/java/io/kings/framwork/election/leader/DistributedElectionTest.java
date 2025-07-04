@@ -2,7 +2,6 @@ package io.kings.framwork.election.leader;
 
 import io.kings.framework.election.leader.AbstractDistributedElection;
 import io.kings.framework.election.leader.DistributedElection;
-import java.util.concurrent.CountDownLatch;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +9,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.CountDownLatch;
 
 @Configuration
 @SpringBootTest(classes = DistributedElectionTest.class)

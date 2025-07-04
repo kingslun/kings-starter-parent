@@ -1,6 +1,7 @@
 package io.kings.framework.data.serializer;
 
 import io.kings.framework.data.exception.SerializeDecorateException;
+
 import java.io.Serializable;
 
 /**

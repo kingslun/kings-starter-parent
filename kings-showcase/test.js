@@ -1,8 +1,8 @@
 function filterCodeValue(arr, oArr = [], code = 'code', value = 'value') {
-  let res = {};
-  arr.forEach(q => res[q[code]] = q[value])
-  oArr.forEach(q => res[q[code]] = q[value])
-  return res;
+    let res = {};
+    arr.forEach(q => res[q[code]] = q[value])
+    oArr.forEach(q => res[q[code]] = q[value])
+    return res;
 }
 
 let arg0 = [{code: '0', value: '新保'}, {code: '1', value: '续保'}]

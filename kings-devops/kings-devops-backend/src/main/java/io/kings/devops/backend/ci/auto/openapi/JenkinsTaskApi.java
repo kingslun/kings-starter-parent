@@ -3,7 +3,9 @@ package io.kings.devops.backend.ci.auto.openapi;
 import io.kings.devops.backend.ci.auto.Response;
 import io.kings.devops.backend.ci.auto.openapi.vo.CreateSonarScanTaskRequestVo;
 import io.kings.devops.backend.ci.auto.openapi.vo.CreateSonarScanTaskResponseVo;
+
 import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +25,7 @@ public interface JenkinsTaskApi {
 
     @PostMapping("/task/static-scan")
     Response<CreateSonarScanTaskResponseVo> createStaticScanTask(
-        @Valid @RequestBody CreateSonarScanTaskRequestVo requestVo);
+            @Valid @RequestBody CreateSonarScanTaskRequestVo requestVo);
 
     @DeleteMapping("/task/static-scan/{projectKey}")
     Response<Void> deleteStaticScanTask(@PathVariable String projectKey);

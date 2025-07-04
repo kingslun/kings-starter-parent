@@ -7,7 +7,7 @@ package io.kings.framework.devops.kubernetes;
  * @date 2022/2/16 10:04 AM
  * @since v2.3
  */
-public interface ServiceResource extends KubernetesResource{
+public interface ServiceResource extends KubernetesResource {
 
     void createService(String namespace);
 
@@ -17,5 +17,5 @@ public interface ServiceResource extends KubernetesResource{
      * @param name svc name
      * @return status
      */
-    Object status(String namespace,String name);
+    Object status(String namespace, String name);
 }

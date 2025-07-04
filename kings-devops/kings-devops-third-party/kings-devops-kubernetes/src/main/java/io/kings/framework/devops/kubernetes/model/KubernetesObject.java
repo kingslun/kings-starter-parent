@@ -25,10 +25,10 @@ public abstract class KubernetesObject {
     @Override
     public String toString() {
         return "KubernetesObject{" +
-            "apiVersion='" + apiVersion + '\'' +
-            ", kind=" + kind +
-            ", metadata=" + metadata +
-            ", spec=" + spec +
-            '}';
+                "apiVersion='" + apiVersion + '\'' +
+                ", kind=" + kind +
+                ", metadata=" + metadata +
+                ", spec=" + spec +
+                '}';
     }
 }

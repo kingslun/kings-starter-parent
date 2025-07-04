@@ -5,6 +5,7 @@ import io.kings.framework.log.desensitize.match.AbstractMatchResult;
 import io.kings.framework.log.desensitize.match.MatchResult;
 import io.kings.framework.log.desensitize.match.regular.Regular;
 import io.kings.framework.log.desensitize.strategy.Strategy;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,8 +46,8 @@ final class RegExpMatchResult extends AbstractMatchResult implements MatchResult
             }
             boolean useIntern = super.context.useIntern();
             result = matcher.replaceFirst(
-                super.security(strategy, useIntern ? matcher.group().intern() : matcher.group(),
-                    useIntern));
+                    super.security(strategy, useIntern ? matcher.group().intern() : matcher.group(),
+                            useIntern));
             i++;
         }
     }

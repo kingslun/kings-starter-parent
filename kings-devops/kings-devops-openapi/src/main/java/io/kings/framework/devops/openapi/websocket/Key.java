@@ -1,15 +1,16 @@
 package io.kings.framework.devops.openapi.websocket;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import javax.websocket.Session;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import javax.websocket.Session;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * kubernetes pod primary key
@@ -28,7 +29,7 @@ final class Key {
         Assert.hasText(ns, "KubernetesConsoleKey must had a namespace");
         Assert.hasText(name, "KubernetesConsoleKey must had a pod name");
         return env + "-" + ns + "-" + name + (StringUtils.hasText(container) ? "-" + container
-            : "");
+                : "");
     }
 
     String key() {
@@ -76,7 +77,7 @@ final class Key {
         }
         Key t = (Key) obj;
         return Objects.equals(env, t.env) && Objects.equals(namespace, t.namespace)
-            && Objects.equals(name, t.name) && Objects.equals(container, t.container);
+                && Objects.equals(name, t.name) && Objects.equals(container, t.container);
     }
 
     @Override

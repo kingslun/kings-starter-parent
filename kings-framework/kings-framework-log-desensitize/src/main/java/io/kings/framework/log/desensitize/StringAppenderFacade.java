@@ -67,7 +67,7 @@ public interface StringAppenderFacade {
         public StringAppenderFacade appendStar(int len) {
             if (len < 0) {
                 throw new io.kings.framework.log.desensitize.DesensitizeException(
-                    MessageFormat.format("illegal arguments [len:{0}]", len));
+                        MessageFormat.format("illegal arguments [len:{0}]", len));
             }
             for (int i = 0; i < len; i++) {
                 this.append(CHAR_STAR);
@@ -78,7 +78,7 @@ public interface StringAppenderFacade {
         public StringAppenderFacade append(int start, int end) {
             if (start < 0 || start > end) {
                 throw new io.kings.framework.log.desensitize.DesensitizeException(
-                    MessageFormat.format("illegal arguments [start:{0},end:{1}]", start, end));
+                        MessageFormat.format("illegal arguments [start:{0},end:{1}]", start, end));
             }
             for (int i = start; i < end; i++) {
                 this.sb.append(this.source.charAt(i));

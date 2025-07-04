@@ -7,18 +7,10 @@ import io.kings.framework.component.zookeeper.exception.DistributedElectionExcep
 import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.data.serializer.SerializationAutoConfiguration;
 import io.kings.framework.data.serializer.Serializer;
-import io.kings.framework.election.leader.AbstractDistributedElection;
-import io.kings.framework.election.leader.DistributedElection;
-import io.kings.framework.election.leader.DistributedElectionAutoConfiguration;
-import io.kings.framework.election.leader.DistributedElectionProperties;
-import io.kings.framework.election.leader.DistributedElectionRegistry;
+import io.kings.framework.election.leader.*;
 import io.kings.framework.election.leader.condition.ConditionOnZookeeperElector;
 import io.kings.framework.util.thread.ThreadFactory;
 import io.kings.framework.util.thread.ThreadPool;
-import java.io.Closeable;
-import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -32,6 +24,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
+import java.io.Closeable;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+
 /**
  * zookeeper分布式一致性处理方案和选举自动装配对象 包括分布式锁和选举等装配功能
  *
@@ -42,7 +39,7 @@ import org.springframework.util.StringUtils;
 @EnableConfigurationProperties(ZookeeperProperties.class)
 @Slf4j
 @AutoConfigureAfter({DistributedElectionAutoConfiguration.class,
-    SerializationAutoConfiguration.class})
+        SerializationAutoConfiguration.class})
 public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseable {
 
     /**
@@ -90,7 +87,7 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
     private ExecutorService threadPool;
 
     public ZookeeperAutoConfiguration(
-        ZookeeperProperties properties) {
+            ZookeeperProperties properties) {
         this.properties = properties;
     }
 
@@ -103,7 +100,7 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
     public void afterPropertiesSet() throws Exception {
         if (!StringUtils.hasText(this.properties.getHost())) {
             throw new ZookeeperException("zookeeper must had a hostname " +
-                "format:[host1:port1,host2:port2,…]");
+                    "format:[host1:port1,host2:port2,…]");
         }
         if (!StringUtils.hasText(this.properties.getNamespace())) {
             throw new ZookeeperException("zookeeper must had a namespace ");
@@ -116,22 +113,22 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
         }
         //apply curatorFramework(zk client)
         final CuratorFrameworkFactory.Builder clientBuilder = CuratorFrameworkFactory.builder()
-            .connectString(this.properties.getHost())
-            .sessionTimeoutMs(this.properties.getSessionTimeoutMs())
-            .connectionTimeoutMs(this.properties.getConnectionTimeoutMs())
-            .canBeReadOnly(this.properties.isReadOnly())
-            .retryPolicy(this.properties.getRetryType().policy(this.properties.getRetry()))
-            .namespace(this.properties.getNamespace());
+                .connectString(this.properties.getHost())
+                .sessionTimeoutMs(this.properties.getSessionTimeoutMs())
+                .connectionTimeoutMs(this.properties.getConnectionTimeoutMs())
+                .canBeReadOnly(this.properties.isReadOnly())
+                .retryPolicy(this.properties.getRetryType().policy(this.properties.getRetry()))
+                .namespace(this.properties.getNamespace());
         ZookeeperProperties.Threads thread = this.properties.getThreads();
         //thread factory
         final java.util.concurrent.ThreadFactory threadFactory =
-            ThreadFactory.defaultThreadFactory(thread.getName());
+                ThreadFactory.defaultThreadFactory(thread.getName());
         clientBuilder.threadFactory(threadFactory);
         //thread pool
         //apply this thread pool
         this.threadPool = ThreadPool.threadPool(thread.getName(), thread.getCorePoolSize(),
-            thread.getMaximumPoolSize(), thread.getKeepAliveTime(),
-            thread.getWorkQueueSize());
+                thread.getMaximumPoolSize(), thread.getKeepAliveTime(),
+                thread.getWorkQueueSize());
         //build client
         this.client = clientBuilder.build();
     }
@@ -217,7 +214,7 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
     @Bean
     KingsZookeeper kingsZookeeper(Serializer serializer) {
         return Zookeeper4DistributedFactory.octopusZookeeper(this.client, this.threadPool,
-            serializer);
+                serializer);
     }
 
     /*=================================leader election autoconfig=================================*/
@@ -249,10 +246,10 @@ public class ZookeeperAutoConfiguration implements InitializingBean, AutoCloseab
     @Primary
     @ConditionalOnMissingBean
     DistributedElectionRegistry distributedElectionRegistry(
-        DistributedElectionProperties properties)
-        throws DistributedElectionException {
+            DistributedElectionProperties properties)
+            throws DistributedElectionException {
         return Zookeeper4DistributedFactory.createZookeeper4DistributedElector(this.client,
-            properties.getZookeeper());
+                properties.getZookeeper());
     }
 
     /**

@@ -8,7 +8,7 @@ package io.kings.framework.component.zookeeper;
  * @since v2.7.2
  */
 public interface ZookeeperAsync<K, V> extends ZookeeperWriter<K, V>,
-    ZookeeperReader<K, V>, Zookeeper {
+        ZookeeperReader<K, V>, Zookeeper {
 
     /**
      * open async
@@ -18,5 +18,5 @@ public interface ZookeeperAsync<K, V> extends ZookeeperWriter<K, V>,
      * @return this
      */
     ZookeeperAsync<K, V> openAsync(ZookeeperAsyncCallback<K, V> operatorCallback,
-        ZookeeperAsyncErrorListener errorListener);
+                                   ZookeeperAsyncErrorListener errorListener);
 }

@@ -2,9 +2,11 @@ package io.kings.devops.backend.ci.auto.config;
 
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -62,8 +64,8 @@ class DefaultConfigurationManager implements ConfigurationManager {
     @Override
     public Git git(String appName) {
         return gitMap.computeIfAbsent(appName,
-            app -> new Git().url(gitUrl).projectPath(projectPath(gitUrl))
-                .credentialsId(gitCredentialsId));
+                app -> new Git().url(gitUrl).projectPath(projectPath(gitUrl))
+                        .credentialsId(gitCredentialsId));
     }
 
     @Override
@@ -74,10 +76,10 @@ class DefaultConfigurationManager implements ConfigurationManager {
     //测试阶段使用本地Jenkins
     private JenkinsServer testJenkinsServer() {
         HttpClientBuilder config = HttpClientBuilder.create().setDefaultRequestConfig(
-            RequestConfig.custom().setConnectTimeout(5000).setConnectionRequestTimeout(1000)
-                .setSocketTimeout(5000).build());
+                RequestConfig.custom().setConnectTimeout(5000).setConnectionRequestTimeout(1000)
+                        .setSocketTimeout(5000).build());
         JenkinsHttpClient client = new JenkinsHttpClient(URI.create(jenkinsHost), config,
-            jenkinsUsername, jenkinsPassword);
+                jenkinsUsername, jenkinsPassword);
         return new JenkinsServer(client);
     }
 
@@ -100,6 +102,6 @@ class DefaultConfigurationManager implements ConfigurationManager {
     private BasicEnvironment fromEnv(String env) {
         //测试阶段仅返回本地环境
         return new BasicEnvironment().jenkinsServer(testJenkinsServer())
-            .sonarQube(new SonarQube().host(sonarqubeHost).login(sonarqubeLogin));
+                .sonarQube(new SonarQube().host(sonarqubeHost).login(sonarqubeLogin));
     }
 }

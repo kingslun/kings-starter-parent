@@ -2,7 +2,9 @@ package io.kings.devops.backend.ci.auto.jenkins;
 
 import io.kings.devops.backend.ci.auto.gitlab.WebhookObject;
 import io.kings.devops.backend.ci.auto.openapi.vo.TaskType;
+
 import java.util.Date;
+
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 

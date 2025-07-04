@@ -5,6 +5,7 @@ import io.kings.framework.component.zookeeper.exception.ZookeeperException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperTransactionException;
 import io.kings.framework.component.zookeeper.exception.ZookeeperWatcherException;
 import io.kings.framework.data.serializer.Serializer;
+
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
@@ -33,8 +34,8 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperTransactionException failed
      */
     Collection<ZookeeperTransactionResponse> inTransaction(
-        Consumer<ZookeeperTransaction<K, V>> action)
-        throws ZookeeperTransactionException;
+            Consumer<ZookeeperTransaction<K, V>> action)
+            throws ZookeeperTransactionException;
 
     /*=================================async operation===================================*/
 
@@ -48,8 +49,8 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperAsyncException failed
      */
     KingsZookeeper inAsync(Consumer<ZookeeperAsync<K, V>> action,
-        ZookeeperAsyncCallback<K, V> callback,
-        ZookeeperAsyncErrorListener listener) throws ZookeeperAsyncException;
+                           ZookeeperAsyncCallback<K, V> callback,
+                           ZookeeperAsyncErrorListener listener) throws ZookeeperAsyncException;
 
     /*==============================watcher for path================================*/
 
@@ -68,7 +69,7 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @see ZookeeperPathWatcher {@link ZookeeperPathWatcher#nodeChanged(Object, Object)}
      */
     default KingsZookeeper registerPathWatcher(K path, ZookeeperPathWatcher<K, V> pathListener)
-        throws ZookeeperWatcherException {
+            throws ZookeeperWatcherException {
         return this.registerPathWatcher(path, pathListener, null);
     }
 
@@ -82,8 +83,8 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperWatcherException failed
      */
     KingsZookeeper registerPathWatcher(K path, ZookeeperPathWatcher<K, V> pathListener,
-        Serializer serializer)
-        throws ZookeeperWatcherException;
+                                       Serializer serializer)
+            throws ZookeeperWatcherException;
 
     /**
      * 对指定的路径节点的一级子目录进行监听，不对该节点的操作进行监听，对其子目录的节点进行增、删、改的操作监听 *  说明 *  注册监听器，当前节点不存在，创建该节点：未抛出异常及错误日志
@@ -99,8 +100,8 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperWatcherException 创建监听过程中发生的错误
      */
     default KingsZookeeper registerPathChildrenWatcher(K path,
-        ZookeeperPathChildrenWatcher<K, V> listener)
-        throws ZookeeperWatcherException {
+                                                       ZookeeperPathChildrenWatcher<K, V> listener)
+            throws ZookeeperWatcherException {
         return this.registerPathChildrenWatcher(path, listener, null);
     }
 
@@ -114,8 +115,8 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperWatcherException failed
      */
     KingsZookeeper registerPathChildrenWatcher(K path, ZookeeperPathChildrenWatcher<K, V> listener,
-        Serializer serializer)
-        throws ZookeeperWatcherException;
+                                               Serializer serializer)
+            throws ZookeeperWatcherException;
 
     /**
      * overload method
@@ -131,13 +132,13 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * ZookeeperPathAndChildrenWatcher)
      */
     default KingsZookeeper registerPathAndChildrenWatcher(K path, boolean cacheData,
-        boolean createParentPath,
-        int maxDepthWatcher,
-        ZookeeperPathAndChildrenWatcher<K, V> watcher)
-        throws ZookeeperWatcherException {
+                                                          boolean createParentPath,
+                                                          int maxDepthWatcher,
+                                                          ZookeeperPathAndChildrenWatcher<K, V> watcher)
+            throws ZookeeperWatcherException {
         try {
             return this.registerPathAndChildrenWatcher(path, cacheData, createParentPath,
-                maxDepthWatcher, this.threadPool(), watcher);
+                    maxDepthWatcher, this.threadPool(), watcher);
         } catch (ZookeeperException e) {
             throw new ZookeeperWatcherException(e);
         }
@@ -155,12 +156,12 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * ZookeeperPathAndChildrenWatcher)
      */
     default KingsZookeeper registerPathAndChildrenWatcher(K path,
-        ZookeeperPathAndChildrenWatcher<K, V> watcher,
-        Serializer serializer)
-        throws ZookeeperWatcherException {
+                                                          ZookeeperPathAndChildrenWatcher<K, V> watcher,
+                                                          Serializer serializer)
+            throws ZookeeperWatcherException {
         try {
             return this.registerPathAndChildrenWatcher(path, true, true,
-                Integer.MAX_VALUE, this.threadPool(), watcher, serializer);
+                    Integer.MAX_VALUE, this.threadPool(), watcher, serializer);
         } catch (ZookeeperException e) {
             throw new ZookeeperWatcherException(e);
         }
@@ -178,11 +179,11 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * ZookeeperPathAndChildrenWatcher)
      */
     default KingsZookeeper registerPathAndChildrenWatcher(K path, int maxDepthWatcher,
-        ZookeeperPathAndChildrenWatcher<K, V> watcher)
-        throws ZookeeperWatcherException {
+                                                          ZookeeperPathAndChildrenWatcher<K, V> watcher)
+            throws ZookeeperWatcherException {
         try {
             return this.registerPathAndChildrenWatcher(path, true, true, maxDepthWatcher,
-                this.threadPool(), watcher);
+                    this.threadPool(), watcher);
         } catch (ZookeeperException e) {
             throw new ZookeeperWatcherException(e);
         }
@@ -199,11 +200,11 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * ZookeeperPathAndChildrenWatcher)
      */
     default KingsZookeeper registerPathAndChildrenWatcher(K path,
-        ZookeeperPathAndChildrenWatcher<K, V> watcher)
-        throws ZookeeperWatcherException {
+                                                          ZookeeperPathAndChildrenWatcher<K, V> watcher)
+            throws ZookeeperWatcherException {
         try {
             return this.registerPathAndChildrenWatcher(path, true, true, Integer.MAX_VALUE,
-                this.threadPool(), watcher);
+                    this.threadPool(), watcher);
         } catch (ZookeeperException e) {
             throw new ZookeeperWatcherException(e);
         }
@@ -231,14 +232,14 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @throws ZookeeperWatcherException 创建监听过程中发生的错误
      */
     default KingsZookeeper registerPathAndChildrenWatcher(K path, boolean cacheData,
-        boolean createParentPath,
-        int maxDepthWatcher,
-        ExecutorService threadPool,
-        ZookeeperPathAndChildrenWatcher<K, V> listener)
-        throws ZookeeperWatcherException {
+                                                          boolean createParentPath,
+                                                          int maxDepthWatcher,
+                                                          ExecutorService threadPool,
+                                                          ZookeeperPathAndChildrenWatcher<K, V> listener)
+            throws ZookeeperWatcherException {
         return this.registerPathAndChildrenWatcher(path, cacheData, createParentPath,
-            maxDepthWatcher, threadPool,
-            listener, null);
+                maxDepthWatcher, threadPool,
+                listener, null);
     }
 
     /**
@@ -256,10 +257,10 @@ public interface ZookeeperComplex<K, V> extends Zookeeper {
      * @since v2.8.6
      */
     KingsZookeeper registerPathAndChildrenWatcher(K path, boolean cacheData,
-        boolean createParentPath,
-        int maxDepthWatcher,
-        ExecutorService threadPool,
-        ZookeeperPathAndChildrenWatcher<K, V> listener,
-        Serializer serializer)
-        throws ZookeeperWatcherException;
+                                                  boolean createParentPath,
+                                                  int maxDepthWatcher,
+                                                  ExecutorService threadPool,
+                                                  ZookeeperPathAndChildrenWatcher<K, V> listener,
+                                                  Serializer serializer)
+            throws ZookeeperWatcherException;
 }

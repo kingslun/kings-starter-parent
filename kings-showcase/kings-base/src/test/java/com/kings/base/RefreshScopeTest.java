@@ -32,8 +32,8 @@ class RefreshScopeTest {
         @Override
         public String toString() {
             return "MyEvent{" +
-                "name='" + name + '\'' +
-                '}';
+                    "name='" + name + '\'' +
+                    '}';
         }
     }
 
