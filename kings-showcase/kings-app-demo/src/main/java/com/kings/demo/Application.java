@@ -5,10 +5,12 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @SpringBootApplication
-public class Application implements InitializingBean, DisposableBean {
+class Application implements InitializingBean, DisposableBean {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class);
@@ -23,5 +25,13 @@ public class Application implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet() {
         log.debug("hello app~");
+    }
+
+    @RestController
+    static class Api {
+        @GetMapping("/")
+        String hello() {
+            return "hello";
+        }
     }
 }

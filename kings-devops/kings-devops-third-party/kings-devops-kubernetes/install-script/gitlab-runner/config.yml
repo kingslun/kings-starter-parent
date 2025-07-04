@@ -1,5 +1,0 @@
-runners:
-  config: |
-    [[runners]]
-      [runners.kubernetes]
-        image = "ubuntu:16.04"

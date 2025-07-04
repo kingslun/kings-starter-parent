@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serve
+  namespace: kings
+spec:
+  selector:
+    matchLabels:
+      app: serve2
+  template:
+    metadata:
+      name: serve2
+      labels:
+        app: serve2
+      annotations:
+        prometheus.io/scrape: "true"        # 启用监控
+        prometheus.io/path: "/metrics"     # 指定指标路径（默认为 /metrics）
+        prometheus.io/port: "8080"         # 指定暴露的端口
+    spec:
+      containers:
+        - name: serve2
+          image: serve:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+      restartPolicy: Always
