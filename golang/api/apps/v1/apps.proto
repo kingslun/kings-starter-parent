@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package apps.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/kings/demo/api/apps/v1;v1";
+
+service AppService {
+  rpc GetApp(GetAppReq) returns (GetAppResp) {
+    option (google.api.http) = {get: "/api/v1/apps/{name}"};
+  }
+}
+message GetAppReq {
+  string name = 1;
+}
+message GetAppResp {
+  string name = 1;
+  string repo = 2;
+  string lang = 3;
+}

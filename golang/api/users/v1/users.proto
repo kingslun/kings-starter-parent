@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package users.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/kings/demo/api/users/v1;v1";
+
+service UserService {
+  // @requireAuth true
+  // @header Authorization: Bearer token
+  rpc GetUser(GetUserReq) returns (GetUserResp) {
+    option (google.api.http) = {get: "/api/v1/users/{name}"};
+  }
+}
+message GetUserReq {
+  string name = 1 [(validate.rules).string = {
+    min_len: 1
+    max_len: 10
+  }];
+}
+message GetUserResp {
+  string name = 1;
+  string phone = 2;
+}

@@ -1,16 +1,12 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: gitlab-system
----
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: gitlab-runner
-  namespace: gitlab-system
+  namespace: middleware
   labels:
     app: gitlab-runner
 spec:
+  serviceName: gitlab-runner
   replicas: 1
   template:
     metadata:
@@ -21,19 +17,19 @@ spec:
       containers:
         - name: gitlab-runner
           image: gitlab/gitlab-runner:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /etc/gitlab-runner
               name: config
-            - mountPath: /var/run/docker.sock
-              name: docker
+            - mountPath: /home/gitlab-runner
+              name: data
       volumes:
-        - name: docker
+        - name: data
           hostPath:
-            path: /var/run/docker.sock
+            path: /Users/kings/data/gitlab-runner/data
         - name: config
           hostPath:
-            path: /Users/lunkings/data/gitlab-runner
+            path: /Users/kings/data/gitlab-runner
       restartPolicy: Always
   selector:
     matchLabels:

@@ -18,7 +18,7 @@ spec:
             - name: POSTGRES_USER
               value: kings
             - name: POSTGRES_PASSWORD
-              value: E.FV0K88
+              value: kings@1995
           image: postgres:latest
           imagePullPolicy: IfNotPresent
           name: postgres

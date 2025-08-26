@@ -7,6 +7,7 @@ spec:
     - ReadWriteOnce
   capacity:
     storage: 50Gi
+  storageClassName: hostpath
   hostPath:
     path: "/Users/kings/data/mysql/data"
 ---
@@ -16,6 +17,7 @@ metadata:
   name: mysql-pvc
   namespace: component
 spec:
+  storageClassName: hostpath
   accessModes:
     - ReadWriteOnce
   resources:

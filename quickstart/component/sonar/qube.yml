@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: sonarqube
-  namespace: sonarqube
+  namespace: component
 spec:
-  serviceName: qube
+  serviceName: sonarqube
   replicas: 1
   selector:
     matchLabels:
@@ -16,15 +16,15 @@ spec:
     spec:
       containers:
         - name: sonarqube
-          image: sonarqube:7.5-community
+          image: sonarqube:latest
           ports:
             - containerPort: 9000
           resources:
             requests:
-              memory: "2Gi"
+              memory: "1Gi"
               cpu: "500m"
             limits:
-              memory: "4Gi"
+              memory: "2Gi"
               cpu: "1"
           env:
             - name: SONAR_ES_BOOTSTRAP_CHECKS_DISABLE
@@ -41,7 +41,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sonarqube
-  namespace: sonarqube
+  namespace: component
 spec:
   type: NodePort
   ports:

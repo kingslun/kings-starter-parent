@@ -1,8 +1,10 @@
+# redis-data PV
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: redis-pv
 spec:
+  storageClassName: hostpath
   accessModes:
     - ReadWriteOnce
   capacity:
@@ -10,12 +12,14 @@ spec:
   hostPath:
     path: "/Users/kings/data/redis"
 ---
+# redis-data PVC
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: redis-pvc
   namespace: component
 spec:
+  storageClassName: hostpath
   accessModes:
     - ReadWriteOnce
   resources:
